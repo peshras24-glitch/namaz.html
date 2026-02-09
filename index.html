@@ -1,102 +1,164 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="tg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Время намаза - Исфара</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+    <title>Kurush Namaz - Исфара</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body {
-            background: #0f172a;
-            color: white;
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-        .container {
-            width: 90%;
-            max-width: 400px;
-            background: #1e293b;
-            padding: 20px;
-            border-radius: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            text-align: center;
-        }
-        h1 { font-size: 1.5rem; color: #38bdf8; margin-bottom: 5px; }
-        .city { font-size: 0.9rem; opacity: 0.7; margin-bottom: 20px; }
-        .time-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 15px;
-            margin: 8px 0;
-            background: #334155;
-            border-radius: 12px;
-            font-size: 1.1rem;
-        }
-        .active {
-            border: 2px solid #38bdf8;
-            background: #1e293b;
-        }
-        .label { font-weight: 300; }
-        .time { font-weight: 500; color: #38bdf8; }
-        .loader { font-size: 0.8rem; margin-top: 15px; color: #94a3b8; }
+        body { background-color: #0f172a; color: white; -webkit-tap-highlight-color: transparent; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .active-tab { color: #38bdf8; border-top: 3px solid #38bdf8; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        @keyframes pulse-blue { 0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); } 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); } }
+        .next-prayer { animation: pulse-blue 2s infinite; border: 1px solid #38bdf8; }
     </style>
 </head>
-<body>
+<body class="font-sans">
 
-<div class="container">
-    <h1>Время Намаза</h1>
-    <div class="city">Исфара, Таджикистан</div>
-    
-    <div id="times">
-        <div class="loader">Загрузка точного времени...</div>
-    </div>
+    <header class="p-6 text-center">
+        <h1 class="text-2xl font-bold text-sky-400">Kurush Digital</h1>
+        <p class="text-xs text-slate-400 uppercase tracking-widest">Исфара • Вақти Намоз</p>
+    </header>
 
-    <p style="font-size: 0.7rem; margin-top: 20px; color: #64748b;">Kurush Digital — 2024</p>
-</div>
+    <main class="px-4 pb-24">
+        
+        <section id="tab-times" class="tab-content active">
+            <div id="next-prayer-card" class="glass rounded-3xl p-6 mb-6 text-center">
+                <p class="text-sm text-slate-300">То намози навбатӣ:</p>
+                <div id="countdown" class="text-4xl font-black my-2">--:--:--</div>
+                <p id="next-prayer-name" class="text-sky-400 font-medium">Загрузка...</p>
+            </div>
 
-<script>
-    async function getPrayerTimes() {
-        const city = "Isfara";
-        const country = "Tajikistan";
-        // Метод 3 - Всемирная Мусульманская Лига (подходит для РТ)
-        const url = `https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=3`;
+            <div id="prayer-list" class="space-y-3">
+                </div>
+        </section>
 
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            const timings = data.data.timings;
+        <section id="tab-learn" class="tab-content">
+            <h2 class="text-xl font-bold mb-4">Омӯзиши Намоз</h2>
+            <div class="space-y-4">
+                <div class="glass p-4 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <h3 class="font-bold">Намози Бамдод</h3>
+                        <p class="text-xs text-slate-400">2 ракъат суннат, 2 ракъат фарз</p>
+                    </div>
+                    <button class="bg-sky-500 p-2 rounded-full px-4 text-sm">Оғоз</button>
+                </div>
+                <div class="glass p-4 rounded-2xl opacity-50">
+                    <h3 class="font-bold">Таҳорат (Дар бахши нав)</h3>
+                </div>
+            </div>
+        </section>
 
-            const names = {
-                "Fajr": "Бамдод",
-                "Sunrise": "Восход",
-                "Dhuhr": "Пешин",
-                "Asr": "Аср",
-                "Maghrib": "Шом",
-                "Isha": "Хуфтан"
-            };
+        <section id="tab-dua" class="tab-content">
+            <h2 class="text-xl font-bold mb-4">Дуоҳои Муборак</h2>
+            <div class="grid grid-cols-1 gap-3">
+                <div class="glass p-4 rounded-2xl">
+                    <p class="text-xs text-sky-400 mb-1">Пеш аз хӯрок</p>
+                    <p class="italic text-sm">"Бисмиллоҳир Раҳмонир Раҳим..."</p>
+                </div>
+                <div class="glass p-4 rounded-2xl">
+                    <p class="text-xs text-sky-400 mb-1">Дуои пас аз намоз</p>
+                    <p class="text-sm">Оятул Курсӣ</p>
+                </div>
+            </div>
+        </section>
 
-            let html = "";
-            for (let key in names) {
-                html += `
-                    <div class="time-row">
-                        <span class="label">${names[key]}</span>
-                        <span class="time">${timings[key]}</span>
+        <section id="tab-settings" class="tab-content">
+            <h2 class="text-xl font-bold mb-4">Танзимот</h2>
+            <div class="glass rounded-2xl p-4 space-y-6">
+                <div class="flex justify-between items-center">
+                    <span>Огоҳии Азон (Занги телефон)</span>
+                    <input type="checkbox" id="azanToggle" class="w-6 h-6 rounded">
+                </div>
+                <div class="flex justify-between items-center">
+                    <span>Огоҳии офтоббаро</span>
+                    <input type="checkbox" checked class="w-6 h-6">
+                </div>
+                <hr class="border-slate-700">
+                <p class="text-xs text-slate-500">Версияи 1.0.0. Маҳсули Kurush Digital. Исфара, Тоҷикистон.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <nav class="fixed bottom-0 left-0 right-0 glass border-t border-slate-800 flex justify-around py-3 rounded-t-3xl">
+        <button onclick="showTab('times')" class="nav-btn active-tab flex flex-col items-center" id="btn-times">
+            <i class="fas fa-clock text-xl"></i>
+            <span class="text-[10px] mt-1">Намоз</span>
+        </button>
+        <button onclick="showTab('learn')" class="nav-btn flex flex-col items-center text-slate-500" id="btn-learn">
+            <i class="fas fa-book-open text-xl"></i>
+            <span class="text-[10px] mt-1">Омӯзиш</span>
+        </button>
+        <button onclick="showTab('dua')" class="nav-btn flex flex-col items-center text-slate-500" id="btn-dua">
+            <i class="fas fa-hands-praying text-xl"></i>
+            <span class="text-[10px] mt-1">Дуо</span>
+        </button>
+        <button onclick="showTab('settings')" class="nav-btn flex flex-col items-center text-slate-500" id="btn-settings">
+            <i class="fas fa-cog text-xl"></i>
+            <span class="text-[10px] mt-1">Танзимот</span>
+        </button>
+    </nav>
+
+    <script>
+        const prayerNames = {
+            Fajr: "Бамдод",
+            Sunrise: "Офтоббаро",
+            Dhuhr: "Пешин",
+            Asr: "Аср",
+            Maghrib: "Шом",
+            Isha: "Хуфтан"
+        };
+
+        async function initApp() {
+            try {
+                // Координаты Исфары
+                const res = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Isfara&country=Tajikistan&method=3');
+                const data = await res.json();
+                const timings = data.data.timings;
+                
+                renderTimes(timings);
+                updateCountdown(timings);
+            } catch (err) {
+                console.error("Хатогӣ дар боргузорӣ");
+            }
+        }
+
+        function renderTimes(times) {
+            const list = document.getElementById('prayer-list');
+            list.innerHTML = "";
+            for (let [id, name] of Object.entries(prayerNames)) {
+                list.innerHTML += `
+                    <div class="glass flex justify-between p-4 rounded-2xl items-center">
+                        <span class="font-medium text-slate-300">${name}</span>
+                        <span class="text-xl font-bold text-sky-400">${times[id]}</span>
                     </div>
                 `;
             }
-            document.getElementById('times').innerHTML = html;
-        } catch (error) {
-            document.getElementById('times').innerHTML = "Ошибка загрузки данных";
         }
-    }
 
-    getPrayerTimes();
-</script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-tab', 'text-slate-500'));
+            
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.getElementById('btn-' + tabId).classList.add('active-tab');
+            document.querySelectorAll('.nav-btn:not(.active-tab)').forEach(b => b.classList.add('text-slate-500'));
+        }
 
+        function updateCountdown(times) {
+            // Упрощенная логика отсчета для примера
+            setInterval(() => {
+                const now = new Date();
+                document.getElementById('countdown').innerText = now.toLocaleTimeString('tg-TJ');
+                document.getElementById('next-prayer-name').innerText = "Вақти ҷорӣ дар Исфара";
+            }, 1000);
+        }
+
+        initApp();
+    </script>
 </body>
 </html>
