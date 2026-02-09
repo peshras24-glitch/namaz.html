@@ -3,162 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kurush Namaz - Исфара</title>
+    <title>Kurush Namaz - Ислом ва Намоз</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: #0f172a; color: white; -webkit-tap-highlight-color: transparent; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        body { background-color: #020617; color: white; -webkit-tap-highlight-color: transparent; }
+        .glass { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); }
         .active-tab { color: #38bdf8; border-top: 3px solid #38bdf8; }
-        .tab-content { display: none; }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
-        @keyframes pulse-blue { 0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); } 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); } }
-        .next-prayer { animation: pulse-blue 2s infinite; border: 1px solid #38bdf8; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .bg-gradient-main { background: radial-gradient(circle at top right, #1e293b, #020617); }
     </style>
 </head>
-<body class="font-sans">
+<body class="bg-gradient-main min-h-screen">
 
-    <header class="p-6 text-center">
-        <h1 class="text-2xl font-bold text-sky-400">Kurush Digital</h1>
-        <p class="text-xs text-slate-400 uppercase tracking-widest">Исфара • Вақти Намоз</p>
+    <header class="p-6 flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-black text-sky-400">Kurush Digital</h1>
+            <p class="text-[10px] text-slate-400 uppercase tracking-[0.2em] city-name">Ҷустуҷӯи макон...</p>
+        </div>
+        <div class="bg-sky-500/10 p-2 rounded-full">
+            <i class="fas fa-mosque text-sky-400"></i>
+        </div>
     </header>
 
-    <main class="px-4 pb-24">
+    <main class="px-4 pb-28">
         
         <section id="tab-times" class="tab-content active">
-            <div id="next-prayer-card" class="glass rounded-3xl p-6 mb-6 text-center">
-                <p class="text-sm text-slate-300">То намози навбатӣ:</p>
-                <div id="countdown" class="text-4xl font-black my-2">--:--:--</div>
-                <p id="next-prayer-name" class="text-sky-400 font-medium">Загрузка...</p>
+            <div class="glass rounded-3xl p-5 mb-6 border-l-4 border-l-sky-500">
+                <div class="flex items-center mb-2">
+                    <i class="fas fa-quote-left text-sky-500 mr-2 text-sm"></i>
+                    <h3 class="text-xs font-bold uppercase text-sky-500">Ҳадиси рӯз</h3>
+                </div>
+                <p id="daily-hadith" class="text-sm leading-relaxed text-slate-200 font-medium italic">
+                    "Беҳтарини шумо касест, ки Қуръонро омӯзад ва ба дигарон омӯзонад."
+                </p>
+                <p class="text-[10px] text-slate-500 mt-2">— Саҳеҳи Бухорӣ</p>
             </div>
 
-            <div id="prayer-list" class="space-y-3">
+            <div id="prayer-list" class="grid grid-cols-2 gap-3">
                 </div>
         </section>
 
         <section id="tab-learn" class="tab-content">
             <h2 class="text-xl font-bold mb-4">Омӯзиши Намоз</h2>
-            <div class="space-y-4">
-                <div class="glass p-4 rounded-2xl flex items-center justify-between">
-                    <div>
-                        <h3 class="font-bold">Намози Бамдод</h3>
-                        <p class="text-xs text-slate-400">2 ракъат суннат, 2 ракъат фарз</p>
+            <div class="space-y-3">
+                <div class="glass p-4 rounded-2xl">
+                    <h3 class="font-bold text-sky-400 border-b border-slate-700 pb-2 mb-2">Миқдори ракъатҳо</h3>
+                    <div class="text-xs space-y-2 text-slate-300">
+                        <div class="flex justify-between"><span>Бамдод:</span> <span>2 Суннат + 2 Фарз</span></div>
+                        <div class="flex justify-between"><span>Пешин:</span> <span>4 Суннат + 4 Фарз + 2 Суннат</span></div>
+                        <div class="flex justify-between"><span>Аср:</span> <span>4 Фарз</span></div>
+                        <div class="flex justify-between"><span>Шом:</span> <span>3 Фарз + 2 Суннат</span></div>
+                        <div class="flex justify-between"><span>Хуфтан:</span> <span>4 Фарз + 2 Суннат + 3 Витр</span></div>
                     </div>
-                    <button class="bg-sky-500 p-2 rounded-full px-4 text-sm">Оғоз</button>
                 </div>
-                <div class="glass p-4 rounded-2xl opacity-50">
-                    <h3 class="font-bold">Таҳорат (Дар бахши нав)</h3>
+                
+                <div class="glass p-4 rounded-2xl">
+                    <h3 class="font-bold text-sm mb-1">Дуои "Сано" (барои оғози намоз)</h3>
+                    <p class="text-[10px] text-slate-400 italic mb-2">Субҳонакаллоҳумма ва биҳамдика...</p>
+                    <button class="text-xs text-sky-400 font-bold">Хондани пурра →</button>
                 </div>
             </div>
         </section>
 
         <section id="tab-dua" class="tab-content">
-            <h2 class="text-xl font-bold mb-4">Дуоҳои Муборак</h2>
-            <div class="grid grid-cols-1 gap-3">
+            <h2 class="text-xl font-bold mb-4">Дуоҳои муҳим</h2>
+            <div class="space-y-3">
                 <div class="glass p-4 rounded-2xl">
-                    <p class="text-xs text-sky-400 mb-1">Пеш аз хӯрок</p>
-                    <p class="italic text-sm">"Бисмиллоҳир Раҳмонир Раҳим..."</p>
+                    <h3 class="text-sm font-bold text-sky-400">Дуои пас аз таом</h3>
+                    <p class="text-xs mt-1 text-slate-300">"Алҳамдулиллоҳиллазӣ атьамана ва сақоно..."</p>
                 </div>
                 <div class="glass p-4 rounded-2xl">
-                    <p class="text-xs text-sky-400 mb-1">Дуои пас аз намоз</p>
-                    <p class="text-sm">Оятул Курсӣ</p>
+                    <h3 class="text-sm font-bold text-sky-400">Дуои ворид шудан ба масҷид</h3>
+                    <p class="text-xs mt-1 text-slate-300">"Аллоҳумма-фтаҳ лӣ абвоба раҳматик."</p>
+                </div>
+                <div class="glass p-4 rounded-2xl">
+                    <h3 class="text-sm font-bold text-sky-400">Дуои волидайн</h3>
+                    <p class="text-xs mt-1 text-slate-300">"Рабби-рҳамҳумо камо раббаёнӣ сағиро."</p>
                 </div>
             </div>
         </section>
 
         <section id="tab-settings" class="tab-content">
             <h2 class="text-xl font-bold mb-4">Танзимот</h2>
-            <div class="glass rounded-2xl p-4 space-y-6">
-                <div class="flex justify-between items-center">
-                    <span>Огоҳии Азон (Занги телефон)</span>
-                    <input type="checkbox" id="azanToggle" class="w-6 h-6 rounded">
+            <div class="glass rounded-2xl p-4 space-y-4">
+                <button onclick="updateLocation()" class="w-full bg-sky-600 p-3 rounded-xl font-bold text-sm">
+                    <i class="fas fa-location-arrow mr-2"></i> Навсозии макон (GPS)
+                </button>
+                <div class="flex justify-between items-center text-sm p-2">
+                    <span>Овози Азон</span>
+                    <input type="checkbox" checked class="w-5 h-5 accent-sky-500">
                 </div>
-                <div class="flex justify-between items-center">
-                    <span>Огоҳии офтоббаро</span>
-                    <input type="checkbox" checked class="w-6 h-6">
-                </div>
-                <hr class="border-slate-700">
-                <p class="text-xs text-slate-500">Версияи 1.0.0. Маҳсули Kurush Digital. Исфара, Тоҷикистон.</p>
             </div>
         </section>
 
     </main>
 
-    <nav class="fixed bottom-0 left-0 right-0 glass border-t border-slate-800 flex justify-around py-3 rounded-t-3xl">
-        <button onclick="showTab('times')" class="nav-btn active-tab flex flex-col items-center" id="btn-times">
-            <i class="fas fa-clock text-xl"></i>
-            <span class="text-[10px] mt-1">Намоз</span>
+    <nav class="fixed bottom-0 left-0 right-0 glass border-t border-slate-800 flex justify-around py-4 rounded-t-[35px] z-50">
+        <button onclick="showTab('times')" class="nav-btn active-tab flex flex-col items-center flex-1" id="btn-times">
+            <i class="fas fa-home text-lg"></i><span class="text-[9px] mt-1 uppercase font-bold">Асосӣ</span>
         </button>
-        <button onclick="showTab('learn')" class="nav-btn flex flex-col items-center text-slate-500" id="btn-learn">
-            <i class="fas fa-book-open text-xl"></i>
-            <span class="text-[10px] mt-1">Омӯзиш</span>
+        <button onclick="showTab('learn')" class="nav-btn text-slate-500 flex flex-col items-center flex-1" id="btn-learn">
+            <i class="fas fa-book-quran text-lg"></i><span class="text-[9px] mt-1 uppercase font-bold">Омӯзиш</span>
         </button>
-        <button onclick="showTab('dua')" class="nav-btn flex flex-col items-center text-slate-500" id="btn-dua">
-            <i class="fas fa-hands-praying text-xl"></i>
-            <span class="text-[10px] mt-1">Дуо</span>
+        <button onclick="showTab('dua')" class="nav-btn text-slate-500 flex flex-col items-center flex-1" id="btn-dua">
+            <i class="fas fa-heart text-lg"></i><span class="text-[9px] mt-1 uppercase font-bold">Дуоҳо</span>
         </button>
-        <button onclick="showTab('settings')" class="nav-btn flex flex-col items-center text-slate-500" id="btn-settings">
-            <i class="fas fa-cog text-xl"></i>
-            <span class="text-[10px] mt-1">Танзимот</span>
+        <button onclick="showTab('settings')" class="nav-btn text-slate-500 flex flex-col items-center flex-1" id="btn-settings">
+            <i class="fas fa-sliders text-lg"></i><span class="text-[9px] mt-1 uppercase font-bold">Дигар</span>
         </button>
     </nav>
 
     <script>
-        const prayerNames = {
-            Fajr: "Бамдод",
-            Sunrise: "Офтоббаро",
-            Dhuhr: "Пешин",
-            Asr: "Аср",
-            Maghrib: "Шом",
-            Isha: "Хуфтан"
-        };
+        const hadiths = [
+            { t: "Беҳтарини шумо касест, ки Қуръонро омӯзад ва ба дигарон омӯзонад.", s: "Бухорӣ" },
+            { t: "Покӣ нишони имон аст.", s: "Муслим" },
+            { t: "Дуо силоҳи мӯъмин аст.", s: "Абу Яьло" },
+            { t: "Намоз нури мӯъмин аст.", s: "Муслим" },
+            { t: "Касе, ки ба падару модари худ некӣ кунад, умраш дароз мешавад.", s: "Тирмизӣ" }
+        ];
 
-        async function initApp() {
-            try {
-                // Координаты Исфары
-                const res = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Isfara&country=Tajikistan&method=3');
-                const data = await res.json();
-                const timings = data.data.timings;
-                
-                renderTimes(timings);
-                updateCountdown(timings);
-            } catch (err) {
-                console.error("Хатогӣ дар боргузорӣ");
+        async function init() {
+            // Устанавливаем хадис дня
+            const hIndex = new Date().getDate() % hadiths.length;
+            document.getElementById('daily-hadith').innerText = `"${hadiths[hIndex].t}"`;
+            
+            // Загружаем локацию
+            const saved = localStorage.getItem('loc');
+            if(saved) {
+                const l = JSON.parse(saved);
+                getTimes(l.lat, l.lon);
+            } else {
+                updateLocation();
             }
         }
 
-        function renderTimes(times) {
+        function updateLocation() {
+            navigator.geolocation.getCurrentPosition(p => {
+                const coords = {lat: p.coords.latitude, lon: p.coords.longitude};
+                localStorage.setItem('loc', JSON.stringify(coords));
+                getTimes(coords.lat, coords.lon);
+            }, () => getTimes(40.12, 70.63)); // Исфара по умолчанию
+        }
+
+        async function getTimes(lat, lon) {
+            document.querySelector('.city-name').innerText = "Навсозӣ...";
+            const res = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`);
+            const d = await res.json();
+            const t = d.data.timings;
+            
+            document.querySelector('.city-name').innerText = d.data.meta.timezone;
+            
             const list = document.getElementById('prayer-list');
+            const map = {Fajr:'Бамдод', Sunrise:'Офтоб', Dhuhr:'Пешин', Asr:'Аср', Maghrib:'Шом', Isha:'Хуфтан'};
+            
             list.innerHTML = "";
-            for (let [id, name] of Object.entries(prayerNames)) {
+            Object.entries(map).forEach(([id, name]) => {
                 list.innerHTML += `
-                    <div class="glass flex justify-between p-4 rounded-2xl items-center">
-                        <span class="font-medium text-slate-300">${name}</span>
-                        <span class="text-xl font-bold text-sky-400">${times[id]}</span>
+                    <div class="glass p-4 rounded-2xl flex flex-col items-center justify-center">
+                        <span class="text-[10px] uppercase text-slate-400 mb-1">${name}</span>
+                        <span class="text-xl font-black text-sky-400">${t[id]}</span>
                     </div>
                 `;
-            }
+            });
         }
 
-        function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-tab', 'text-slate-500'));
-            
-            document.getElementById('tab-' + tabId).classList.add('active');
-            document.getElementById('btn-' + tabId).classList.add('active-tab');
-            document.querySelectorAll('.nav-btn:not(.active-tab)').forEach(b => b.classList.add('text-slate-500'));
+        function showTab(id) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-tab', 'text-sky-400'));
+            document.getElementById('tab-'+id).classList.add('active');
+            document.getElementById('btn-'+id).classList.add('active-tab');
         }
 
-        function updateCountdown(times) {
-            // Упрощенная логика отсчета для примера
-            setInterval(() => {
-                const now = new Date();
-                document.getElementById('countdown').innerText = now.toLocaleTimeString('tg-TJ');
-                document.getElementById('next-prayer-name').innerText = "Вақти ҷорӣ дар Исфара";
-            }, 1000);
-        }
-
-        initApp();
+        init();
     </script>
 </body>
 </html>
