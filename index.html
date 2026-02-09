@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Время намаза - Исфара</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #0f172a;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        h1 { font-size: 1.5rem; color: #38bdf8; margin-bottom: 5px; }
+        .city { font-size: 0.9rem; opacity: 0.7; margin-bottom: 20px; }
+        .time-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: #334155;
+            border-radius: 12px;
+            font-size: 1.1rem;
+        }
+        .active {
+            border: 2px solid #38bdf8;
+            background: #1e293b;
+        }
+        .label { font-weight: 300; }
+        .time { font-weight: 500; color: #38bdf8; }
+        .loader { font-size: 0.8rem; margin-top: 15px; color: #94a3b8; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Время Намаза</h1>
+    <div class="city">Исфара, Таджикистан</div>
+    
+    <div id="times">
+        <div class="loader">Загрузка точного времени...</div>
+    </div>
+
+    <p style="font-size: 0.7rem; margin-top: 20px; color: #64748b;">Kurush Digital — 2024</p>
+</div>
+
+<script>
+    async function getPrayerTimes() {
+        const city = "Isfara";
+        const country = "Tajikistan";
+        // Метод 3 - Всемирная Мусульманская Лига (подходит для РТ)
+        const url = `https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=3`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            const timings = data.data.timings;
+
+            const names = {
+                "Fajr": "Бамдод",
+                "Sunrise": "Восход",
+                "Dhuhr": "Пешин",
+                "Asr": "Аср",
+                "Maghrib": "Шом",
+                "Isha": "Хуфтан"
+            };
+
+            let html = "";
+            for (let key in names) {
+                html += `
+                    <div class="time-row">
+                        <span class="label">${names[key]}</span>
+                        <span class="time">${timings[key]}</span>
+                    </div>
+                `;
+            }
+            document.getElementById('times').innerHTML = html;
+        } catch (error) {
+            document.getElementById('times').innerHTML = "Ошибка загрузки данных";
+        }
+    }
+
+    getPrayerTimes();
+</script>
+
+</body>
+</html>
