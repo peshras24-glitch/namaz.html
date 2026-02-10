@@ -24,7 +24,6 @@
             color: var(--text-light);
             -webkit-tap-highlight-color: transparent;
             min-height: 100vh;
-            overflow-x: hidden;
         }
         
         .glass-card {
@@ -126,7 +125,7 @@
             height: 24px;
             background: white;
             border-radius: 50%;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
         
         .countdown-timer {
@@ -151,7 +150,6 @@
             line-height: 2.2;
             text-align: right;
             font-size: 1.4rem;
-            word-break: keep-all;
         }
         
         .step-indicator {
@@ -282,104 +280,6 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
-        /* Исправления для тасбиха */
-        .tasbih-btn-primary {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--secondary), var(--primary));
-            color: white;
-            font-size: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
-            transition: all 0.3s ease;
-            border: none;
-        }
-        
-        .tasbih-btn-primary:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.6);
-        }
-        
-        .tasbih-btn-primary:active {
-            transform: scale(0.95);
-        }
-        
-        .tasbih-btn-secondary {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: var(--card-bg);
-            color: var(--text-light);
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .tasbih-btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        /* Исправления для переполнения текста */
-        .text-ellipsis {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        
-        .break-words {
-            word-break: break-word;
-            overflow-wrap: break-word;
-        }
-        
-        /* Адаптивные исправления */
-        @media (max-width: 380px) {
-            .prayer-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
-            }
-            
-            .tasbih-btn-primary {
-                width: 90px;
-                height: 90px;
-                font-size: 1.8rem;
-            }
-            
-            .tasbih-btn-secondary {
-                width: 60px;
-                height: 60px;
-                font-size: 1.3rem;
-            }
-            
-            .arabic-text {
-                font-size: 1.2rem;
-                line-height: 1.8;
-            }
-        }
-        
-        /* Улучшенные кнопки тасбиха */
-        .tasbih-controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
-        }
-        
-        /* Иконка тасбеха внутри дисплея */
-        .tasbih-icon-inner {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            opacity: 0.9;
-        }
     </style>
 </head>
 <body class="min-h-screen pb-32">
@@ -403,27 +303,25 @@
                 <button onclick="closeCityModal()" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-2xl hover:bg-slate-800 transition">&times;</button>
             </div>
             
-            <!-- Кнопка GPS сверху -->
-            <div class="glass-card p-4 mb-4">
-                <button onclick="getUserLocation()" class="w-full city-select-btn py-4 rounded-xl font-bold flex items-center justify-center gap-3 text-lg">
-                    <i class="fas fa-location-crosshairs"></i>
-                    Ҷойгиршавии худкор бо GPS
-                </button>
-            </div>
-            
-            <!-- Поиск ниже -->
             <div class="mb-6">
                 <div class="relative">
                     <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500"></i>
                     <input type="text" id="city-search" placeholder="Ҷустуҷӯи шаҳр..." 
-                           class="w-full glass-card pl-12 pr-4 py-4 rounded-2xl text-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
-                           oninput="renderCityList()">
+                           class="w-full glass-card pl-12 pr-4 py-4 rounded-2xl text-lg focus:outline-none focus:ring-2 focus:ring-primary/30">
                 </div>
             </div>
             
-            <!-- Список городов с фиксированной высотой -->
-            <div class="city-modal-content space-y-3" id="city-list">
+            <div class="space-y-3" id="city-list">
                 <!-- Города будут загружены динамически -->
+            </div>
+            
+            <div class="mt-8 glass-card p-4 rounded-2xl">
+                <h3 class="font-bold text-lg mb-2">Истифодаи ҷойгиршавӣ</h3>
+                <p class="text-sm text-slate-400 mb-4">Барои гирифтани вақтҳои дақиқ, иҷозат диҳед, ки мо ҷойгиршавии шуморо бо GPS муайян кунем.</p>
+                <button onclick="getUserLocation()" class="w-full city-select-btn py-3 rounded-xl font-bold flex items-center justify-center gap-3">
+                    <i class="fas fa-location-crosshairs"></i>
+                    Ҷойгиршавии худкор
+                </button>
             </div>
         </div>
     </div>
@@ -435,7 +333,7 @@
                 <h1 class="text-3xl font-black text-gradient tracking-tight">AZON</h1>
                 <div onclick="openCityModal()" class="flex items-center gap-2 mt-2 cursor-pointer city-select-btn px-3 py-2 rounded-xl">
                     <i class="fas fa-location-dot text-primary"></i>
-                    <span id="city-name" class="font-bold text-ellipsis max-w-[150px]">Душанбе</span>
+                    <span id="city-name" class="font-bold">Душанбе</span>
                     <i class="fas fa-chevron-down text-slate-500 text-xs"></i>
                 </div>
             </div>
@@ -443,7 +341,7 @@
             <div class="flex items-center gap-4">
                 <div class="text-right">
                     <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Намози оянда</div>
-                    <div id="next-prayer-name" class="text-sm font-bold mb-1 break-words">Бамдод</div>
+                    <div id="next-prayer-name" class="text-sm font-bold mb-1">Бамдод</div>
                     <div id="countdown-timer" class="countdown-timer text-xl font-black text-gradient">--:--:--</div>
                 </div>
                 
@@ -467,7 +365,7 @@
                     <span id="hijri-date" class="text-sm font-semibold">1445 Рамазон 15</span>
                 </div>
                 <div class="text-right">
-                    <div id="current-date" class="text-sm font-semibold break-words"></div>
+                    <div id="current-date" class="text-sm font-semibold"></div>
                     <div class="text-xs text-slate-500" id="current-time"></div>
                 </div>
             </div>
@@ -487,7 +385,7 @@
                         <span id="hadith-refresh-info" class="text-xs text-slate-500">Баъд аз 24 соат</span>
                     </div>
                 </div>
-                <p id="hadith-text" class="text-sm leading-relaxed font-medium mb-3 break-words">...</p>
+                <p id="hadith-text" class="text-sm leading-relaxed font-medium mb-3">...</p>
                 <div class="flex justify-between items-center">
                     <div id="hadith-source" class="text-xs text-slate-500"></div>
                     <button onclick="refreshHadith()" id="refresh-hadith-btn" class="px-3 py-1 text-xs rounded-full glass-card text-slate-400 hover:text-primary transition" disabled>
@@ -498,7 +396,9 @@
 
             <!-- Список намазов -->
             <div id="prayer-list" class="space-y-3">
-                <!-- Данные загружаются динамически -->
+                <!-- Загрузочные карточки -->
+                <div class="prayer-card glass-card p-5 h-20 loading-shimmer"></div>
+                <div class="prayer-card glass-card p-5 h-20 loading-shimmer"></div>
             </div>
         </section>
 
@@ -506,17 +406,15 @@
         <section id="tab-learn" class="tab-content">
             <div class="mb-8">
                 <h2 class="text-2xl font-black mb-2 text-gradient">Омӯзиши Намоз</h2>
-                <p class="text-slate-400 text-sm break-words">Тартиби пурраи адои намоз бо тавсифоти муфассал</p>
+                <p class="text-slate-400 text-sm">Тартиби пурраи адои намоз бо тавсифоти муфассал</p>
             </div>
             
-            <div id="prayer-types-list" class="space-y-3 mb-8">
-                <!-- Данные загружаются динамически -->
-            </div>
+            <div id="prayer-types-list" class="space-y-3 mb-8"></div>
             
-            <div class="glass-card p-5 mb-6 overflow-hidden">
+            <div class="glass-card p-5 mb-6">
                 <h3 class="text-lg font-bold mb-4 text-primary">Ракаатҳои намоз</h3>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm min-w-[500px]">
+                    <table class="w-full text-sm">
                         <thead>
                             <tr class="border-b border-slate-700">
                                 <th class="text-left p-3 font-bold">Намоз</th>
@@ -527,9 +425,7 @@
                                 <th class="text-center p-3 font-bold">Ҷамъ</th>
                             </tr>
                         </thead>
-                        <tbody id="rakats-table">
-                            <!-- Данные загружаются динамически -->
-                        </tbody>
+                        <tbody id="rakats-table"></tbody>
                     </table>
                 </div>
             </div>
@@ -539,21 +435,21 @@
                 <div class="space-y-3">
                     <div class="flex items-start gap-3">
                         <div class="step-indicator">1</div>
-                        <div class="break-words">
+                        <div>
                             <h4 class="font-bold">Таҳорат</h4>
                             <p class="text-sm text-slate-400">Пок будани ҷисм ва либос аз надонат</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-3">
                         <div class="step-indicator">2</div>
-                        <div class="break-words">
+                        <div>
                             <h4 class="font-bold">Вақт</h4>
                             <p class="text-sm text-slate-400">Дароомадани вақти намоз</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-3">
                         <div class="step-indicator">3</div>
-                        <div class="break-words">
+                        <div>
                             <h4 class="font-bold">Қибла</h4>
                             <p class="text-sm text-slate-400">Рӯ ба сӯи Каъба кардан</p>
                         </div>
@@ -566,7 +462,7 @@
         <section id="tab-dua" class="tab-content">
             <div class="mb-6">
                 <h2 class="text-2xl font-black mb-2 text-gradient">Сураҳо ва Дуоҳо</h2>
-                <p class="text-slate-400 text-sm break-words">Сураҳои Қуръон ва дуоҳои муфид барои рӯзгор</p>
+                <p class="text-slate-400 text-sm">Сураҳои Қуръон ва дуоҳои муфид барои рӯзгор</p>
             </div>
             
             <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
@@ -577,24 +473,21 @@
                 <button onclick="filterDua('prayer')" id="filter-prayer" class="px-4 py-2 text-sm rounded-full glass-card font-bold whitespace-nowrap">Дар намоз</button>
             </div>
             
-            <div id="dua-list" class="grid grid-cols-1 gap-3">
-                <!-- Данные загружаются динамически -->
-            </div>
+            <div id="dua-list" class="grid grid-cols-1 gap-3"></div>
         </section>
 
         <!-- Вкладка тасбих -->
         <section id="tab-extra" class="tab-content">
             <div class="mb-8">
                 <h2 class="text-2xl font-black mb-2 text-gradient">Тасбеҳ</h2>
-                <p class="text-slate-400 text-sm break-words">Барои зикр, тасбеҳ ва истиғфор</p>
+                <p class="text-slate-400 text-sm">Барои зикр, тасбеҳ ва истиғфор</p>
             </div>
             
             <div class="flex flex-col items-center">
                 <div class="relative mb-8">
                     <div class="absolute inset-0 rounded-full blur-2xl bg-secondary/20"></div>
                     <div id="tasbih-display" class="tasbih-display relative w-72 h-72 rounded-full border-8 border-slate-800 flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-950">
-                        <div class="tasbih-icon-inner">📿</div>
-                        <span id="tasbih-count" class="text-8xl font-black text-white mt-2">0</span>
+                        <span id="tasbih-count" class="text-8xl font-black text-white">0</span>
                         <span id="tasbih-goal" class="text-sm font-bold text-secondary mt-4 uppercase tracking-wider">Ҳадаф: 33</span>
                         <div class="mt-6">
                             <div class="text-xs text-slate-500">Ҷамъ: <span id="tasbih-total">0</span></div>
@@ -602,34 +495,34 @@
                     </div>
                 </div>
                 
-                <div class="tasbih-controls">
-                    <button onclick="resetTasbih()" class="tasbih-btn-secondary">
-                        <i class="fas fa-redo"></i>
+                <div class="flex justify-center gap-6 mb-8">
+                    <button onclick="resetTasbih()" class="w-16 h-16 rounded-full glass-card flex items-center justify-center hover:bg-slate-800 transition active:scale-95">
+                        <i class="fas fa-redo text-slate-400"></i>
                     </button>
-                    <button onclick="incrementTasbih()" class="tasbih-btn-primary pulse-animation">
+                    <button onclick="incrementTasbih()" class="w-24 h-24 rounded-full bg-gradient-to-br from-secondary to-emerald-600 text-white shadow-2xl shadow-secondary/40 flex items-center justify-center text-3xl hover:shadow-secondary/60 transition active:scale-95 pulse-animation">
                         <i class="fas fa-hands-praying"></i>
                     </button>
-                    <button onclick="toggleTasbihGoal()" class="tasbih-btn-secondary">
-                        <span id="goal-display" class="font-bold">33</span>
+                    <button onclick="toggleTasbihGoal()" class="w-16 h-16 rounded-full glass-card flex items-center justify-center font-bold text-primary hover:bg-slate-800 transition">
+                        <span id="goal-display">33</span>
                     </button>
                 </div>
                 
-                <div class="grid grid-cols-3 gap-3 w-full max-w-sm mt-8">
-                    <button onclick="setTasbihGoal(33)" class="glass-card py-4 rounded-xl text-center hover:bg-slate-800 transition active:scale-95">
-                        <div class="font-bold text-lg">33</div>
+                <div class="grid grid-cols-3 gap-3 w-full max-w-sm">
+                    <button onclick="setTasbihGoal(33)" class="glass-card py-3 rounded-xl text-center hover:bg-slate-800 transition">
+                        <div class="font-bold">33</div>
                         <div class="text-xs text-slate-500">Муқаррарӣ</div>
                     </button>
-                    <button onclick="setTasbihGoal(99)" class="glass-card py-4 rounded-xl text-center hover:bg-slate-800 transition active:scale-95">
-                        <div class="font-bold text-lg">99</div>
+                    <button onclick="setTasbihGoal(99)" class="glass-card py-3 rounded-xl text-center hover:bg-slate-800 transition">
+                        <div class="font-bold">99</div>
                         <div class="text-xs text-slate-500">Номҳо</div>
                     </button>
-                    <button onclick="setTasbihGoal(100)" class="glass-card py-4 rounded-xl text-center hover:bg-slate-800 transition active:scale-95">
-                        <div class="font-bold text-lg">100</div>
+                    <button onclick="setTasbihGoal(100)" class="glass-card py-3 rounded-xl text-center hover:bg-slate-800 transition">
+                        <div class="font-bold">100</div>
                         <div class="text-xs text-slate-500">Такбир</div>
                     </button>
                 </div>
                 
-                <div class="mt-8 text-center text-slate-500 text-sm break-words">
+                <div class="mt-8 text-center text-slate-500 text-sm">
                     <i class="fas fa-info-circle mr-2"></i>
                     Барои тасбеҳ, таҳмид, такбир ва истиғфор
                 </div>
@@ -640,18 +533,18 @@
         <section id="tab-settings" class="tab-content">
             <div class="mb-8">
                 <h2 class="text-2xl font-black mb-2 text-gradient">Танзимот</h2>
-                <p class="text-slate-400 text-sm break-words">Танзимоти барнома ва пайвастшавӣ</p>
+                <p class="text-slate-400 text-sm">Танзимоти барнома ва пайвастшавӣ</p>
             </div>
             
             <div class="space-y-3">
                 <div class="glass-card p-5">
-                    <h3 class="font-bold text-lg mb-4 break-words">Шаҳр ва ҷойгиршавӣ</h3>
+                    <h3 class="font-bold text-lg mb-4">Шаҳр ва ҷойгиршавӣ</h3>
                     <button onclick="openCityModal()" class="w-full city-select-btn py-4 rounded-xl font-bold flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-city text-primary"></i>
-                            <div class="text-left">
-                                <div class="break-words">Шаҳри ҷорӣ</div>
-                                <div id="current-city" class="text-sm font-normal text-slate-400 break-words">Душанбе</div>
+                            <div>
+                                <div class="text-left">Шаҳри ҷорӣ</div>
+                                <div id="current-city" class="text-sm font-normal text-slate-400">Душанбе</div>
                             </div>
                         </div>
                         <i class="fas fa-chevron-right text-slate-500"></i>
@@ -659,19 +552,19 @@
                 </div>
                 
                 <div class="glass-card p-5">
-                    <h3 class="font-bold text-lg mb-4 break-words">Огоҳиномаҳо</h3>
+                    <h3 class="font-bold text-lg mb-4">Огоҳиномаҳо</h3>
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
                             <div class="flex items-center gap-3">
                                 <div class="prayer-icon bg-primary/10 text-primary">
                                     <i class="fas fa-bell"></i>
                                 </div>
-                                <div class="break-words">
+                                <div>
                                     <div class="font-bold">Огоҳиномаҳои намоз</div>
                                     <div class="text-sm text-slate-500">Огоҳӣ пеш аз вақти намоз</div>
                                 </div>
                             </div>
-                            <div onclick="toggleAllNotifications()" class="notification-toggle active" id="all-notifications-toggle">
+                            <div class="notification-toggle active" onclick="toggleAllNotifications()">
                                 <div class="toggle-knob"></div>
                             </div>
                         </div>
@@ -679,17 +572,17 @@
                         <div class="progress-bar">
                             <div id="notification-progress" class="progress-fill" style="width: 80%"></div>
                         </div>
-                        <div class="text-xs text-slate-500 text-center break-words">80% огоҳиномаҳо фаъоланд</div>
+                        <div class="text-xs text-slate-500 text-center">80% огоҳиномаҳо фаъоланд</div>
                     </div>
                 </div>
                 
                 <div class="glass-card p-5">
-                    <h3 class="font-bold text-lg mb-4 break-words">Дастгирӣ ва пайвастшавӣ</h3>
+                    <h3 class="font-bold text-lg mb-4">Дастгирӣ ва пайвастшавӣ</h3>
                     <div class="space-y-3">
                         <button onclick="openSupport()" class="w-full support-btn py-4 rounded-xl font-bold flex items-center justify-between">
                             <div class="flex items-center gap-3">
                                 <i class="fab fa-telegram"></i>
-                                <span class="break-words">Савол доред? Ба мо нависед</span>
+                                <span>Савол доред? Ба мо нависед</span>
                             </div>
                             <i class="fas fa-external-link-alt"></i>
                         </button>
@@ -697,7 +590,7 @@
                         <button onclick="openDeveloper()" class="w-full glass-card py-4 rounded-xl font-bold flex items-center justify-between hover:bg-slate-800 transition">
                             <div class="flex items-center gap-3">
                                 <i class="fas fa-code text-primary"></i>
-                                <span class="break-words">Дар бораи барнома</span>
+                                <span>Дар бораи барнома</span>
                             </div>
                             <i class="fas fa-chevron-right text-slate-500"></i>
                         </button>
@@ -705,7 +598,7 @@
                         <button onclick="shareApp()" class="w-full glass-card py-4 rounded-xl font-bold flex items-center justify-between hover:bg-slate-800 transition">
                             <div class="flex items-center gap-3">
                                 <i class="fas fa-share-alt text-secondary"></i>
-                                <span class="break-words">Бо дӯстонам мубодила кунед</span>
+                                <span>Бо дӯстонам мубодила кунед</span>
                             </div>
                             <i class="fas fa-chevron-right text-slate-500"></i>
                         </button>
@@ -713,25 +606,25 @@
                 </div>
                 
                 <div class="glass-card p-5">
-                    <h3 class="font-bold text-lg mb-4 break-words">Версия ва маълумот</h3>
+                    <h3 class="font-bold text-lg mb-4">Версия ва маълумот</h3>
                     <div class="space-y-2">
                         <div class="flex justify-between">
-                            <span class="text-slate-400 break-words">Версияи барнома</span>
+                            <span class="text-slate-400">Версияи барнома</span>
                             <span class="font-bold">1.0.0</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-slate-400 break-words">Санаи навсозӣ</span>
+                            <span class="text-slate-400">Санаи навсозӣ</span>
                             <span class="font-bold" id="last-update">10.02.2024</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-slate-400 break-words">Забони барнома</span>
+                            <span class="text-slate-400">Забони барнома</span>
                             <span class="font-bold">Тоҷикӣ</span>
                         </div>
                     </div>
                     
                     <div class="mt-6 pt-6 border-t border-slate-800/50 text-center">
-                        <div class="text-sm text-slate-500 mb-2 break-words">Таҳиягар</div>
-                        <a href="https://kurushdigital.one" target="_blank" class="text-primary font-bold hover:underline break-words">KurushDigital.one</a>
+                        <div class="text-sm text-slate-500 mb-2">Таҳиягар</div>
+                        <a href="https://kurushdigital.one" target="_blank" class="text-primary font-bold hover:underline">KurushDigital.one</a>
                     </div>
                 </div>
             </div>
@@ -763,7 +656,7 @@
     </nav>
 
     <!-- Toast уведомления -->
-    <div id="toast" class="fixed top-4 right-4 glass-card px-4 py-3 rounded-xl shadow-2xl transform translate-x-full transition-transform duration-300 z-50 max-w-sm break-words"></div>
+    <div id="toast" class="fixed top-4 right-4 glass-card px-4 py-3 rounded-xl shadow-2xl transform translate-x-full transition-transform duration-300 z-50 max-w-sm"></div>
 
     <script>
         // ==================== КОНФИГУРАЦИЯ ====================
@@ -858,6 +751,7 @@
 
         // Суры и дуа
         const DUAS = [
+            // Суры
             { 
                 id: 1, 
                 title: "Сураи Фотиҳа", 
@@ -889,10 +783,113 @@
                 translation: "Худост, ки маъбуде ҷуз Ӯ нест, зиндаву устувор. На хоб ӯро дармеёбад ва на хоб. Он чи дар осмонҳо ва замин аст, аз они Ӯст. Кист, ки назди Ӯ шафоъат кунад, магар ба иҷозати Ӯ? Он чи пеши рӯйи онон ва он чи пушт сари онон аст, медонад. Ва онон ба ҳеҷ чиз аз дониши Ӯ иҳота намеёбанд, магар ба он чӣ Ӯ бихоҳад. Курсии Ӯ осмонҳову заминро фаро гирифтааст ва нигоҳ доштани он ду Ӯро малол намеоварад ва Ӯ баланду бузург аст.", 
                 category: "surah", 
                 times: "Пас аз намоз ва пеш аз хоб"
+            },
+            
+            // Утренние дуа
+            { 
+                id: 5, 
+                title: "Дуои субҳӣ", 
+                arabic: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ", 
+                translation: "Субҳ кардем ва подшоҳӣ аз они Худост. Ситоиш Худоро, маъбуде ҷуз Худо нест, танҳост ва шарике надорад. Подшоҳӣ аз они Ӯст ва ситоиш аз они Ӯст ва Ӯ бар ҳар чиз тавоност. Эй Парвардигори ман, аз Ту дархост мекунам, ки ба ман некии ин рӯз ва некии паси онро ато кунӣ ва аз Ту паноҳ мебарам аз бадии ин рӯз ва бадии паси он. Эй Парвардигори ман, аз Ту паноҳ мебарам аз танбалии пирӣ ва нописандии пирӣ. Эй Парвардигори ман, аз Ту паноҳ мебарам аз азоби дӯзах ва азоби қабр.", 
+                category: "morning", 
+                times: "Пас аз намози Бамдод"
+            },
+            
+            // Вечерние дуа
+            { 
+                id: 6, 
+                title: "Дуои шомӣ", 
+                arabic: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذِهِ اللَّيْلَةِ وَشَرِّ مَا بَعْدَهَا، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ", 
+                translation: "Шом кардем ва подшоҳӣ аз они Худост. Ситоиш Худоро, маъбуде ҷуз Худо нест, танҳост ва шарике надорад. Подшоҳӣ аз они Ӯст ва ситоиш аз они Ӯст ва Ӯ бар ҳар чиз тавоност. Эй Парвардигори ман, аз Ту дархост мекунам, ки ба ман некии ин шаб ва некии паси онро ато кунӣ ва аз Ту паноҳ мебарам аз бадии ин шаб ва бадии паси он. Эй Парвардигори ман, аз Ту паноҳ мебарам аз танбалии пирӣ ва нописандии пирӣ. Эй Парвардигори ман, аз Ту паноҳ мебарам аз азоби дӯзах ва азоби қабр.", 
+                category: "evening", 
+                times: "Пас аз намози Шом"
+            },
+            
+            // Дуа для намаза
+            { 
+                id: 7, 
+                title: "Дуои қунут", 
+                arabic: "اللَّهُمَّ اهْدِنِي فِيمَنْ هَدَيْتَ، وَعَافِنِي فِيمَنْ عَافَيْتَ، وَتَوَلَّنِي فِيمَنْ تَوَلَّيْتَ، وَبَارِكْ لِي فِيمَا أَعْطَيْتَ، وَقِنِي شَرَّ مَا قَضَيْتَ، فَإِنَّكَ تَقْضِي وَلَا يُقْضَى عَلَيْكَ، وَإِنَّهُ لَا يَذِلُّ مَنْ وَالَيْتَ، وَلَا يَعِزُّ مَنْ عَادَيْتَ، تَبَارَكْتَ رَبَّنَا وَتَعَالَيْتَ", 
+                translation: "Эй Худо, маро ҳамроҳи касоне, ки ҳидоят кардӣ, ҳидоят кун ва маро ҳамроҳи касоне, ки озорашон додӣ, озорат деҳ ва маро дар ихтиёри касоне қарор деҳ, ки дар ихтиёри худ гирифтӣ ва ба ман дар он чи, ки ба ман додӣ, баракат ато кун ва маро аз шарри он чи қазо кардӣ, нигаҳ дор, зеро Ту қазо мекунӣ ва бар Ту қазо намешавад ва ҳар кӯ дар ихтиёри Ту бошад, золил намешавад ва ҳар кӯ душмани Ту бошад, озору бузург намешавад. Ту муборакӣ эй Парвардигори мо ва Ту бартарӣ.", 
+                category: "prayer", 
+                times: "Дар ракаати витр"
+            },
+            
+            // Дуа после намаза
+            { 
+                id: 8, 
+                title: "Дуои баъд аз намоз", 
+                arabic: "اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ", 
+                translation: "Эй Худо, Ту саломатӣ ва аз Ту саломатӣ аст. Ту муборакӣ эй соҳиби бузургӣ ва карам.", 
+                category: "prayer", 
+                times: "Пас аз салом"
+            },
+            
+            // Общие дуа
+            { 
+                id: 9, 
+                title: "Дуои ризқ", 
+                arabic: "اللَّهُمَّ ارْزُقْنِي رِزْقًا حَلَالًا طَيِّبًا، وَارْزُقْنِي الْعِلْمَ النَّافِعَ، وَالرِّزْقَ الْوَاسِعَ، وَالشُّكْرَ عَلَى النِّعَمِ، وَالصَّبْرَ عَلَى الْمِحَنِ، يَا أَرْحَمَ الرَّاحِمِينَ", 
+                translation: "Эй Худо, ба ман ризқи ҳалолу пок арзонӣ кун ва ба ман илми нафиъ ва ризқи васеъ ва шукр бар неъматҳо ва сабр бар мусибатҳо ато кун, эй меҳрубонтарини меҳрубонҳо.", 
+                category: "all", 
+                times: "Ҳар вақт"
+            },
+            
+            { 
+                id: 10, 
+                title: "Дуои тавба", 
+                arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي، فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ", 
+                translation: "Эй Худо, Ту Парвардигори ман ҳастӣ, маъбуде ҷуз Ту нест. Ту маро офаридӣ ва ман бандаи Ту ҳастам. Ва ман ба аҳду ваъдаи Ту (вафодор) ҳастам, то ҷое, ки тавонам. Аз Ту паноҳ мебарам аз бадии корҳое, ки ман кардаам. Неъмататро, ки бар ман арзонӣ кардӣ, ба сӯи Ту мебарам ва гуноҳамро ба сӯи Ту мебарам, пас маро бибахш, зеро ҷуз Ту касе гуноҳонро намебахшад.", 
+                category: "all", 
+                times: "Пас аз намози шаб"
             }
         ];
 
-        // Данные для таблицы ракаатов
+        // Данные для обучения
+        const LEARN_STEPS = {
+            Fajr: [
+                {title: "Ният", description: "Дар дил ният кунед, ки намози Бамдод (2 ракаати суннат + 2 ракаати фарз) мехонед.", arabic: "نَوَيْتُ أَنْ أُصَلِّيَ صَلَاةَ الصُّبْحِ"},
+                {title: "Такбири таҳрима", description: "Дастҳоро то гӯшҳо бардошта 'Аллоҳу Акбар' бигӯед.", arabic: "اللهُ أَكْبَرُ"},
+                {title: "Қироати Фотиҳа", description: "Баъд аз Сано, Сураи Фотиҳаро бо тамаккун хонед.", arabic: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ"},
+                {title: "Сураи иловагӣ", description: "Баъд аз Фотиҳа, як сураи кӯтоҳ (мас. Сураи Ихлос) хонед.", arabic: "قُلْ هُوَ اللَّهُ أَحَدٌ"},
+                {title: "Рукӯъ", description: "Ба рукӯъ рафта, 3 бор 'Субҳона раббиял азим' бигӯед.", arabic: "سُبْحَانَ رَبِّيَ الْعَظِيمِ"},
+                {title: "Қиёми баъд аз рукӯъ", description: "Бархеста, 'Самиъаллоҳу лиман ҳамидаҳ' бигӯед.", arabic: "سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ"},
+                {title: "Саҷда", description: "Ба саҷда рафта, 3 бор 'Субҳона раббиял аъло' бигӯед.", arabic: "سُبْحَانَ رَبِّيَ الْأَعْلَى"},
+                {title: "Ҷалса", description: "Баъйни ду саҷда нишаста, 'Раббиғфирлӣ' бигӯед.", arabic: "رَبِّ اغْفِرْ لِي"},
+                {title: "Ракаати дуюм", description: "Ба ҳамин тартиб ракаати дуюмро иҷро кунед."},
+                {title: "Қаъдаи охир", description: "Нишаста, Аттаҳиёт, Салавот ва Дуои хонида, салом диҳед.", arabic: "التَّحِيَّاتُ لِلَّهِ وَالصَّلَوَاتُ وَالطَّيِّبَاتُ"}
+            ],
+            Dhuhr: [
+                {title: "Ният", description: "Ният кунед, ки намози Пешин (4 ракаати суннат + 4 ракаати фарз + 2 ракаати суннат) мехонед."},
+                {title: "Ракаатҳои суннат", description: "Аввал 4 ракаати суннатро хонед (ҳар ду ракаат як ҷо)."},
+                {title: "Ракаатҳои фарз", description: "Сипас 4 ракаати фарзро хонед (ҳама як ҷо)."},
+                {title: "Қироати овозхон", description: "Дар ду ракаати аввали фарз, Фотиҳа ва сураи иловагиро овозхон бихонед."},
+                {title: "Қироати хомӯш", description: "Дар ду ракаати охири фарз, танҳо Фотиҳаро дар дил бихонед."},
+                {title: "Ракаатҳои суннати охир", description: "Дар охир 2 ракаати суннатро хонед."}
+            ],
+            Asr: [
+                {title: "Ният", description: "Ният кунед, ки намози Аср (4 ракаати фарз) мехонед."},
+                {title: "Қироати хомӯш", description: "Дар ҳамаи 4 ракаатҳо, танҳо Фотиҳаро дар дил бихонед."},
+                {title: "Таваҷҷуҳ", description: "Бо тамаккун ва хушӯъ намозро иҷро кунед."}
+            ],
+            Maghrib: [
+                {title: "Ният", description: "Ният кунед, ки намози Шом (3 ракаати фарз + 2 ракаати суннат) мехонед."},
+                {title: "Ракаатҳои фарз", description: "Аввал 3 ракаати фарзро якҷоя хонед."},
+                {title: "Қироати овозхон", description: "Дар ду ракаати аввал, Фотиҳа ва сураи иловагиро овозхон бихонед."},
+                {title: "Ракаати сеюм", description: "Дар ракаати сеюм, танҳо Фотиҳаро хонед."},
+                {title: "Ракаатҳои суннат", description: "Баъд аз фарз, 2 ракаати суннатро хонед."}
+            ],
+            Isha: [
+                {title: "Ният", description: "Ният кунед, ки намози Хуфтан (4 ракаати фарз + 2 ракаати суннат + 3 ракаати витр + 2 ракаати нафил) мехонед."},
+                {title: "Ракаатҳои фарз", description: "Аввал 4 ракаати фарзро хонед."},
+                {title: "Ракаатҳои суннат", description: "Сипас 2 ракаати суннатро хонед."},
+                {title: "Ракаатҳои витр", description: "Баъд аз суннат, 3 ракаати витрро хонед."},
+                {title: "Дуои қунут", description: "Дар ракаати сеюми витр, пеш аз рукӯъ, дуои қунутро хонед."},
+                {title: "Ракаатҳои нафил", description: "Дар охир 2 ракаати нафили шабро хонед."}
+            ]
+        };
+
+        // Таблица ракаатов
         const RAKATS_DATA = [
             { prayer: "Бамдод", fard: 2, sunnah: 2, witr: 0, nafl: 0, total: 4 },
             { prayer: "Пешин", fard: 4, sunnah: 4, witr: 0, nafl: 2, total: 10 },
@@ -904,8 +901,6 @@
         // ==================== ФУНКЦИИ ИНИЦИАЛИЗАЦИИ ====================
 
         async function init() {
-            console.log("Инициализация приложения...");
-            
             // Установка даты
             updateDateTime();
             setInterval(updateDateTime, 60000);
@@ -913,7 +908,7 @@
             // Установка хадиса дня
             setupDailyHadith();
             
-            // Загрузка данных ВСЕХ разделов
+            // Загрузка данных
             renderPrayerTypes();
             renderRakatsTable();
             renderDuaList();
@@ -923,17 +918,12 @@
             // Загрузка местоположения
             const savedCity = localStorage.getItem('azon_selected_city');
             if (savedCity) {
-                try {
-                    const city = JSON.parse(savedCity);
-                    state.currentLocation = city;
-                    document.getElementById('city-name').textContent = city.name;
-                    document.getElementById('current-city').textContent = city.name;
-                } catch (e) {
-                    console.error("Ошибка загрузки города:", e);
-                }
+                const city = JSON.parse(savedCity);
+                state.currentLocation = city;
+                document.getElementById('city-name').textContent = city.name;
+                document.getElementById('current-city').textContent = city.name;
             }
             
-            // Загрузка времени намазов
             await fetchPrayerTimes();
             
             // Таймеры
@@ -942,22 +932,17 @@
             
             // Загрузка настроек уведомлений
             loadNotificationSettings();
-            
-            // Инициализация анимации переключателя
-            updateAllNotificationsToggle();
-            
-            console.log("Приложение инициализировано");
         }
 
         // ==================== ФУНКЦИИ МЕСТОПОЛОЖЕНИЯ ====================
 
         async function getUserLocation() {
             if (!navigator.geolocation) {
-                showToast("Геолокация дастгирӣ намешавад", "error");
+                showToast("Геолокация дастгирӣ намешавад");
                 return;
             }
             
-            showToast("Ҷойгиршавӣ бо GPS...", "info");
+            showLoading(true);
             
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
@@ -985,17 +970,14 @@
                     document.getElementById('current-city').textContent = nearestCity.name;
                     
                     await fetchPrayerTimes();
+                    showLoading(false);
                     closeCityModal();
                     showToast(`Ҷойгиршавӣ муваффақ: ${nearestCity.name}`);
                 },
                 (error) => {
                     console.error("Геолокация хатогӣ:", error);
-                    showToast("Геолокация муваффақ нашудааст. Шаҳри худро дастӣ интихоб кунед", "error");
-                },
-                {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 0
+                    showToast("Геолокация муваффақ нашудааст. Шаҳри худро дастӣ интихоб кунед");
+                    showLoading(false);
                 }
             );
         }
@@ -1003,12 +985,15 @@
         function openCityModal() {
             renderCityList();
             document.getElementById('city-modal').classList.add('active');
+            
+            // Фокус на поиск
+            setTimeout(() => {
+                document.getElementById('city-search').focus();
+            }, 300);
         }
 
         function closeCityModal() {
             document.getElementById('city-modal').classList.remove('active');
-            // Скрыть клавиатуру на мобильных
-            document.getElementById('city-search').blur();
         }
 
         function renderCityList() {
@@ -1020,16 +1005,6 @@
             const filteredCities = CONFIG.CITIES.filter(city => 
                 city.name.toLowerCase().includes(searchTerm)
             );
-            
-            if (filteredCities.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-8">
-                        <i class="fas fa-search text-4xl text-slate-700 mb-4"></i>
-                        <p class="text-slate-400">Шаҳре бо ин ном ёфт нашуд</p>
-                    </div>
-                `;
-                return;
-            }
             
             filteredCities.forEach(city => {
                 const isActive = state.currentLocation.name === city.name;
@@ -1043,7 +1018,7 @@
                             <div class="w-10 h-10 rounded-full ${isActive ? 'bg-primary/20 text-primary' : 'bg-slate-800 text-slate-400'} flex items-center justify-center">
                                 <i class="fas fa-city"></i>
                             </div>
-                            <div class="break-words">
+                            <div>
                                 <div class="font-bold">${city.name}</div>
                                 <div class="text-xs text-slate-500">Координатҳо: ${city.lat.toFixed(4)}, ${city.lng.toFixed(4)}</div>
                             </div>
@@ -1080,58 +1055,24 @@
                 if (!response.ok) throw new Error("API хатогӣ");
                 
                 const data = await response.json();
-                console.log("Данные API:", data);
+                state.timings = data.data.timings;
                 
-                if (data.data && data.data.timings) {
-                    state.timings = data.data.timings;
-                    console.log("Время намазов:", state.timings);
-                    
-                    renderPrayerTimes();
-                    calculateNextPrayer();
-                    updateCountdown();
-                } else {
-                    throw new Error("Нет данных о времени намазов");
-                }
+                renderPrayerTimes();
+                calculateNextPrayer();
+                updateCountdown();
                 
             } catch (error) {
                 console.error("Хатоги гирифтани вақтҳо:", error);
-                showToast("Хатогӣ дар гирифтани вақтҳои намоз. Лутфан пайвасти интернетро тафтиш кунед", "error");
-                // Показываем тестовые данные при ошибке
-                showTestData();
+                showToast("Хатогӣ дар гирифтани вақтҳои намоз. Лутфан пайвасти интернетро тафтиш кунед");
             }
-        }
-
-        function showTestData() {
-            // Тестовые данные для отладки
-            state.timings = {
-                Fajr: "05:30",
-                Dhuhr: "12:45",
-                Asr: "16:15",
-                Maghrib: "18:30",
-                Isha: "20:00"
-            };
-            
-            renderPrayerTimes();
-            calculateNextPrayer();
-            updateCountdown();
-            showToast("Загружены тестовые данные", "info");
         }
 
         function renderPrayerTimes() {
             const container = document.getElementById('prayer-list');
-            
-            if (!container) {
-                console.error("Контейнер prayer-list не найден!");
-                return;
-            }
-            
             container.innerHTML = '';
             
             CONFIG.PRAYER_ORDER.forEach(prayerKey => {
-                if (!state.timings[prayerKey]) {
-                    console.warn(`Нет времени для намаза: ${prayerKey}`);
-                    return;
-                }
+                if (!state.timings[prayerKey]) return;
                 
                 const time = state.timings[prayerKey];
                 const name = CONFIG.PRAYER_NAMES[prayerKey];
@@ -1147,7 +1088,7 @@
                             <div class="prayer-icon ${isActive ? 'bg-primary/20 text-primary' : 'bg-slate-800 text-slate-400'}">
                                 <i class="fas ${icon}"></i>
                             </div>
-                            <div class="break-words">
+                            <div>
                                 <div class="font-bold text-lg">${name}</div>
                                 <div class="text-xs text-slate-500">${description}</div>
                             </div>
@@ -1167,8 +1108,6 @@
                 
                 container.appendChild(card);
             });
-            
-            console.log("Время намазов отрисовано");
         }
 
         function calculateNextPrayer() {
@@ -1178,19 +1117,12 @@
             let nextPrayer = null;
             let minDiff = Infinity;
             
-            // Проверяем все намазы
             CONFIG.PRAYER_ORDER.forEach(prayerKey => {
-                if (!state.timings[prayerKey]) return;
-                
                 const [hours, minutes] = state.timings[prayerKey].split(':').map(Number);
-                let prayerTime = hours * 60 + minutes;
+                const prayerTime = hours * 60 + minutes;
+                let diff = prayerTime - currentTime;
                 
-                // Если время намаза уже прошло сегодня, проверяем завтра
-                if (prayerTime <= currentTime) {
-                    prayerTime += 24 * 60; // Добавляем сутки
-                }
-                
-                const diff = prayerTime - currentTime;
+                if (diff < 0) diff += 24 * 60;
                 
                 if (diff < minDiff && diff > 0) {
                     minDiff = diff;
@@ -1198,18 +1130,11 @@
                 }
             });
             
-            // Если все намазы сегодня прошли, следующий - Бамдод завтра
-            if (!nextPrayer && state.timings.Fajr) {
-                nextPrayer = 'Fajr';
-            }
-            
-            state.nextPrayer = nextPrayer;
+            state.nextPrayer = nextPrayer || CONFIG.PRAYER_ORDER[0];
             
             if (nextPrayer) {
                 document.getElementById('next-prayer-name').textContent = CONFIG.PRAYER_NAMES[nextPrayer];
             }
-            
-            console.log("Следующий намаз:", nextPrayer);
         }
 
         function updateCountdown() {
@@ -1220,47 +1145,124 @@
             
             const now = new Date();
             const [hours, minutes] = state.timings[state.nextPrayer].split(':').map(Number);
-            let prayerTime = new Date(now);
+            const prayerTime = new Date(now);
             prayerTime.setHours(hours, minutes, 0, 0);
             
-            // Если время намаза уже прошло, берем завтрашний
             if (prayerTime <= now) {
                 prayerTime.setDate(prayerTime.getDate() + 1);
+                calculateNextPrayer();
+                return;
             }
             
             const diff = prayerTime - now;
-            
-            // Если разница отрицательная, пересчитываем
-            if (diff < 0) {
-                calculateNextPrayer();
-                return updateCountdown();
-            }
-            
             const hoursLeft = Math.floor(diff / (1000 * 60 * 60));
             const minutesLeft = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const secondsLeft = Math.floor((diff % (1000 * 60)) / 1000);
             
-            // Форматируем для отображения
-            let displayText = '';
+            document.getElementById('countdown-timer').textContent = 
+                `${hoursLeft.toString().padStart(2, '0')}:${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
+        }
+
+        // ==================== УВЕДОМЛЕНИЯ ====================
+
+        function toggleNotification(prayerKey, event) {
+            if (event) event.stopPropagation();
             
-            if (hoursLeft > 0) {
-                displayText = `${hoursLeft.toString().padStart(2, '0')}:${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
-            } else {
-                displayText = `${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
+            state.notifications[prayerKey] = !state.notifications[prayerKey];
+            localStorage.setItem('azon_notifications', JSON.stringify(state.notifications));
+            
+            const toggleElement = event?.target.closest('.notification-toggle');
+            if (toggleElement) {
+                toggleElement.classList.toggle('active');
+                toggleElement.classList.toggle('inactive');
             }
             
-            document.getElementById('countdown-timer').textContent = displayText;
+            updateNotificationProgress();
+            
+            showToast(state.notifications[prayerKey] ? 
+                "Огоҳӣ фаъол шуд" : "Огоҳӣ ғайрифаъол шуд");
+        }
+
+        function toggleAllNotifications() {
+            const isActive = Object.values(state.notifications).some(v => v !== false);
+            const newState = !isActive;
+            
+            CONFIG.PRAYER_ORDER.forEach(prayerKey => {
+                state.notifications[prayerKey] = newState;
+            });
+            
+            localStorage.setItem('azon_notifications', JSON.stringify(state.notifications));
+            renderPrayerTimes();
+            updateNotificationProgress();
+            
+            showToast(newState ? "Ҳама огоҳиномаҳо фаъол шуданд" : "Ҳама огоҳиномаҳо ғайрифаъол шуданд");
+        }
+
+        function loadNotificationSettings() {
+            CONFIG.PRAYER_ORDER.forEach(prayerKey => {
+                if (state.notifications[prayerKey] === undefined) {
+                    state.notifications[prayerKey] = true;
+                }
+            });
+            localStorage.setItem('azon_notifications', JSON.stringify(state.notifications));
+        }
+
+        function updateNotificationProgress() {
+            const enabled = Object.values(state.notifications).filter(v => v !== false).length;
+            const total = CONFIG.PRAYER_ORDER.length;
+            const percentage = (enabled / total) * 100;
+            
+            document.getElementById('notification-progress').style.width = `${percentage}%`;
+        }
+
+        // ==================== ХАДИС ДНЯ ====================
+
+        function setupDailyHadith() {
+            const today = new Date().toDateString();
+            
+            if (state.lastHadithUpdate !== today) {
+                // Новый день - новый хадис
+                const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+                state.currentHadithIndex = dayOfYear % HADITHS.length;
+                state.lastHadithUpdate = today;
+                localStorage.setItem('azon_last_hadith_update', today);
+                
+                // Разблокировать кнопку обновления
+                document.getElementById('refresh-hadith-btn').disabled = false;
+                document.getElementById('hadith-refresh-info').textContent = "Навсозӣ дастрас аст";
+            }
+            
+            displayCurrentHadith();
+        }
+
+        function displayCurrentHadith() {
+            const hadith = HADITHS[state.currentHadithIndex];
+            document.getElementById('hadith-text').textContent = hadith.text;
+            document.getElementById('hadith-source').textContent = `(${hadith.source})`;
+        }
+
+        function refreshHadith() {
+            const today = new Date().toDateString();
+            if (state.lastHadithUpdate === today) {
+                showToast("Шумо аллакай имрӯз хадис нав кардед. Фақат 1 бор дар рӯз имконпазир аст");
+                return;
+            }
+            
+            state.currentHadithIndex = (state.currentHadithIndex + 1) % HADITHS.length;
+            state.lastHadithUpdate = today;
+            localStorage.setItem('azon_last_hadith_update', today);
+            
+            displayCurrentHadith();
+            document.getElementById('refresh-hadith-btn').disabled = true;
+            document.getElementById('hadith-refresh-info').textContent = "Баъд аз 24 соат";
+            
+            showToast("Ҳадиси нав муваффақона боргузорӣ шуд");
         }
 
         // ==================== ОБУЧЕНИЕ ====================
 
         function renderPrayerTypes() {
             const container = document.getElementById('prayer-types-list');
-            if (!container) {
-                console.error("Контейнер prayer-types-list не найден!");
-                return;
-            }
-            
             container.innerHTML = '';
             
             Object.entries(CONFIG.PRAYER_NAMES).forEach(([key, name]) => {
@@ -1286,17 +1288,10 @@
                 `;
                 container.appendChild(card);
             });
-            
-            console.log("Типы намазов отрисованы");
         }
 
         function renderRakatsTable() {
             const container = document.getElementById('rakats-table');
-            if (!container) {
-                console.error("Контейнер rakats-table не найден!");
-                return;
-            }
-            
             container.innerHTML = '';
             
             RAKATS_DATA.forEach(row => {
@@ -1312,11 +1307,10 @@
                 `;
                 container.appendChild(tr);
             });
-            
-            console.log("Таблица ракаатов отрисована");
         }
 
         function openLearningModal(prayerKey, prayerName) {
+            const steps = LEARN_STEPS[prayerKey] || [];
             const rakats = RAKATS_DATA.find(r => r.prayer === prayerName) || {};
             
             document.getElementById('modal-title').textContent = `Тарзи адои намози ${prayerName}`;
@@ -1335,27 +1329,36 @@
                     </div>
                     <div class="text-sm text-slate-500">Тартиби пурраи адои намози ${prayerName}</div>
                 </div>
-                
-                <div class="space-y-4">
-                    <div class="learn-step">
-                        <h4 class="font-bold text-lg mb-2">1. Ният</h4>
-                        <p class="text-slate-300">Дар дил ният мекунед, ки намози ${prayerName}-ро мехонед.</p>
-                        <div class="arabic-text glass-card p-4 rounded-xl mt-2">نَوَيْتُ أَنْ أُصَلِّيَ صَلَاةَ ${prayerName}</div>
-                    </div>
-                    
-                    <div class="learn-step">
-                        <h4 class="font-bold text-lg mb-2">2. Такбири таҳрима</h4>
-                        <p class="text-slate-300">Дастҳоро то гӯшҳо бардошта "Аллоҳу Акбар" мегӯед.</p>
-                        <div class="arabic-text glass-card p-4 rounded-xl mt-2">اللهُ أَكْبَرُ</div>
-                    </div>
-                    
-                    <div class="learn-step">
-                        <h4 class="font-bold text-lg mb-2">3. Қироати Фотиҳа</h4>
-                        <p class="text-slate-300">Баъд аз Сано, Сураи Фотиҳаро мехонед.</p>
-                        <div class="arabic-text glass-card p-4 rounded-xl mt-2">الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ</div>
-                    </div>
-                </div>
             `;
+            
+            steps.forEach((step, index) => {
+                content += `
+                    <div class="learn-step">
+                        <div class="flex items-start mb-3">
+                            <div class="step-indicator">${index + 1}</div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">${step.title}</h4>
+                                <p class="text-slate-300 leading-relaxed">${step.description}</p>
+                            </div>
+                        </div>
+                        ${step.arabic ? `
+                            <div class="mt-4">
+                                <div class="text-xs text-slate-500 mb-2">Матни арабӣ:</div>
+                                <div class="arabic-text glass-card p-4 rounded-xl">${step.arabic}</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            if (steps.length === 0) {
+                content += `
+                    <div class="text-center py-10">
+                        <i class="fas fa-book-open text-4xl text-slate-700 mb-4"></i>
+                        <p class="text-slate-400">Маълумотҳо барои ин намоз ҳоло дастрас нестанд</p>
+                    </div>
+                `;
+            }
             
             document.getElementById('modal-content').innerHTML = content;
             document.getElementById('modal').classList.add('active');
@@ -1365,11 +1368,6 @@
 
         function renderDuaList(filter = 'all') {
             const container = document.getElementById('dua-list');
-            if (!container) {
-                console.error("Контейнер dua-list не найден!");
-                return;
-            }
-            
             container.innerHTML = '';
             
             // Обновление активной кнопки фильтра
@@ -1409,7 +1407,7 @@
                             <i class="fas ${categoryIcon}"></i>
                         </div>
                         <div class="flex-1">
-                            <div class="font-bold mb-1 break-words">${dua.title}</div>
+                            <div class="font-bold mb-1">${dua.title}</div>
                             <div class="text-xs text-slate-500 flex items-center gap-2">
                                 <i class="fas fa-clock"></i>
                                 ${dua.times}
@@ -1420,8 +1418,6 @@
                 `;
                 container.appendChild(card);
             });
-            
-            console.log("Дуа отрисованы, количество:", filteredDuas.length);
         }
 
         function filterDua(category) {
@@ -1463,7 +1459,6 @@
             document.getElementById('tasbih-goal').textContent = `Ҳадаф: ${state.tasbih.goal}`;
             document.getElementById('tasbih-total').textContent = state.tasbih.total;
             document.getElementById('goal-display').textContent = state.tasbih.goal;
-            console.log("Тасбих инициализирован");
         }
 
         function incrementTasbih() {
@@ -1509,7 +1504,7 @@
             showToast(`Ҳадафи тасбеҳ ба ${goal} тағйир ёфт`);
         }
 
-        // ==================== ОСТАЛЬНЫЕ ФУНКЦИИ ====================
+        // ==================== НАСТРОЙКИ И ПОДДЕРЖКА ====================
 
         function updateSettingsDisplay() {
             document.getElementById('current-city').textContent = state.currentLocation.name;
@@ -1528,65 +1523,67 @@
         }
 
         function shareApp() {
-            const shareText = "Azon - Вақтҳои Намоз\nБарномаи зебо ва муфид барои гирифтани вақтҳои намоз\n\n";
-            
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(shareText + "Ҳоло дар Google Play дастрас нест. Барои истифода, ба сомона равед.");
-                showToast("Маълумот барои мубодила нусхабардорӣ шуд");
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Azon - Вақтҳои Намоз',
+                    text: 'Барномаи зебо ва муфид барои гирифтани вақтҳои намоз',
+                    url: window.location.href
+                });
             } else {
-                const tempInput = document.createElement('input');
-                tempInput.value = shareText + "Ҳоло дар Google Play дастрас нест. Барои истифода, ба сомона равед.";
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempInput);
-                showToast("Маълумот барои мубодила нусхабардорӣ шуд");
+                // Fallback для браузеров без поддержки Web Share API
+                navigator.clipboard.writeText(window.location.href);
+                showToast("Истиноди барнома нусхабардорӣ шуд");
             }
         }
 
+        // ==================== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ====================
+
         function updateDateTime() {
             const now = new Date();
-            
-            try {
-                document.getElementById('current-date').textContent = now.toLocaleDateString('tg-TJ', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-            } catch (e) {
-                document.getElementById('current-date').textContent = now.toLocaleDateString('ru-RU', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-            }
-            
+            document.getElementById('current-date').textContent = now.toLocaleDateString('tg-TJ', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
             document.getElementById('current-time').textContent = now.toLocaleTimeString('tg-TJ', {
                 hour: '2-digit',
                 minute: '2-digit'
             });
+            
+            // Обновление даты по Хиджре (упрощенная версия)
+            const hijriDate = calculateHijriDate(now);
+            document.getElementById('hijri-date').textContent = hijriDate;
+        }
+
+        function calculateHijriDate(gregorianDate) {
+            // Упрощенный расчет даты Хиджры
+            const hijriOffset = -579;
+            const hijriEpoch = 227015; // Дней с 1 Мухаррама 1 AH до 1 января 1 AD
+            
+            const day = Math.floor((gregorianDate.getTime() / 86400000) + 2440587.5);
+            const daysSinceHijriEpoch = day - hijriEpoch;
+            const hijriYear = Math.floor((daysSinceHijriEpoch - hijriOffset) / 354.366);
+            const hijriMonth = Math.floor((daysSinceHijriEpoch - hijriOffset - hijriYear * 354.366) / 29.53) + 1;
+            const hijriDay = Math.floor(daysSinceHijriEpoch - hijriOffset - hijriYear * 354.366 - (hijriMonth - 1) * 29.53) + 1;
+            
+            const months = ["Муҳаррам", "Сафар", "Рабиъул-аввал", "Рабиъус-сони", "Ҷумодул-улё", "Ҷумодул-ухро", "Раҷаб", "Шаъбон", "Рамазон", "Шаввол", "Зул-қаъда", "Зул-ҳиҷҷа"];
+            
+            return `${hijriYear + 1} ${months[hijriMonth - 1]} ${Math.floor(hijriDay)}`;
         }
 
         function formatTime(timeStr) {
-            return timeStr ? timeStr.slice(0, 5) : '--:--';
+            return timeStr.slice(0, 5);
         }
 
-        function showToast(message, type = "success") {
+        function showLoading(show) {
+            // Можно добавить индикатор загрузки
+        }
+
+        function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
-            
-            toast.className = "fixed top-4 right-4 glass-card px-4 py-3 rounded-xl shadow-2xl transform translate-x-full transition-transform duration-300 z-50 max-w-sm break-words";
-            
-            if (type === "error") {
-                toast.classList.add('bg-red-500/90', 'text-white');
-            } else if (type === "info") {
-                toast.classList.add('bg-blue-500/90', 'text-white');
-            } else {
-                toast.classList.add('bg-primary/90', 'text-white');
-            }
-            
+            toast.classList.add('bg-primary/90', 'text-white');
             toast.style.transform = 'translateX(0)';
             
             setTimeout(() => {
@@ -1599,41 +1596,35 @@
         }
 
         function showTab(tabId) {
+            // Скрыть все вкладки
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
             
+            // Убрать активный класс со всех кнопок
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('active-tab');
                 btn.classList.add('text-slate-500');
             });
             
+            // Показать выбранную вкладку
             document.getElementById(`tab-${tabId}`).classList.add('active');
             
+            // Активировать кнопку
             const activeBtn = document.getElementById(`btn-${tabId}`);
             activeBtn.classList.add('active-tab');
             activeBtn.classList.remove('text-slate-500');
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // ==================== ЗАПУСК ПРИЛОЖЕНИЯ ====================
+        // ==================== ОБРАБОТЧИКИ СОБЫТИЙ ====================
 
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("DOM загружен, запускаем инициализацию...");
-            init();
-        });
+        document.addEventListener('DOMContentLoaded', init);
 
-        // Дебаг функция для проверки состояния
-        window.debugState = function() {
-            console.log("Состояние приложения:", state);
-            console.log("Контейнеры найдены:", {
-                prayerList: !!document.getElementById('prayer-list'),
-                prayerTypesList: !!document.getElementById('prayer-types-list'),
-                duaList: !!document.getElementById('dua-list'),
-                rakatsTable: !!document.getElementById('rakats-table')
-            });
-        };
+        // Поиск городов
+        document.getElementById('city-search').addEventListener('input', renderCityList);
+
+        // Обновление времени каждую секунду
+        setInterval(updateDateTime, 1000);
     </script>
 </body>
 </html>
