@@ -150,6 +150,8 @@
             line-height: 2.2;
             text-align: right;
             font-size: 1.4rem;
+            word-break: keep-all;
+            overflow-wrap: break-word;
         }
         
         .step-indicator {
@@ -280,6 +282,38 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+        
+        .tasbih-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3);
+        }
+        
+        .tasbih-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
+        }
+        
+        .city-list-container {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .city-list-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .city-list-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        .city-list-container::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body class="min-h-screen pb-32">
@@ -304,24 +338,21 @@
             </div>
             
             <div class="mb-6">
+                <button onclick="getUserLocation()" class="w-full city-select-btn py-4 rounded-xl font-bold flex items-center justify-center gap-3 mb-4">
+                    <i class="fas fa-location-crosshairs"></i>
+                    Ҷойгиршавии худкор бо GPS
+                </button>
+                
                 <div class="relative">
                     <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500"></i>
                     <input type="text" id="city-search" placeholder="Ҷустуҷӯи шаҳр..." 
-                           class="w-full glass-card pl-12 pr-4 py-4 rounded-2xl text-lg focus:outline-none focus:ring-2 focus:ring-primary/30">
+                           class="w-full glass-card pl-12 pr-4 py-4 rounded-2xl text-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                           oninput="renderCityList()">
                 </div>
             </div>
             
-            <div class="space-y-3" id="city-list">
+            <div class="city-list-container space-y-3" id="city-list">
                 <!-- Города будут загружены динамически -->
-            </div>
-            
-            <div class="mt-8 glass-card p-4 rounded-2xl">
-                <h3 class="font-bold text-lg mb-2">Истифодаи ҷойгиршавӣ</h3>
-                <p class="text-sm text-slate-400 mb-4">Барои гирифтани вақтҳои дақиқ, иҷозат диҳед, ки мо ҷойгиршавии шуморо бо GPS муайян кунем.</p>
-                <button onclick="getUserLocation()" class="w-full city-select-btn py-3 rounded-xl font-bold flex items-center justify-center gap-3">
-                    <i class="fas fa-location-crosshairs"></i>
-                    Ҷойгиршавии худкор
-                </button>
             </div>
         </div>
     </div>
@@ -496,29 +527,29 @@
                 </div>
                 
                 <div class="flex justify-center gap-6 mb-8">
-                    <button onclick="resetTasbih()" class="w-16 h-16 rounded-full glass-card flex items-center justify-center hover:bg-slate-800 transition active:scale-95">
-                        <i class="fas fa-redo text-slate-400"></i>
+                    <button onclick="resetTasbih()" class="w-20 h-20 rounded-full tasbih-btn flex items-center justify-center transition active:scale-95">
+                        <i class="fas fa-redo text-white text-2xl"></i>
                     </button>
-                    <button onclick="incrementTasbih()" class="w-24 h-24 rounded-full bg-gradient-to-br from-secondary to-emerald-600 text-white shadow-2xl shadow-secondary/40 flex items-center justify-center text-3xl hover:shadow-secondary/60 transition active:scale-95 pulse-animation">
+                    <button onclick="incrementTasbih()" class="w-32 h-32 rounded-full tasbih-btn text-white shadow-2xl flex items-center justify-center text-4xl hover:shadow-secondary/60 transition active:scale-95 pulse-animation">
                         <i class="fas fa-hands-praying"></i>
                     </button>
-                    <button onclick="toggleTasbihGoal()" class="w-16 h-16 rounded-full glass-card flex items-center justify-center font-bold text-primary hover:bg-slate-800 transition">
-                        <span id="goal-display">33</span>
+                    <button onclick="toggleTasbihGoal()" class="w-20 h-20 rounded-full tasbih-btn flex items-center justify-center font-bold text-white hover:bg-slate-800 transition">
+                        <span id="goal-display" class="text-2xl">33</span>
                     </button>
                 </div>
                 
-                <div class="grid grid-cols-3 gap-3 w-full max-w-sm">
-                    <button onclick="setTasbihGoal(33)" class="glass-card py-3 rounded-xl text-center hover:bg-slate-800 transition">
-                        <div class="font-bold">33</div>
-                        <div class="text-xs text-slate-500">Муқаррарӣ</div>
+                <div class="grid grid-cols-3 gap-4 w-full max-w-sm mb-8">
+                    <button onclick="setTasbihGoal(33)" class="glass-card py-4 rounded-xl text-center hover:bg-slate-800 transition active:scale-95">
+                        <div class="font-bold text-xl">33</div>
+                        <div class="text-xs text-slate-500 mt-1">Муқаррарӣ</div>
                     </button>
-                    <button onclick="setTasbihGoal(99)" class="glass-card py-3 rounded-xl text-center hover:bg-slate-800 transition">
-                        <div class="font-bold">99</div>
-                        <div class="text-xs text-slate-500">Номҳо</div>
+                    <button onclick="setTasbihGoal(99)" class="glass-card py-4 rounded-xl text-center hover:bg-slate-800 transition active:scale-95">
+                        <div class="font-bold text-xl">99</div>
+                        <div class="text-xs text-slate-500 mt-1">Номҳо</div>
                     </button>
-                    <button onclick="setTasbihGoal(100)" class="glass-card py-3 rounded-xl text-center hover:bg-slate-800 transition">
-                        <div class="font-bold">100</div>
-                        <div class="text-xs text-slate-500">Такбир</div>
+                    <button onclick="setTasbihGoal(100)" class="glass-card py-4 rounded-xl text-center hover:bg-slate-800 transition active:scale-95">
+                        <div class="font-bold text-xl">100</div>
+                        <div class="text-xs text-slate-500 mt-1">Такбир</div>
                     </button>
                 </div>
                 
@@ -564,7 +595,7 @@
                                     <div class="text-sm text-slate-500">Огоҳӣ пеш аз вақти намоз</div>
                                 </div>
                             </div>
-                            <div class="notification-toggle active" onclick="toggleAllNotifications()">
+                            <div id="all-notifications-toggle" class="notification-toggle active" onclick="toggleAllNotifications()">
                                 <div class="toggle-knob"></div>
                             </div>
                         </div>
@@ -674,14 +705,16 @@
                 Dhuhr: 'fa-sun',
                 Asr: 'fa-cloud-sun',
                 Maghrib: 'fa-sunset',
-                Isha: 'fa-moon'
+                Isha: 'fa-moon',
+                Sunrise: 'fa-sun'
             },
             PRAYER_DESCRIPTIONS: {
                 Fajr: 'Вақти саҳар',
                 Dhuhr: 'Вақти пешин',
                 Asr: 'Вақти аср',
                 Maghrib: 'Вақти шом',
-                Isha: 'Вақти хуфтан'
+                Isha: 'Вақти хуфтан',
+                Sunrise: 'Тулуъи офтоб'
             },
             PRAYER_ORDER: ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'],
             
@@ -751,11 +784,10 @@
 
         // Суры и дуа
         const DUAS = [
-            // Суры
             { 
                 id: 1, 
                 title: "Сураи Фотиҳа", 
-                arabic: "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ (1) الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ (2) الرَّحْمَنِ الرَّحِيمِ (3) مَالِكِ يَوْمِ الدِّينِ (4) إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ (5) اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ (6) صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ (7)", 
+                arabic: "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ (1) الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ (2) الرَّحْمَنِ الرَّحِيمِ (3) مَالِكِ يَوْمِ الدِّينِ (4) إِيَّاكَ نَعْبُدُ وَإِيَّакَ نَسْتَعِينُ (5) اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ (6) صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ (7)", 
                 translation: "Ба номи Худои бахшандаи меҳрубон. Ситоиш Худоро, Парвардигори ҷаҳониён. Бахшандаи меҳрубон. Соҳиби рӯзи ҷазо. Танҳо Туро мепарастему танҳо аз Ту ёрӣ меҷӯем. Моро ба роҳи рост ҳидоят кун. Роҳи касоне, ки неъматашон додӣ, на роҳи мағзӯбшудагон ва на роҳи гумроҳон.", 
                 category: "surah", 
                 times: "Дар ҳар ракаати намоз"
@@ -779,13 +811,12 @@
             { 
                 id: 4, 
                 title: "Оятул Курсӣ", 
-                arabic: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضِ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ", 
+                arabic: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْديهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضِ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ", 
                 translation: "Худост, ки маъбуде ҷуз Ӯ нест, зиндаву устувор. На хоб ӯро дармеёбад ва на хоб. Он чи дар осмонҳо ва замин аст, аз они Ӯст. Кист, ки назди Ӯ шафоъат кунад, магар ба иҷозати Ӯ? Он чи пеши рӯйи онон ва он чи пушт сари онон аст, медонад. Ва онон ба ҳеҷ чиз аз дониши Ӯ иҳота намеёбанд, магар ба он чӣ Ӯ бихоҳад. Курсии Ӯ осмонҳову заминро фаро гирифтааст ва нигоҳ доштани он ду Ӯро малол намеоварад ва Ӯ баланду бузург аст.", 
                 category: "surah", 
                 times: "Пас аз намоз ва пеш аз хоб"
             },
             
-            // Утренние дуа
             { 
                 id: 5, 
                 title: "Дуои субҳӣ", 
@@ -795,17 +826,15 @@
                 times: "Пас аз намози Бамдод"
             },
             
-            // Вечерние дуа
             { 
                 id: 6, 
                 title: "Дуои шомӣ", 
-                arabic: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذِهِ اللَّيْلَةِ وَشَرِّ مَا بَعْدَهَا، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ", 
+                arabic: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذِهِ اللَّيْلَةِ وَشَرِّ مَا بَعْدَهَا، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ", 
                 translation: "Шом кардем ва подшоҳӣ аз они Худост. Ситоиш Худоро, маъбуде ҷуз Худо нест, танҳост ва шарике надорад. Подшоҳӣ аз они Ӯст ва ситоиш аз они Ӯст ва Ӯ бар ҳар чиз тавоност. Эй Парвардигори ман, аз Ту дархост мекунам, ки ба ман некии ин шаб ва некии паси онро ато кунӣ ва аз Ту паноҳ мебарам аз бадии ин шаб ва бадии паси он. Эй Парвардигори ман, аз Ту паноҳ мебарам аз танбалии пирӣ ва нописандии пирӣ. Эй Парвардигори ман, аз Ту паноҳ мебарам аз азоби дӯзах ва азоби қабр.", 
                 category: "evening", 
                 times: "Пас аз намози Шом"
             },
             
-            // Дуа для намаза
             { 
                 id: 7, 
                 title: "Дуои қунут", 
@@ -815,7 +844,6 @@
                 times: "Дар ракаати витр"
             },
             
-            // Дуа после намаза
             { 
                 id: 8, 
                 title: "Дуои баъд аз намоз", 
@@ -825,7 +853,6 @@
                 times: "Пас аз салом"
             },
             
-            // Общие дуа
             { 
                 id: 9, 
                 title: "Дуои ризқ", 
@@ -985,11 +1012,6 @@
         function openCityModal() {
             renderCityList();
             document.getElementById('city-modal').classList.add('active');
-            
-            // Фокус на поиск
-            setTimeout(() => {
-                document.getElementById('city-search').focus();
-            }, 300);
         }
 
         function closeCityModal() {
@@ -998,7 +1020,7 @@
 
         function renderCityList() {
             const container = document.getElementById('city-list');
-            const searchTerm = document.getElementById('city-search').value.toLowerCase();
+            const searchTerm = document.getElementById('city-search')?.value.toLowerCase() || '';
             
             container.innerHTML = '';
             
@@ -1076,7 +1098,7 @@
                 
                 const time = state.timings[prayerKey];
                 const name = CONFIG.PRAYER_NAMES[prayerKey];
-                const icon = CONFIG.PRAYER_ICONS[prayerKey];
+                const icon = CONFIG.PRAYER_ICONS[prayerKey] || 'fa-mosque';
                 const description = CONFIG.PRAYER_DESCRIPTIONS[prayerKey];
                 const isActive = state.nextPrayer === prayerKey;
                 
@@ -1088,15 +1110,15 @@
                             <div class="prayer-icon ${isActive ? 'bg-primary/20 text-primary' : 'bg-slate-800 text-slate-400'}">
                                 <i class="fas ${icon}"></i>
                             </div>
-                            <div>
-                                <div class="font-bold text-lg">${name}</div>
-                                <div class="text-xs text-slate-500">${description}</div>
+                            <div class="flex-1 min-w-0">
+                                <div class="font-bold text-lg truncate">${name}</div>
+                                <div class="text-xs text-slate-500 truncate">${description}</div>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <div class="text-2xl font-black mb-1">${formatTime(time)}</div>
+                        <div class="text-right flex-shrink-0 ml-4">
+                            <div class="text-2xl font-black mb-1 whitespace-nowrap">${formatTime(time)}</div>
                             <div class="flex items-center justify-end gap-2">
-                                <span class="text-xs text-slate-500">Огоҳӣ</span>
+                                <span class="text-xs text-slate-500 whitespace-nowrap">Огоҳӣ</span>
                                 <div onclick="toggleNotification('${prayerKey}', event)" 
                                      class="notification-toggle ${state.notifications[prayerKey] !== false ? 'active' : 'inactive'}">
                                     <div class="toggle-knob"></div>
@@ -1117,20 +1139,33 @@
             let nextPrayer = null;
             let minDiff = Infinity;
             
-            CONFIG.PRAYER_ORDER.forEach(prayerKey => {
-                const [hours, minutes] = state.timings[prayerKey].split(':').map(Number);
-                const prayerTime = hours * 60 + minutes;
-                let diff = prayerTime - currentTime;
-                
-                if (diff < 0) diff += 24 * 60;
-                
-                if (diff < minDiff && diff > 0) {
-                    minDiff = diff;
-                    nextPrayer = prayerKey;
+            // Проверяем все намазы
+            Object.keys(state.timings).forEach(prayerKey => {
+                if (CONFIG.PRAYER_ORDER.includes(prayerKey)) {
+                    const [hours, minutes] = state.timings[prayerKey].split(':').map(Number);
+                    const prayerTime = hours * 60 + minutes;
+                    let diff = prayerTime - currentTime;
+                    
+                    if (diff < 0) diff += 24 * 60;
+                    
+                    if (diff < minDiff && diff > 0) {
+                        minDiff = diff;
+                        nextPrayer = prayerKey;
+                    }
                 }
             });
             
-            state.nextPrayer = nextPrayer || CONFIG.PRAYER_ORDER[0];
+            // Если все намазы прошли, следующий - Бамдод завтра
+            if (!nextPrayer) {
+                nextPrayer = 'Fajr';
+                // Добавляем 24 часа для расчета
+                const [hours, minutes] = state.timings['Fajr'].split(':').map(Number);
+                const fajrTime = hours * 60 + minutes;
+                let diff = fajrTime - currentTime + 24 * 60;
+                minDiff = diff;
+            }
+            
+            state.nextPrayer = nextPrayer;
             
             if (nextPrayer) {
                 document.getElementById('next-prayer-name').textContent = CONFIG.PRAYER_NAMES[nextPrayer];
@@ -1145,9 +1180,10 @@
             
             const now = new Date();
             const [hours, minutes] = state.timings[state.nextPrayer].split(':').map(Number);
-            const prayerTime = new Date(now);
+            let prayerTime = new Date(now);
             prayerTime.setHours(hours, minutes, 0, 0);
             
+            // Если время намаза уже прошло, берем следующий день
             if (prayerTime <= now) {
                 prayerTime.setDate(prayerTime.getDate() + 1);
                 calculateNextPrayer();
@@ -1192,7 +1228,20 @@
             });
             
             localStorage.setItem('azon_notifications', JSON.stringify(state.notifications));
-            renderPrayerTimes();
+            
+            // Обновляем все переключатели на главном экране
+            document.querySelectorAll('.notification-toggle').forEach(toggle => {
+                toggle.classList.toggle('active', newState);
+                toggle.classList.toggle('inactive', !newState);
+            });
+            
+            // Обновляем переключатель в настройках
+            const settingsToggle = document.getElementById('all-notifications-toggle');
+            if (settingsToggle) {
+                settingsToggle.classList.toggle('active', newState);
+                settingsToggle.classList.toggle('inactive', !newState);
+            }
+            
             updateNotificationProgress();
             
             showToast(newState ? "Ҳама огоҳиномаҳо фаъол шуданд" : "Ҳама огоҳиномаҳо ғайрифаъол шуданд");
@@ -1213,6 +1262,11 @@
             const percentage = (enabled / total) * 100;
             
             document.getElementById('notification-progress').style.width = `${percentage}%`;
+            
+            const progressText = document.querySelector('#tab-settings .text-xs.text-slate-500.text-center');
+            if (progressText) {
+                progressText.textContent = `${Math.round(percentage)}% огоҳиномаҳо фаъоланд`;
+            }
         }
 
         // ==================== ХАДИС ДНЯ ====================
@@ -1276,13 +1330,13 @@
                         <div class="prayer-icon bg-primary/10 text-primary">
                             <i class="fas ${CONFIG.PRAYER_ICONS[key] || 'fa-mosque'}"></i>
                         </div>
-                        <div>
-                            <div class="font-bold">${name}</div>
-                            <div class="text-xs text-slate-500">${CONFIG.PRAYER_DESCRIPTIONS[key] || ''}</div>
+                        <div class="flex-1 min-w-0">
+                            <div class="font-bold truncate">${name}</div>
+                            <div class="text-xs text-slate-500 truncate">${CONFIG.PRAYER_DESCRIPTIONS[key] || ''}</div>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs text-slate-500">Тафсилот</span>
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <span class="text-xs text-slate-500 whitespace-nowrap">Тафсилот</span>
                         <i class="fas fa-chevron-right text-slate-500"></i>
                     </div>
                 `;
@@ -1298,7 +1352,7 @@
                 const tr = document.createElement('tr');
                 tr.className = 'border-b border-slate-800/50 hover:bg-slate-800/20';
                 tr.innerHTML = `
-                    <td class="p-3 font-bold">${row.prayer}</td>
+                    <td class="p-3 font-bold whitespace-nowrap">${row.prayer}</td>
                     <td class="p-3 text-center font-bold text-primary">${row.fard}</td>
                     <td class="p-3 text-center text-slate-300">${row.sunnah || '-'}</td>
                     <td class="p-3 text-center text-slate-300">${row.witr || '-'}</td>
@@ -1336,7 +1390,7 @@
                     <div class="learn-step">
                         <div class="flex items-start mb-3">
                             <div class="step-indicator">${index + 1}</div>
-                            <div>
+                            <div class="flex-1 min-w-0">
                                 <h4 class="font-bold text-lg mb-1">${step.title}</h4>
                                 <p class="text-slate-300 leading-relaxed">${step.description}</p>
                             </div>
@@ -1344,7 +1398,7 @@
                         ${step.arabic ? `
                             <div class="mt-4">
                                 <div class="text-xs text-slate-500 mb-2">Матни арабӣ:</div>
-                                <div class="arabic-text glass-card p-4 rounded-xl">${step.arabic}</div>
+                                <div class="arabic-text glass-card p-4 rounded-xl overflow-x-auto">${step.arabic}</div>
                             </div>
                         ` : ''}
                     </div>
@@ -1403,17 +1457,17 @@
                 card.onclick = () => openDuaModal(dua);
                 card.innerHTML = `
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
                             <i class="fas ${categoryIcon}"></i>
                         </div>
-                        <div class="flex-1">
-                            <div class="font-bold mb-1">${dua.title}</div>
-                            <div class="text-xs text-slate-500 flex items-center gap-2">
-                                <i class="fas fa-clock"></i>
-                                ${dua.times}
+                        <div class="flex-1 min-w-0">
+                            <div class="font-bold mb-1 truncate">${dua.title}</div>
+                            <div class="text-xs text-slate-500 flex items-center gap-2 truncate">
+                                <i class="fas fa-clock flex-shrink-0"></i>
+                                <span class="truncate">${dua.times}</span>
                             </div>
                         </div>
-                        <i class="fas fa-chevron-right text-slate-600"></i>
+                        <i class="fas fa-chevron-right text-slate-600 flex-shrink-0"></i>
                     </div>
                 `;
                 container.appendChild(card);
@@ -1429,7 +1483,7 @@
             
             const content = `
                 <div class="glass-card p-6 mb-6">
-                    <div class="arabic-text mb-6 leading-[2.8]">${dua.arabic}</div>
+                    <div class="arabic-text mb-6 leading-[2.8] overflow-x-auto">${dua.arabic}</div>
                     <div class="border-t border-slate-800/50 pt-6">
                         <h4 class="font-bold mb-2 text-primary">Тарҷума:</h4>
                         <p class="text-slate-300 leading-relaxed">${dua.translation}</p>
@@ -1437,12 +1491,12 @@
                 </div>
                 <div class="glass-card p-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+                        <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary flex-shrink-0">
                             <i class="fas fa-info-circle"></i>
                         </div>
-                        <div>
+                        <div class="flex-1 min-w-0">
                             <h4 class="font-bold mb-1">Маълумот:</h4>
-                            <p class="text-sm text-slate-400">Ин ${dua.category === 'surah' ? 'сура' : 'дуо'} барои ${dua.times.toLowerCase()} истифода мешавад.</p>
+                            <p class="text-sm text-slate-400 truncate">Ин ${dua.category === 'surah' ? 'сура' : 'дуо'} барои ${dua.times.toLowerCase()} истифода мешавад.</p>
                         </div>
                     </div>
                 </div>
@@ -1523,16 +1577,17 @@
         }
 
         function shareApp() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Azon - Вақтҳои Намоз',
-                    text: 'Барномаи зебо ва муфид барои гирифтани вақтҳои намоз',
-                    url: window.location.href
-                });
+            const shareData = {
+                title: 'Azon - Вақтҳои Намоз',
+                text: 'Барномаи зебо ва муфид барои гирифтани вақтҳои намоз',
+                url: 'https://play.google.com/store/apps/details?id=com.kurushdigital.azon'
+            };
+            
+            if (navigator.share && navigator.canShare(shareData)) {
+                navigator.share(shareData);
             } else {
-                // Fallback для браузеров без поддержки Web Share API
-                navigator.clipboard.writeText(window.location.href);
-                showToast("Истиноди барнома нусхабардорӣ шуд");
+                navigator.clipboard.writeText(shareData.url);
+                showToast("Истиноди Google Play нусхабардорӣ шуд");
             }
         }
 
@@ -1559,7 +1614,7 @@
         function calculateHijriDate(gregorianDate) {
             // Упрощенный расчет даты Хиджры
             const hijriOffset = -579;
-            const hijriEpoch = 227015; // Дней с 1 Мухаррама 1 AH до 1 января 1 AD
+            const hijriEpoch = 227015;
             
             const day = Math.floor((gregorianDate.getTime() / 86400000) + 2440587.5);
             const daysSinceHijriEpoch = day - hijriEpoch;
@@ -1619,12 +1674,6 @@
         // ==================== ОБРАБОТЧИКИ СОБЫТИЙ ====================
 
         document.addEventListener('DOMContentLoaded', init);
-
-        // Поиск городов
-        document.getElementById('city-search').addEventListener('input', renderCityList);
-
-        // Обновление времени каждую секунду
-        setInterval(updateDateTime, 1000);
     </script>
 </body>
 </html>
