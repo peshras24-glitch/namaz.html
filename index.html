@@ -1,164 +1,1053 @@
 <!DOCTYPE html>
-<html lang="tg">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Муноҷот - Вақти Намоз</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Isfara FM - 93.9FM с ЧАТОМ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
     <style>
-        body { font-family: 'Montserrat', sans-serif; background: #020617; color: #f8fafc; min-height: 100vh; }
-        .glass { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-        .nav-active { color: #38bdf8; border-top: 2px solid #38bdf8; padding-top: 8px; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #7a1cff;
+            --secondary: #9d4dff;
+            --accent: #FF6B35;
+            --accent-hover: #FF8C42;
+            --text: #FFFFFF;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            background: linear-gradient(135deg, #2a0b5e 0%, #4a1b9e 30%, var(--primary) 70%, var(--secondary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+            padding-bottom: 100px;
+        }
+
+        /* Шапка */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            position: relative;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            height: 50px;
+            width: 50px;
+            object-fit: contain;
+            background: transparent;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+        }
+
+        .logo-text h1 {
+            font-size: 18px;
+            color: var(--text);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            color: #FFD700;
+            font-weight: bold;
+        }
+
+        .menu-btn {
+            font-size: 22px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: var(--text);
+            cursor: pointer;
+            padding: 10px;
+            width: 45px;
+            height: 45px;
+            transition: all 0.3s;
+        }
+
+        /* Боковое меню */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(42, 11, 94, 0.98);
+            backdrop-filter: blur(20px);
+            transition: right 0.4s;
+            z-index: 1000;
+            padding: 80px 20px 30px;
+            overflow-y: auto;
+        }
+
+        .side-menu.active {
+            right: 0;
+        }
+
+        .menu-header {
+            font-size: 22px;
+            margin-bottom: 25px;
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+        }
+
+        .menu-item {
+            padding: 18px 15px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 107, 53, 0.2);
+            border-color: var(--accent);
+            transform: translateX(-5px);
+        }
+
+        .menu-item i {
+            color: var(--accent);
+            font-size: 20px;
+            width: 25px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Основной контент */
+        .main-content {
+            padding: 20px 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .radio-info {
+            text-align: center;
+        }
+
+        /* Виниловый диск */
+        .radio-logo-container {
+            position: relative;
+            margin: 20px auto 30px;
+            width: min(220px, 70vw);
+            height: min(220px, 70vw);
+        }
+
+        .radio-logo-large {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+        }
+
+        .radio-logo-large.playing {
+            animation: rotate 15s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .sound-wave {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            right: 0;
+            height: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 3px;
+            opacity: 0;
+        }
+
+        .sound-wave.active {
+            opacity: 1;
+        }
+
+        .wave-bar {
+            width: 3px;
+            background: linear-gradient(to top, var(--accent), #FFD700);
+            border-radius: 2px;
+            animation: wave 1.2s infinite;
+        }
+
+        @keyframes wave {
+            0%,100%{transform:scaleY(1)} 50%{transform:scaleY(1.5)}
+        }
+
+        .radio-title {
+            font-size: clamp(22px,6vw,28px);
+            margin:20px 0 10px;
+            font-family:'Orbitron',sans-serif;
+        }
+
+        .radio-frequency {
+            font-size: clamp(18px,5vw,22px);
+            color:#FFD700;
+            margin-bottom:25px;
+            font-family:'Orbitron',sans-serif;
+        }
+
+        /* Плеер */
+        .player-container {
+            width:100%;
+            margin:25px auto;
+            background:rgba(255,255,255,0.1);
+            border-radius:25px;
+            padding:10px;
+            border:1px solid rgba(255,255,255,0.15);
+        }
+
+        .player-btn {
+            width:100%;
+            height:60px;
+            border-radius:20px;
+            background:linear-gradient(135deg, var(--accent), #FF4500);
+            border:none;
+            color:white;
+            font-size:17px;
+            font-weight:700;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:15px;
+        }
+
+        .status {
+            font-size:14px;
+            margin-top:15px;
+            padding:10px 25px;
+            background:rgba(255,255,255,0.1);
+            border-radius:25px;
+            display:inline-block;
+        }
+
+        /* Топ треки */
+        .top-tracks {
+            margin:30px 0;
+            padding:20px;
+            background:rgba(255,255,255,0.08);
+            border-radius:20px;
+        }
+
+        .top-tracks-title {
+            font-size:20px;
+            color:var(--accent);
+            margin-bottom:20px;
+            font-family:'Orbitron',sans-serif;
+            text-align:center;
+        }
+
+        .track-item {
+            display:flex;
+            align-items:center;
+            padding:12px;
+            background:rgba(255,255,255,0.05);
+            border-radius:12px;
+            margin-bottom:10px;
+        }
+
+        .track-number {
+            font-size:18px;
+            font-weight:800;
+            color:var(--accent);
+            min-width:30px;
+        }
+
+        .track-info {
+            flex-grow:1;
+        }
+
+        .track-name {
+            font-weight:600;
+        }
+
+        .track-artist {
+            font-size:13px;
+            color:rgba(255,255,255,0.7);
+        }
+
+        .track-play {
+            color:var(--accent);
+            background:rgba(255,107,53,0.1);
+            border:none;
+            width:35px;
+            height:35px;
+            border-radius:50%;
+            cursor:pointer;
+        }
+
+        /* Программы */
+        .programs-section {
+            margin:40px 0;
+            padding:25px 0;
+            border-top:1px solid rgba(255,255,255,0.1);
+            border-bottom:1px solid rgba(255,255,255,0.1);
+        }
+
+        .section-title {
+            font-size:22px;
+            color:var(--accent);
+            margin-bottom:20px;
+            font-family:'Orbitron',sans-serif;
+            text-align:center;
+        }
+
+        .days-grid {
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:8px;
+            margin-bottom:20px;
+        }
+
+        .day-btn {
+            padding:12px 5px;
+            background:rgba(255,255,255,0.1);
+            border:none;
+            border-radius:10px;
+            color:var(--text);
+            cursor:pointer;
+            font-size:13px;
+        }
+
+        .day-btn.active {
+            background:var(--accent);
+        }
+
+        .day-schedule {
+            margin-top:20px;
+            padding:20px;
+            background:rgba(255,255,255,0.08);
+            border-radius:15px;
+        }
+
+        .program-item {
+            padding:12px;
+            margin-bottom:10px;
+            background:rgba(255,255,255,0.05);
+            border-radius:10px;
+            border-left:4px solid var(--accent);
+            display:flex;
+            justify-content:space-between;
+        }
+
+        .program-time {
+            color:var(--accent);
+            font-weight:bold;
+        }
+
+        /* ========== УМНЫЙ ЧАТ ========== */
+        .chat-toggle {
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 50px;
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        .chat-toggle:hover {
+            background: rgba(255, 107, 53, 0.2);
+            border-color: var(--accent);
+        }
+
+        .chat-toggle-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-toggle-left i {
+            font-size: 22px;
+            color: var(--accent);
+        }
+
+        .chat-toggle-left span {
+            font-weight: 600;
+        }
+
+        .chat-toggle-right {
+            background: var(--accent);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .chat-container {
+            margin: 15px 0 30px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .chat-container.hidden {
+            display: none;
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            background: rgba(255, 107, 53, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            font-size: 18px;
+            color: var(--accent);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .chat-header-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .chat-header-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--accent);
+        }
+
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-message {
+            margin-bottom: 15px;
+            animation: fadeIn 0.3s;
+        }
+
+        .chat-message-own {
+            text-align: right;
+        }
+
+        .message-bubble {
+            display: inline-block;
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.1);
+            text-align: left;
+        }
+
+        .chat-message-own .message-bubble {
+            background: rgba(255, 107, 53, 0.3);
+        }
+
+        .message-user {
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .message-text {
+            font-size: 14px;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .message-time {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 3px;
+            text-align: right;
+        }
+
+        .chat-input-area {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .chat-name-input {
+            flex: 0.3;
+            padding: 12px;
+            border-radius: 25px;
+            border: none;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 14px;
+        }
+
+        .chat-message-input {
+            flex: 1;
+            padding: 12px;
+            border-radius: 25px;
+            border: none;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 14px;
+        }
+
+        .chat-send-btn {
+            background: var(--accent);
+            border: none;
+            border-radius: 25px;
+            padding: 0 20px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .chat-send-btn:hover {
+            background: var(--accent-hover);
+            transform: scale(1.05);
+        }
+
+        .chat-warning {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .chat-warning i {
+            color: var(--accent);
+            margin: 0 3px;
+        }
+
+        .online-count {
+            font-size: 13px;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        /* Соцсети */
+        .social-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0 30px;
+            flex-wrap: wrap;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        .social-icon.instagram { background: linear-gradient(45deg, #405DE6, #833AB4, #E1306C); }
+        .social-icon.telegram { background: #0088cc; }
+        .social-icon.whatsapp { background: #25D366; }
+        .social-icon.youtube { background: #FF0000; }
+
+        /* Футер */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 15px;
+            background: rgba(42, 11, 94, 0.8);
+            backdrop-filter: blur(15px);
+            font-size: 12px;
+            z-index: 99;
+        }
+
+        .footer-link {
+            color: white !important;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (min-width: 768px) {
+            .side-menu { width: 350px; right: -350px; }
+            .days-grid { grid-template-columns: repeat(7, 1fr); }
+        }
     </style>
 </head>
-<body class="pb-24">
-
-    <header class="p-6 flex justify-between items-center">
-        <div>
-            <h1 class="text-xl font-extrabold text-sky-400">МУНОҶОТ</h1>
-            <p id="location-text" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-1 text-sky-400">Ҷустуҷӯ...</p>
+<body>
+    <!-- Шапка -->
+    <header>
+        <div class="logo-container">
+            <img src="https://i.ibb.co/39MLN2z8/photo-2026-01-28-08-19-22-no-bg-preview-carve-photos.png" class="logo">
+            <div class="logo-text">
+                <h1>Isfara FM</h1>
+                <p>93.9FM</p>
+            </div>
         </div>
-        <button onclick="updateLocation()" class="p-2 glass text-sky-400"><i class="fas fa-location-crosshairs"></i></button>
+        <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
     </header>
 
-    <main class="px-5">
-        
-        <section id="times" class="tab-content active">
-            <div class="glass p-5 mb-6 border-l-4 border-sky-500">
-                <h3 class="text-[10px] font-bold text-sky-500 uppercase mb-2">Ҳадиси Рӯз</h3>
-                <p id="hadith-text" class="text-sm italic text-slate-200 leading-relaxed font-medium">...</p>
-            </div>
+    <!-- Меню -->
+    <div class="side-menu" id="sideMenu">
+        <div class="menu-header">Меню</div>
+        <div class="menu-item" data-section="main"><i class="fas fa-home"></i>Главная</div>
+        <div class="menu-item" data-section="about"><i class="fas fa-info-circle"></i>О радио</div>
+        <div class="menu-item" data-section="team"><i class="fas fa-users"></i>Команда</div>
+        <div class="menu-item" data-section="support"><i class="fas fa-headset"></i>Поддержка</div>
+    </div>
+    <div class="overlay" id="overlay"></div>
 
-            <div id="prayer-grid" class="grid grid-cols-2 gap-3">
+    <!-- Главный экран -->
+    <div class="main-content" id="mainContent">
+        <div class="radio-info">
+            <!-- Виниловый диск -->
+            <div class="radio-logo-container">
+                <img src="https://i.ibb.co/39MLN2z8/photo-2026-01-28-08-19-22-no-bg-preview-carve-photos.png" class="radio-logo-large" id="mainLogo">
+                <div class="sound-wave" id="soundWave">
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
                 </div>
-        </section>
-
-        <section id="learn" class="tab-content">
-            <h2 class="text-xl font-extrabold mb-4">Омӯзиши Намоз</h2>
+            </div>
             
-            <div class="space-y-4">
-                <div class="glass p-5">
-                    <h3 class="font-bold text-sky-400 mb-3 underline">Тартиби ракъатҳо:</h3>
-                    <div class="space-y-2 text-sm">
-                        <p><b>Бамдод:</b> 2 суннат + 2 фарз</p>
-                        <p><b>Пешин:</b> 4 суннат + 4 фарз + 2 суннат</p>
-                        <p><b>Аср:</b> 4 фарз</p>
-                        <p><b>Шом:</b> 3 фарз + 2 суннат</p>
-                        <p><b>Хуфтан:</b> 4 фарз + 2 суннат + 3 витр</p>
-                    </div>
-                </div>
+            <h1 class="radio-title">Isfara FM</h1>
+            <p class="radio-frequency">93.9 FM - Голос Исфары</p>
+            
+            <!-- Плеер -->
+            <div class="player-container">
+                <button class="player-btn" id="playBtn">
+                    <i class="fas fa-play"></i> <span>Слушать Isfara FM</span>
+                </button>
+            </div>
+            
+            <div class="status" id="status">Нажмите кнопку для прослушивания</div>
 
-                <div class="glass p-5">
-                    <h3 class="font-bold text-sky-400 mb-2">Чӣ тавр намоз хонем?</h3>
-                    <div class="text-xs space-y-4 text-slate-300 leading-relaxed">
-                        <p><b>1. Ният:</b> Ният кардам бигузорам ... ракъат намози (ном) вақте ки бар ман аст, рӯй овардам ба қибла, қибла ба ҷиҳати Каъба, холисан лиллоҳи таъоло.</p>
-                        <p><b>2. Такбир:</b> "Аллоҳу Акбар" гуфта дастҳоро то гӯш мебардорем.</p>
-                        <p><b>3. Сано:</b> "Субҳонакаллоҳумма ва биҳамдика ва таборакасмука ва таъоло ҷаддука ва ло илоҳа ғайрук".</p>
-                        <p><b>4. Сураҳо:</b> Баъд аз Сано, сураи Фотиҳа ва як сураи замми мехонем.</p>
+            <!-- Топ треки -->
+            <div class="top-tracks">
+                <h2 class="top-tracks-title"><i class="fas fa-chart-line"></i> Топ треки недели</h2>
+                <div class="track-list">
+                    <div class="track-item"><div class="track-number">1</div><div class="track-info"><div class="track-name">Омадам ба ту</div><div class="track-artist">Шабнами Сурайё</div></div><button class="track-play"><i class="fas fa-play"></i></button></div>
+                    <div class="track-item"><div class="track-number">2</div><div class="track-info"><div class="track-name">Диламро</div><div class="track-artist">Нигина Амонқулова</div></div><button class="track-play"><i class="fas fa-play"></i></button></div>
+                    <div class="track-item"><div class="track-number">3</div><div class="track-info"><div class="track-name">Ишқ</div><div class="track-artist">Дилшодӣ</div></div><button class="track-play"><i class="fas fa-play"></i></button></div>
+                </div>
+            </div>
+
+            <!-- ========== УМНЫЙ ЧАТ ========== -->
+            <div class="chat-toggle" id="chatToggle">
+                <div class="chat-toggle-left">
+                    <i class="fas fa-comments"></i>
+                    <span>Чат слушателей</span>
+                </div>
+                <div class="chat-toggle-right" id="onlineCount">
+                    0 онлайн
+                </div>
+            </div>
+
+            <div class="chat-container hidden" id="chatContainer">
+                <div class="chat-header">
+                    <h3><i class="fas fa-comments" style="margin-right: 8px;"></i> Чат Isfara FM</h3>
+                    <button class="chat-header-close" id="chatCloseBtn"><i class="fas fa-times"></i></button>
+                </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Сообщения будут здесь -->
+                </div>
+                
+                <div class="chat-input-area">
+                    <div class="chat-input-row">
+                        <input type="text" class="chat-name-input" id="userName" placeholder="Ваше имя" value="Слушатель">
+                        <input type="text" class="chat-message-input" id="messageInput" placeholder="Написать сообщение...">
+                        <button class="chat-send-btn" id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                    <div class="chat-warning">
+                        <i class="fas fa-shield-alt"></i> Нет спаму • 1 сообщение/10 сек • <span class="online-count" id="onlineCount2">0</span> онлайн
                     </div>
                 </div>
             </div>
-        </section>
 
-        <section id="dua" class="tab-content">
-            <h2 class="text-xl font-extrabold mb-4">Ганҷинаи Дуоҳо</h2>
-            <div class="space-y-3">
-                <div class="glass p-4">
-                    <h4 class="text-sky-400 font-bold text-xs uppercase mb-1">Дуои пас аз таом</h4>
-                    <p class="text-sm leading-relaxed">"Алҳамду лиллоҳиллазӣ атъамана ва сақоно ва ҷаъалано минал муслимин."</p>
+            <!-- Программы -->
+            <div class="programs-section">
+                <h2 class="section-title">Расписание программ</h2>
+                <div class="days-grid">
+                    <button class="day-btn active" data-day="monday">ПН</button>
+                    <button class="day-btn" data-day="tuesday">ВТ</button>
+                    <button class="day-btn" data-day="wednesday">СР</button>
+                    <button class="day-btn" data-day="thursday">ЧТ</button>
+                    <button class="day-btn" data-day="friday">ПТ</button>
+                    <button class="day-btn" data-day="saturday">СБ</button>
+                    <button class="day-btn" data-day="sunday">ВС</button>
                 </div>
-                <div class="glass p-4">
-                    <h4 class="text-sky-400 font-bold text-xs uppercase mb-1">Дуои хоб</h4>
-                    <p class="text-sm leading-relaxed">"Бо исмика Аллоҳумма амуту ва аҳё."</p>
-                </div>
-                <div class="glass p-4">
-                    <h4 class="text-sky-400 font-bold text-xs uppercase mb-1">Дуои падару модар</h4>
-                    <p class="text-sm leading-relaxed">"Рабби-рҳамҳумо камо раббаёнӣ сағиро."</p>
-                </div>
-                <div class="glass p-4">
-                    <h4 class="text-sky-400 font-bold text-xs uppercase mb-1">Оятул-Курсӣ</h4>
-                    <p class="text-[10px] text-slate-300 italic">"Аллоҳу ло илоҳа илла ҳувал ҳайюл қайюм..." (Хондани ин оят пас аз ҳар намоз фазилати калон дорад).</p>
+                <div class="day-schedule" id="currentSchedule">
+                    <h3 class="day-title">Понедельник</h3>
+                    <ul class="program-list" id="programList"></ul>
                 </div>
             </div>
-        </section>
+            
+            <!-- Соцсети -->
+            <div class="social-container">
+                <a href="#" class="social-icon instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon telegram"><i class="fab fa-telegram-plane"></i></a>
+                <a href="#" class="social-icon whatsapp"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" class="social-icon youtube"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
 
-    </main>
+    <!-- Футер -->
+    <footer>
+        <p>© 2026 Isfara FM. Разработчик: <a href="#" class="footer-link">Kurushdigital.one</a></p>
+    </footer>
 
-    <nav class="fixed bottom-0 left-0 right-0 glass rounded-t-[30px] p-4 flex justify-around items-center border-t border-white/10">
-        <button onclick="switchTab('times')" id="nav-times" class="nav-active flex flex-col items-center">
-            <i class="fas fa-home-alt text-lg"></i>
-            <span class="text-[9px] font-bold mt-1">АСОСӢ</span>
-        </button>
-        <button onclick="switchTab('learn')" id="nav-learn" class="text-slate-500 flex flex-col items-center">
-            <i class="fas fa-book-open text-lg"></i>
-            <span class="text-[9px] font-bold mt-1">ОМӮЗИШ</span>
-        </button>
-        <button onclick="switchTab('dua')" id="nav-dua" class="text-slate-500 flex flex-col items-center">
-            <i class="fas fa-hands-holding-child text-lg"></i>
-            <span class="text-[9px] font-bold mt-1">ДУОҲО</span>
-        </button>
-    </nav>
+    <!-- Аудио -->
+    <audio id="radioStream" preload="none">
+        <source src="https://c34.radioboss.fm:8880/stream" type="audio/mpeg">
+    </audio>
 
     <script>
-        const hadiths = [
-            { t: "Беҳтарини шумо касест, ки Қуръонро омӯзад ва ба дигарон омӯзонад.", s: "Бухорӣ" },
-            { t: "Дуо силоҳи мӯъмин аст.", s: "Абу Яъло" },
-            { t: "Намоз сутуни дин аст.", s: "Тирмизӣ" },
-            { t: "Ҷаннат зери қадами модарон аст.", s: "Насоӣ" }
-        ];
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('nav button').forEach(b => b.classList.remove('nav-active', 'text-sky-400'));
-            document.querySelectorAll('nav button').forEach(b => b.classList.add('text-slate-500'));
-            
-            document.getElementById(tabId).classList.add('active');
-            const btn = document.getElementById('nav-' + tabId);
-            btn.classList.add('nav-active');
-            btn.classList.remove('text-slate-500');
-        }
-
-        async function updateLocation() {
-            document.getElementById('location-text').innerText = "ҶУСТУҶӮ...";
-            navigator.geolocation.getCurrentPosition(pos => {
-                fetchTimes(pos.coords.latitude, pos.coords.longitude);
-            }, () => {
-                fetchTimes(40.12, 70.63); // Исфара по умолчанию
+        // ========== FIREBASE ИНИЦИАЛИЗАЦИЯ ==========
+        const firebaseConfig = {
+            apiKey: "AIzaSyBLShAT8LWWVJ8bcwD6Y_FmltgbmWp4Lfw",
+            authDomain: "isfara-fm.firebaseapp.com",
+            projectId: "isfara-fm",
+            storageBucket: "isfara-fm.firebasestorage.app",
+            messagingSenderId: "818615034969",
+            appId: "1:818615034969:web:7b2981f4ba8d3fc44f3d48",
+            measurementId: "G-Z0DF7JQGKF"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
+        // ========== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ==========
+        let isPlaying = false;
+        let lastMessageTime = 0;
+        const MESSAGE_COOLDOWN = 10000; // 10 секунд
+        let userName = localStorage.getItem('isfara_username') || 'Слушатель';
+        let userId = localStorage.getItem('isfara_userid') || 'user_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('isfara_userid', userId);
+        
+        // ========== УМНЫЙ ЧАТ ==========
+        const chatToggle = document.getElementById('chatToggle');
+        const chatContainer = document.getElementById('chatContainer');
+        const chatCloseBtn = document.getElementById('chatCloseBtn');
+        const userNameInput = document.getElementById('userName');
+        const messageInput = document.getElementById('messageInput');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        const onlineCounts = document.querySelectorAll('.chat-toggle-right, #onlineCount2');
+        
+        // Сохраняем имя
+        userNameInput.value = userName;
+        userNameInput.addEventListener('change', function() {
+            userName = this.value || 'Слушатель';
+            localStorage.setItem('isfara_username', userName);
+        });
+        
+        // Открыть чат
+        chatToggle.addEventListener('click', function() {
+            chatContainer.classList.remove('hidden');
+            chatToggle.style.display = 'none';
+            loadMessages();
+        });
+        
+        // Закрыть чат
+        chatCloseBtn.addEventListener('click', function() {
+            chatContainer.classList.add('hidden');
+            chatToggle.style.display = 'flex';
+        });
+        
+        // ========== ЗАГРУЗКА СООБЩЕНИЙ ==========
+        function loadMessages() {
+            const messagesRef = database.ref('chat/messages').limitToLast(50);
+            messagesRef.off(); // Отключаем старые слушатели
+            messagesRef.on('child_added', function(snapshot) {
+                const message = snapshot.val();
+                addMessageToChat(message, snapshot.key);
             });
         }
-
-        async function fetchTimes(lat, lon) {
-            try {
-                const res = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`);
-                const json = await res.json();
-                const t = json.data.timings;
-                
-                document.getElementById('location-text').innerText = json.data.meta.timezone.split('/')[1].toUpperCase() || "ИСФАРА";
-                
-                const names = {Fajr:'Бамдод', Sunrise:'Офтоб', Dhuhr:'Пешин', Asr:'Аср', Maghrib:'Шом', Isha:'Хуфтан'};
-                let html = '';
-                for(let k in names) {
-                    html += `<div class="glass p-4 text-center">
-                        <div class="text-[9px] text-slate-400 font-bold mb-1 uppercase">${names[k]}</div>
-                        <div class="text-xl font-black text-sky-400">${t[k]}</div>
-                    </div>`;
-                }
-                document.getElementById('prayer-grid').innerHTML = html;
-            } catch (e) {
-                document.getElementById('location-text').innerText = "ХАТОИ ПАЙВАСТ";
-            }
+        
+        // ========== ДОБАВИТЬ СООБЩЕНИЕ В ЧАТ ==========
+        function addMessageToChat(message, messageId) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message' + (message.userId === userId ? ' chat-message-own' : '');
+            messageDiv.id = 'msg_' + messageId;
+            
+            const time = new Date(message.timestamp).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <div class="message-bubble">
+                    <div class="message-user">${escapeHtml(message.userName)}</div>
+                    <div class="message-text">${escapeHtml(message.text)}</div>
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
-
-        // Рандомный хадис
-        const h = hadiths[new Date().getDate() % hadiths.length];
-        document.getElementById('hadith-text').innerText = `"${h.t}" — ${h.s}`;
-
-        updateLocation();
+        
+        // Защита от XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // ========== ФИЛЬТР СООБЩЕНИЙ (АНТИ-СПАМ) ==========
+        function filterMessage(text) {
+            // Слишком короткие
+            if (text.length < 2) return {ok: false, reason: 'Слишком короткое'};
+            
+            // Слишком длинные
+            if (text.length > 200) return {ok: false, reason: 'Слишком длинное'};
+            
+            // Запрещённые слова (мат)
+            const badWords = ['сука', 'бля', 'хуй', 'пизд', 'cock', 'fuck', 'shit', 'ass'];
+            for (let word of badWords) {
+                if (text.toLowerCase().includes(word)) {
+                    return {ok: false, reason: 'Запрещённое слово'};
+                }
+            }
+            
+            // Ссылки
+            const urlPattern = /(https?:\/\/[^\s]+)|(www\.[^\s]+)|([a-zA-Z0-9-]+\.(ru|com|org|net|tj)\b)/gi;
+            if (urlPattern.test(text)) {
+                return {ok: false, reason: 'Ссылки запрещены'};
+            }
+            
+            // Телефоны
+            const phonePattern = /(\+992|8)[\s-]?\(?\d{2,3}\)?[\s-]?\d{2,3}[\s-]?\d{2,3}/g;
+            if (phonePattern.test(text)) {
+                return {ok: false, reason: 'Телефоны запрещены'};
+            }
+            
+            return {ok: true};
+        }
+        
+        // ========== ОТПРАВКА СООБЩЕНИЯ ==========
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            if (!text) return;
+            
+            // Проверка на спам
+            const filter = filterMessage(text);
+            if (!filter.ok) {
+                alert('⛔ ' + filter.reason);
+                return;
+            }
+            
+            // Анти-флуд
+            const now = Date.now();
+            if (now - lastMessageTime < MESSAGE_COOLDOWN) {
+                const seconds = Math.ceil((MESSAGE_COOLDOWN - (now - lastMessageTime)) / 1000);
+                alert(`⏳ Подождите ${seconds} сек. перед следующим сообщением`);
+                return;
+            }
+            
+            // Отправка в Firebase
+            const messagesRef = database.ref('chat/messages');
+            messagesRef.push({
+                userId: userId,
+                userName: userName,
+                text: text,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            }).then(() => {
+                messageInput.value = '';
+                lastMessageTime = now;
+            }).catch(error => {
+                console.error('Ошибка отправки:', error);
+                alert('Ошибка отправки. Попробуйте ещё раз.');
+            });
+        }
+        
+        sendMessageBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+        
+        // ========== ОНЛАЙН ПОЛЬЗОВАТЕЛИ ==========
+        const userPresenceRef = database.ref('chat/presence/' + userId);
+        
+        // При подключении
+        userPresenceRef.set({
+            online: true,
+            lastSeen: firebase.database.ServerValue.TIMESTAMP
+        });
+        
+        // При отключении
+        window.addEventListener('beforeunload', function() {
+            userPresenceRef.set({
+                online: false,
+                lastSeen: firebase.database.ServerValue.TIMESTAMP
+            });
+        });
+        
+        // Считаем онлайн
+        const presenceRef = database.ref('chat/presence');
+        presenceRef.on('value', function(snapshot) {
+            let online = 0;
+            snapshot.forEach(child => {
+                const user = child.val();
+                if (user.online) online++;
+            });
+            
+            // Обновляем счётчики
+            onlineCounts.forEach(el => {
+                el.textContent = online + ' онлайн';
+            });
+        });
+        
+        // ========== РАСПИСАНИЕ ==========
+        const schedules = {
+            monday: [{time:"07:00",title:"Хабар"},{time:"08:00-10:00",title:"Салом"},{time:"11:00",title:"Бузургон"},{time:"14:00",title:"Савол ба ҳуқуқшинос"},{time:"17:00-19:00",title:"Шом ба хайр"}],
+            tuesday: [{time:"07:00",title:"Хабар"},{time:"08:00-10:00",title:"Салом"},{time:"11:00",title:"Хазинаи маърифат"},{time:"14:00-16:00",title:"Садои дил"},{time:"17:00-19:00",title:"Шом ба хайр"}],
+            wednesday: [{time:"07:00",title:"Хабар"},{time:"08:00-10:00",title:"Салом"},{time:"11:00",title:"Бузургон"},{time:"14:00",title:"Саломати"},{time:"17:00-19:00",title:"Шом ба хайр"}],
+            thursday: [{time:"07:00",title:"Хабар"},{time:"08:00-10:00",title:"Салом"},{time:"11:00",title:"Хазинаи маърифат"},{time:"14:00",title:"Зан ва оила"},{time:"17:00-19:00",title:"Шом ба хайр"}],
+            friday: [{time:"07:00",title:"Хабар"},{time:"08:00-10:00",title:"Салом"},{time:"11:00",title:"Хазинаи маърифат"},{time:"14:00-16:00",title:"Садои дил"},{time:"17:00-19:00",title:"Шом ба хайр"}],
+            saturday: [{time:"07:00",title:"Хабар"},{time:"08:00-10:00",title:"Салом"},{time:"11:00",title:"Хазинаи маърифат"},{time:"14:00-16:00",title:"Садои дил"},{time:"17:00-19:00",title:"Шом ба хайр"}],
+            sunday: [{time:"07:00-08:00",title:"Сурудхои шашмаком"},{time:"10:00-11:00",title:"Сурудхои точики"},{time:"11:00",title:"Саломати"},{time:"17:00",title:"Савол ба ҳуқуқшинос"},{time:"20:00-22:00",title:"Мусикихои форам"}]
+        };
+        
+        function showDaySchedule(day) {
+            const schedule = schedules[day];
+            const list = document.getElementById('programList');
+            list.innerHTML = '';
+            schedule.forEach(item => {
+                list.innerHTML += `<li class="program-item"><span class="program-time">${item.time}</span>${item.title}</li>`;
+            });
+        }
+        
+        document.querySelectorAll('.day-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                showDaySchedule(this.getAttribute('data-day'));
+            });
+        });
+        showDaySchedule('monday');
+        
+        // ========== МЕНЮ ==========
+        document.getElementById('menuBtn').addEventListener('click', () => {
+            document.getElementById('sideMenu').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        });
+        document.getElementById('overlay').addEventListener('click', () => {
+            document.getElementById('sideMenu').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        });
+        
+        // ========== ПЛЕЕР ==========
+        const playBtn = document.getElementById('playBtn');
+        const radioStream = document.getElementById('radioStream');
+        const status = document.getElementById('status');
+        const mainLogo = document.getElementById('mainLogo');
+        const soundWave = document.getElementById('soundWave');
+        
+        playBtn.addEventListener('click', () => {
+            if (!isPlaying) {
+                radioStream.play().then(() => {
+                    isPlaying = true;
+                    playBtn.innerHTML = '<i class="fas fa-pause"></i> Пауза';
+                    playBtn.classList.add('playing');
+                    mainLogo.classList.add('playing');
+                    soundWave.classList.add('active');
+                }).catch(() => {
+                    status.textContent = 'Ошибка подключения';
+                });
+            } else {
+                radioStream.pause();
+                isPlaying = false;
+                playBtn.innerHTML = '<i class="fas fa-play"></i> Слушать Isfara FM';
+                playBtn.classList.remove('playing');
+                mainLogo.classList.remove('playing');
+                soundWave.classList.remove('active');
+            }
+        });
+        
+        // ========== ТРЕКИ ==========
+        document.querySelectorAll('.track-play').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-play');
+                icon.classList.toggle('fa-pause');
+                this.style.background = icon.classList.contains('fa-pause') ? 'rgba(255,107,53,0.5)' : 'rgba(255,107,53,0.1)';
+            });
+        });
     </script>
 </body>
 </html>
