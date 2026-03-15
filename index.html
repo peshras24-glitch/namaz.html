@@ -4,45 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Isfara FM - 93.9FM РАДИОИ ИСФАРА</title>
-    <!-- Отключаем кэширование -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    
+    <!-- МОЩНОЕ ОТКЛЮЧЕНИЕ КЭША -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <!-- Иконки и шрифты -->
+    <meta http-equiv="Cache-Control" content="no-store">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* ========== ОСНОВНЫЕ СТИЛИ ========== */
+        /* ========== СБРОС ========== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* ========== CSS-ПЕРЕМЕННЫЕ ========== */
         :root {
             --primary: #7a1cff;
             --secondary: #9d4dff;
-            --accent: #00aaff;        /* Неоново-голубой */
-            --accent-glow: #00ccff;
+            --accent: #FF6B35;        /* ОРАНЖЕВЫЙ - вернули */
+            --accent-hover: #FF8C42;
             --text: #FFFFFF;
             --glass-bg: rgba(255, 255, 255, 0.08);
             --glass-border: rgba(255, 255, 255, 0.12);
             --glass-hover: rgba(255, 255, 255, 0.15);
         }
 
+        /* ========== БАЗА ========== */
+        html, body {
+            height: 100%;
+        }
+
         body {
             background: linear-gradient(135deg, #2a0b5e 0%, #4a1b9e 30%, #7a1cff 70%, #9d4dff 100%);
             color: var(--text);
             font-family: 'Montserrat', sans-serif;
-            min-height: 100vh;
-            position: relative;
             font-size: 16px;
             line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
         }
 
-        /* Фоновый эффект */
+        /* Анимированный фон */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -62,11 +73,12 @@
             100% { transform: scale(1.1) rotate(1deg); }
         }
 
-        /* Контейнер для контента */
+        /* Контейнер */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 20px;
+            width: 100%;
         }
 
         /* ========== ШАПКА ========== */
@@ -74,7 +86,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 20px;
+            padding: 15px 20px;
             background: rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
@@ -91,35 +103,36 @@
         }
 
         .logo {
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             object-fit: contain;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+            filter: drop-shadow(0 0 15px rgba(255,107,53,0.3));
         }
 
         .logo-text h1 {
-            font-size: clamp(18px, 4vw, 22px);
+            font-size: clamp(20px, 5vw, 24px);
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
             line-height: 1.2;
+            text-shadow: 0 0 10px rgba(0,0,0,0.3);
         }
 
         .logo-text p {
-            font-size: 12px;
+            font-size: 13px;
             color: #FFD700;
-            font-weight: bold;
+            font-weight: 700;
             letter-spacing: 1px;
         }
 
-        /* Кнопка меню */
+        /* Кнопка бургер */
         .menu-btn {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
+            background: rgba(255, 107, 53, 0.15);
+            border: 1px solid rgba(255, 107, 53, 0.3);
             border-radius: 12px;
             color: white;
-            width: 45px;
-            height: 45px;
-            font-size: 22px;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
             cursor: pointer;
             transition: all 0.3s;
             backdrop-filter: blur(10px);
@@ -129,7 +142,7 @@
         }
 
         .menu-btn:hover {
-            background: var(--glass-hover);
+            background: rgba(255, 107, 53, 0.3);
             transform: rotate(90deg);
         }
 
@@ -139,16 +152,15 @@
             top: 0;
             right: -100%;
             width: 100%;
-            max-width: 350px;
-            height: 100%;
+            height: 100vh;
             background: rgba(42, 11, 94, 0.98);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: right 0.4s ease;
             z-index: 1000;
             padding: 80px 20px 30px;
             overflow-y: auto;
-            box-shadow: -5px 0 30px rgba(0,0,0,0.5);
+            border-left: 1px solid rgba(255,107,53,0.3);
         }
 
         .side-menu.active {
@@ -156,39 +168,43 @@
         }
 
         .menu-header {
-            font-size: 22px;
+            font-size: 26px;
+            font-weight: 800;
             color: var(--accent);
-            border-bottom: 2px solid var(--accent);
-            padding-bottom: 10px;
-            margin-bottom: 25px;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
             font-family: 'Orbitron', sans-serif;
             text-align: center;
+            letter-spacing: 1px;
         }
 
         .menu-item {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 15px;
-            margin-bottom: 10px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
+            gap: 20px;
+            padding: 18px 20px;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255,107,53,0.2);
+            border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: 500;
         }
 
         .menu-item:hover {
-            background: rgba(0, 170, 255, 0.2);
+            background: rgba(255, 107, 53, 0.15);
             border-color: var(--accent);
             transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(255,107,53,0.2);
         }
 
         .menu-item i {
             color: var(--accent);
-            font-size: 20px;
-            width: 25px;
+            font-size: 24px;
+            width: 30px;
         }
 
         .overlay {
@@ -197,8 +213,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(3px);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
             z-index: 999;
             display: none;
         }
@@ -209,9 +225,11 @@
 
         /* ========== ОСНОВНОЙ КОНТЕНТ ========== */
         .main-content {
+            flex: 1;
             padding: 20px 15px 30px;
             max-width: 800px;
             margin: 0 auto;
+            width: 100%;
         }
 
         /* Плеер */
@@ -222,8 +240,8 @@
 
         .vinyl-container {
             position: relative;
-            width: 200px;
-            height: 200px;
+            width: 220px;
+            height: 220px;
             margin: 0 auto 20px;
         }
 
@@ -234,7 +252,8 @@
             object-fit: cover;
             animation: rotate 15s linear infinite;
             animation-play-state: paused;
-            filter: drop-shadow(0 0 20px rgba(0,170,255,0.3));
+            filter: drop-shadow(0 0 20px rgba(255,107,53,0.3));
+            border: 3px solid var(--accent);
         }
 
         .vinyl.playing {
@@ -253,7 +272,7 @@
             right: 0;
             display: flex;
             justify-content: center;
-            gap: 3px;
+            gap: 4px;
             opacity: 0;
             transition: opacity 0.3s;
         }
@@ -263,19 +282,19 @@
         }
 
         .wave-bar {
-            width: 4px;
-            height: 20px;
+            width: 5px;
+            height: 25px;
             background: var(--accent);
-            border-radius: 2px;
+            border-radius: 3px;
             animation: wave 1.2s ease-in-out infinite;
         }
 
-        .wave-bar:nth-child(2) { animation-delay: 0.1s; height: 25px; }
-        .wave-bar:nth-child(3) { animation-delay: 0.2s; height: 30px; }
-        .wave-bar:nth-child(4) { animation-delay: 0.3s; height: 35px; }
-        .wave-bar:nth-child(5) { animation-delay: 0.4s; height: 30px; }
-        .wave-bar:nth-child(6) { animation-delay: 0.5s; height: 25px; }
-        .wave-bar:nth-child(7) { animation-delay: 0.6s; height: 20px; }
+        .wave-bar:nth-child(2) { animation-delay: 0.1s; height: 30px; }
+        .wave-bar:nth-child(3) { animation-delay: 0.2s; height: 35px; }
+        .wave-bar:nth-child(4) { animation-delay: 0.3s; height: 40px; }
+        .wave-bar:nth-child(5) { animation-delay: 0.4s; height: 35px; }
+        .wave-bar:nth-child(6) { animation-delay: 0.5s; height: 30px; }
+        .wave-bar:nth-child(7) { animation-delay: 0.6s; height: 25px; }
 
         @keyframes wave {
             0%, 100% { transform: scaleY(1); }
@@ -284,76 +303,79 @@
 
         .player-btn {
             width: 100%;
-            max-width: 300px;
-            height: 60px;
+            max-width: 350px;
+            height: 65px;
             margin: 20px auto 10px;
-            background: linear-gradient(135deg, var(--accent), #0088cc);
+            background: linear-gradient(135deg, var(--accent), #FF4500);
             border: none;
-            border-radius: 30px;
+            border-radius: 40px;
             color: white;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(0,170,255,0.5);
+            box-shadow: 0 0 25px rgba(255,107,53,0.4);
         }
 
         .player-btn:hover {
             transform: scale(1.02);
-            box-shadow: 0 0 30px rgba(0,170,255,0.8);
+            box-shadow: 0 0 35px rgba(255,107,53,0.7);
         }
 
         .status-text {
-            font-size: 14px;
+            font-size: 15px;
             color: rgba(255,255,255,0.8);
-            margin-top: 10px;
+            margin-top: 12px;
+            background: rgba(0,0,0,0.2);
+            padding: 8px 15px;
+            border-radius: 30px;
+            display: inline-block;
         }
 
-        /* Блоки погоды и валют */
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 30px 0;
-        }
-
-        .info-card {
+        /* ========== ИНФО-БЛОКИ (ПОГОДА И КУРС - ДРУГ ПОД ДРУГОМ) ========== */
+        .info-block {
             background: var(--glass-bg);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 20px 15px;
+            border-radius: 25px;
+            padding: 25px 20px;
+            margin-bottom: 20px;
             transition: all 0.3s;
         }
 
-        .info-card:hover {
+        .info-block:hover {
             border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(0,170,255,0.2);
+            box-shadow: 0 0 20px rgba(255,107,53,0.2);
         }
 
-        .card-title {
-            font-size: 18px;
+        .info-title {
+            font-size: 20px;
             color: var(--accent);
             margin-bottom: 15px;
             font-family: 'Orbitron', sans-serif;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .weather-info {
+        .info-title i {
             font-size: 24px;
-            font-weight: 700;
+        }
+
+        .weather-temp {
+            font-size: 42px;
+            font-weight: 800;
             margin-bottom: 8px;
+            line-height: 1.2;
         }
 
         .weather-details {
-            font-size: 14px;
+            font-size: 16px;
             color: rgba(255,255,255,0.8);
         }
 
@@ -361,9 +383,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
+            padding: 12px 0;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 16px;
+            font-size: 18px;
         }
 
         .currency-item:last-child {
@@ -371,78 +393,76 @@
         }
 
         .currency-code {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--accent);
         }
 
-        /* Новости */
-        .news-section {
-            margin: 30px 0;
-            padding: 25px 20px;
+        /* ========== НОВОСТИ (ЕДИНЫЙ БЛОК) ========== */
+        .news-block {
             background: var(--glass-bg);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
+            border-radius: 25px;
+            padding: 25px 20px;
+            margin: 20px 0;
         }
 
-        .section-title {
-            font-size: 22px;
-            color: var(--accent);
-            margin-bottom: 20px;
-            font-family: 'Orbitron', sans-serif;
+        .news-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 20px;
+            font-size: 24px;
+            color: var(--accent);
+            font-family: 'Orbitron', sans-serif;
         }
 
-        .news-card {
+        .news-items {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .news-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
             padding: 15px;
             background: rgba(0,0,0,0.2);
             border-radius: 15px;
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s;
+            border-left: 5px solid var(--accent);
         }
 
-        .news-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        .news-card i {
-            color: var(--accent);
+        .news-item i {
             font-size: 24px;
-            margin-bottom: 10px;
+            color: var(--accent);
+            min-width: 30px;
         }
 
-        .news-card h4 {
-            font-size: 16px;
-            margin-bottom: 8px;
+        .news-content h4 {
+            font-size: 18px;
+            margin-bottom: 5px;
             font-weight: 600;
         }
 
-        .news-card p {
+        .news-content p {
             font-size: 14px;
             color: rgba(255,255,255,0.7);
         }
 
         .news-btn {
             display: inline-block;
-            padding: 10px 25px;
+            padding: 12px 30px;
             background: transparent;
             border: 2px solid var(--accent);
-            border-radius: 25px;
+            border-radius: 30px;
             color: var(--accent);
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
             transition: all 0.3s;
+            font-size: 16px;
         }
 
         .news-btn:hover {
@@ -450,98 +470,107 @@
             color: white;
         }
 
-        /* Рекламный блок */
+        /* ========== РЕКЛАМА (КАРУСЕЛЬ) ========== */
         .ad-section {
             margin: 30px 0;
-            padding: 25px 20px;
-            background: linear-gradient(135deg, rgba(0,170,255,0.1), rgba(122,28,255,0.2));
+            background: var(--glass-bg);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 2px solid var(--accent);
-            border-radius: 20px;
-            text-align: center;
+            border-radius: 25px;
+            padding: 25px 20px;
         }
 
         .ad-title {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 800;
             color: var(--accent);
             margin-bottom: 20px;
             font-family: 'Orbitron', sans-serif;
-            text-shadow: 0 0 10px rgba(0,170,255,0.5);
+            text-align: center;
+            text-shadow: 0 0 15px rgba(255,107,53,0.5);
         }
 
-        .ad-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin: 25px 0;
-        }
-
-        .feature {
-            padding: 15px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-        }
-
-        .feature i {
-            font-size: 28px;
-            color: var(--accent);
-            margin-bottom: 8px;
-        }
-
-        .feature p {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .ad-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary {
-            padding: 12px 30px;
-            background: var(--accent);
-            border: none;
-            border-radius: 25px;
-            color: white;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 16px;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary:hover {
-            background: #0088cc;
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--accent);
-        }
-
-        .btn-secondary {
-            padding: 12px 30px;
-            background: transparent;
+        .ad-carousel {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 15px;
             border: 2px solid var(--accent);
-            border-radius: 25px;
-            color: var(--accent);
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 16px;
-            text-decoration: none;
-            display: inline-block;
         }
 
-        .btn-secondary:hover {
+        .ad-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            padding: 0;
+        }
+
+        .ad-slide.active {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .ad-content {
+            background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.5));
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .ad-content h3 {
+            color: white;
+            font-size: 22px;
+            margin-bottom: 10px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .ad-link {
+            display: inline-block;
             background: var(--accent);
             color: white;
+            padding: 8px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
         }
 
-        /* Соцсети */
+        .ad-link:hover {
+            background: #FF4500;
+            transform: scale(1.05);
+        }
+
+        .ad-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .ad-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .ad-dot.active {
+            background: var(--accent);
+            transform: scale(1.2);
+        }
+
+        /* ========== СОЦСЕТИ ========== */
         .social-section {
             margin: 30px 0;
             text-align: center;
@@ -555,20 +584,22 @@
         }
 
         .social-icon {
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 26px;
             color: white;
             transition: all 0.3s;
             text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         .social-icon:hover {
             transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
 
         .telegram { background: #0088cc; }
@@ -576,44 +607,55 @@
         .youtube { background: #FF0000; }
         .whatsapp { background: #25D366; }
 
-        /* ========== КОНТЕНТ-СЕКЦИИ (меню) ========== */
+        /* ========== КОНТЕНТ-СЕКЦИИ (МЕНЮ) ========== */
         .content-section {
             display: none;
             padding: 20px 15px;
             max-width: 800px;
             margin: 0 auto;
+            width: 100%;
+            flex: 1;
         }
 
         .content-section.active {
             display: block;
         }
 
-        /* Команда и Партнёры (карточки) */
-        .team-grid, .partners-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
+        .section-title {
+            font-size: 26px;
+            color: var(--accent);
+            margin-bottom: 25px;
+            font-family: 'Orbitron', sans-serif;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
         }
 
-        .team-card, .partner-card {
+        /* Команда */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .team-card {
             background: var(--glass-bg);
             backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
-            border-radius: 15px;
+            border-radius: 20px;
             padding: 20px 15px;
             text-align: center;
             transition: all 0.3s;
         }
 
-        .team-card:hover, .partner-card:hover {
+        .team-card:hover {
             border-color: var(--accent);
             transform: translateY(-5px);
         }
 
         .team-card img {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 15px;
@@ -630,9 +672,32 @@
             color: rgba(255,255,255,0.7);
         }
 
+        /* Партнёры */
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .partner-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .partner-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
         .partner-card img {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             object-fit: contain;
             margin-bottom: 15px;
             filter: brightness(0) invert(1);
@@ -646,7 +711,7 @@
         .days-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            gap: 10px;
             margin: 20px 0;
         }
 
@@ -657,18 +722,20 @@
         }
 
         .day-btn {
-            padding: 10px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
+            padding: 12px 5px;
+            background: rgba(255,107,53,0.1);
+            border: 1px solid rgba(255,107,53,0.3);
+            border-radius: 10px;
             color: white;
             cursor: pointer;
             transition: all 0.3s;
+            font-weight: 600;
         }
 
         .day-btn.active {
             background: var(--accent);
             border-color: var(--accent);
+            color: white;
         }
 
         .program-list {
@@ -679,38 +746,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px;
-            background: var(--glass-bg);
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
             border-left: 4px solid var(--accent);
-            border-radius: 8px;
-            margin-bottom: 8px;
+            border-radius: 10px;
+            margin-bottom: 10px;
         }
 
         .program-time {
             color: var(--accent);
-            font-weight: 600;
-        }
-
-        /* ========== ФУТЕР ========== */
-        footer {
-            text-align: center;
-            padding: 20px 15px;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-top: 1px solid var(--glass-border);
-            font-size: 14px;
-            padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-        }
-
-        .footer-link {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .footer-link:hover {
-            text-decoration: underline;
+            font-weight: 700;
         }
 
         /* Диалог выхода */
@@ -722,12 +767,13 @@
             transform: translate(-50%, -50%);
             background: rgba(42, 11, 94, 0.98);
             backdrop-filter: blur(20px);
-            padding: 25px;
-            border-radius: 20px;
-            border: 2px solid var(--accent);
+            padding: 30px;
+            border-radius: 25px;
+            border: 3px solid var(--accent);
             z-index: 2000;
             text-align: center;
-            min-width: 280px;
+            min-width: 300px;
+            box-shadow: 0 0 40px rgba(255,107,53,0.3);
         }
 
         .exit-dialog.active {
@@ -736,18 +782,19 @@
 
         .dialog-buttons {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .dialog-btn {
-            padding: 10px 25px;
+            padding: 12px 30px;
             border: none;
-            border-radius: 25px;
-            font-weight: 600;
+            border-radius: 30px;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 16px;
         }
 
         .dialog-btn-yes {
@@ -763,6 +810,45 @@
         .dialog-btn:hover {
             transform: scale(1.05);
         }
+
+        /* ========== ФУТЕР ========== */
+        footer {
+            text-align: center;
+            padding: 25px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-top: 2px solid rgba(255,107,53,0.3);
+            font-size: 15px;
+            width: 100%;
+            padding-bottom: calc(25px + env(safe-area-inset-bottom, 0px));
+            margin-top: auto;
+        }
+
+        .footer-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Адаптивность для больших экранов */
+        @media (min-width: 1200px) {
+            .main-content {
+                max-width: 900px;
+            }
+            
+            .team-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .partners-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
     </style>
 </head>
 <body>
@@ -770,8 +856,8 @@
 
     <!-- Диалог выхода -->
     <div class="exit-dialog" id="exitDialog">
-        <i class="fas fa-sign-out-alt" style="font-size: 40px; color: var(--accent); margin-bottom: 15px;"></i>
-        <h3 style="margin-bottom: 15px;">Закрыть приложение?</h3>
+        <i class="fas fa-sign-out-alt" style="font-size: 50px; color: var(--accent); margin-bottom: 15px;"></i>
+        <h2 style="margin-bottom: 15px;">Закрыть приложение?</h2>
         <div class="dialog-buttons">
             <button class="dialog-btn dialog-btn-yes" id="exitYes">Да</button>
             <button class="dialog-btn dialog-btn-no" id="exitNo">Нет</button>
@@ -792,9 +878,9 @@
         </button>
     </header>
 
-    <!-- Боковое меню -->
+    <!-- Боковое меню (на весь экран) -->
     <div class="side-menu" id="sideMenu">
-        <div class="menu-header">Меню Isfara FM</div>
+        <div class="menu-header">Isfara FM</div>
         
         <div class="menu-item" data-section="main">
             <i class="fas fa-home"></i> Главная
@@ -841,89 +927,109 @@
                 </div>
             </div>
             <button class="player-btn" id="playBtn">
-                <i class="fas fa-play"></i> Слушать
+                <i class="fas fa-play"></i> Слушать Isfara FM
             </button>
             <div class="status-text" id="status">Нажмите кнопку для прослушивания</div>
         </div>
 
-        <!-- Погода и Курс валют -->
-        <div class="info-grid">
-            <!-- Погода -->
-            <div class="info-card" id="weatherCard">
-                <div class="card-title">
-                    <i class="fas fa-cloud-sun"></i> Исфара
-                </div>
-                <div class="weather-info" id="weatherTemp">--°C</div>
-                <div class="weather-details" id="weatherDetails">Влажность: --% | Ветер: -- м/с</div>
+        <!-- ПОГОДА (отдельно) -->
+        <div class="info-block" id="weatherBlock">
+            <div class="info-title">
+                <i class="fas fa-cloud-sun"></i> Погода в Исфаре
             </div>
-            
-            <!-- Курс валют -->
-            <div class="info-card">
-                <div class="card-title">
-                    <i class="fas fa-coins"></i> Курс валют
-                </div>
-                <div class="currency-item">
-                    <span class="currency-code">1 USD</span>
-                    <span id="usdRate">10.95</span> сомони
-                </div>
-                <div class="currency-item">
-                    <span class="currency-code">1 EUR</span>
-                    <span id="eurRate">11.82</span> сомони
-                </div>
-                <div class="currency-item">
-                    <span class="currency-code">1 RUB</span>
-                    <span id="rubRate">0.12</span> сомони
-                </div>
+            <div class="weather-temp" id="weatherTemp">--°C</div>
+            <div class="weather-details" id="weatherDetails">Влажность: --% | Ветер: -- м/с</div>
+        </div>
+
+        <!-- КУРС ВАЛЮТ (отдельно) -->
+        <div class="info-block">
+            <div class="info-title">
+                <i class="fas fa-coins"></i> Курс валют
+            </div>
+            <div class="currency-item">
+                <span class="currency-code">1 USD</span>
+                <span id="usdRate">10.95</span> сомони
+            </div>
+            <div class="currency-item">
+                <span class="currency-code">1 EUR</span>
+                <span id="eurRate">11.82</span> сомони
+            </div>
+            <div class="currency-item">
+                <span class="currency-code">1 RUB</span>
+                <span id="rubRate">0.12</span> сомони
             </div>
         </div>
 
-        <!-- Новости Исфары -->
-        <div class="news-section">
-            <div class="section-title">
+        <!-- НОВОСТИ (единый блок) -->
+        <div class="news-block">
+            <div class="news-header">
                 <i class="fas fa-newspaper"></i> НОВОСТИ ИСФАРЫ
             </div>
-            <div class="news-grid">
-                <div class="news-card">
+            <div class="news-items">
+                <div class="news-item">
                     <i class="fas fa-school"></i>
-                    <h4>Открытие детского сада</h4>
-                    <p>В районе Сомони открылся новый детский сад на 150 мест</p>
+                    <div class="news-content">
+                        <h4>Открытие детского сада</h4>
+                        <p>В районе Сомони открылся новый детский сад на 150 мест</p>
+                    </div>
                 </div>
-                <div class="news-card">
+                <div class="news-item">
                     <i class="fas fa-palette"></i>
-                    <h4>Фестиваль ремесленников</h4>
-                    <p>Ярмарка народных промыслов пройдёт в центре города</p>
+                    <div class="news-content">
+                        <h4>Фестиваль ремесленников</h4>
+                        <p>Ярмарка народных промыслов пройдёт в центре города</p>
+                    </div>
                 </div>
-                <div class="news-card">
+                <div class="news-item">
                     <i class="fas fa-road"></i>
-                    <h4>Ремонт дорог</h4>
-                    <p>На улице Ленина временные ограничения движения</p>
+                    <div class="news-content">
+                        <h4>Ремонт дорог</h4>
+                        <p>На улице Ленина временные ограничения движения</p>
+                    </div>
                 </div>
             </div>
             <div style="text-align: center;">
-                <a href="#" class="news-btn" onclick="alert('Все новости скоро появятся'); return false;">→ ВСЕ НОВОСТИ</a>
+                <a href="#" class="news-btn">→ ВСЕ НОВОСТИ</a>
             </div>
         </div>
 
-        <!-- Реклама (усиленный блок) -->
+        <!-- РЕКЛАМА (карусель с баннерами) -->
         <div class="ad-section">
-            <div class="ad-title">✨ РЕКЛАМА НА ISFARA FM ✨</div>
-            <div class="ad-features">
-                <div class="feature">
-                    <i class="fas fa-users"></i>
-                    <p>10 000+ слушателей ежедневно</p>
+            <div class="ad-title">✨ ISFARA FM РЕКЛАМА ✨</div>
+            
+            <div class="ad-carousel" id="adCarousel">
+                <!-- Слайд 1 -->
+                <div class="ad-slide active" data-index="0" 
+                     style="background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+                    <div class="ad-content">
+                        <h3>Реклама на радио</h3>
+                        <a href="https://t.me/kurush_digital" class="ad-link" target="_blank">Заказать</a>
+                    </div>
                 </div>
-                <div class="feature">
-                    <i class="fas fa-microphone-alt"></i>
-                    <p>Прямой эфир в утреннем шоу</p>
+                
+                <!-- Слайд 2 -->
+                <div class="ad-slide" data-index="1" 
+                     style="background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+                    <div class="ad-content">
+                        <h3>Спонсорство программ</h3>
+                        <a href="https://t.me/kurush_digital" class="ad-link" target="_blank">Стать спонсором</a>
+                    </div>
                 </div>
-                <div class="feature">
-                    <i class="fas fa-chart-line"></i>
-                    <p>Гибкие пакеты под любой бюджет</p>
+                
+                <!-- Слайд 3 -->
+                <div class="ad-slide" data-index="2" 
+                     style="background-image: url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+                    <div class="ad-content">
+                        <h3>Партнёрство</h3>
+                        <a href="https://t.me/kurush_digital" class="ad-link" target="_blank">Предложить</a>
+                    </div>
                 </div>
             </div>
-            <div class="ad-buttons">
-                <a href="https://t.me/kurush_digital" class="btn-primary" target="_blank">ЗАКАЗАТЬ РЕКЛАМУ</a>
-                <a href="https://t.me/kurush_digital" class="btn-secondary" target="_blank">Стать спонсором</a>
+            
+            <div class="ad-controls">
+                <div class="ad-dot active" data-index="0"></div>
+                <div class="ad-dot" data-index="1"></div>
+                <div class="ad-dot" data-index="2"></div>
             </div>
         </div>
 
@@ -956,10 +1062,10 @@
     <!-- Секция О радио -->
     <div class="content-section" id="aboutSection">
         <h2 class="section-title">О радио Isfara FM</h2>
-        <div style="background: var(--glass-bg); backdrop-filter: blur(10px); padding: 25px; border-radius: 20px;">
-            <p style="margin-bottom: 15px;"><strong>Isfara FM</strong> — первая радиостанция города Исфара, вещающая с 2012 года.</p>
+        <div style="background: rgba(255,255,255,0.05); padding: 25px; border-radius: 20px;">
+            <p style="margin-bottom: 15px; font-size: 18px;"><strong>Isfara FM</strong> — первая радиостанция города Исфара, вещающая с 2012 года.</p>
             <p style="margin-bottom: 15px;">Мы объединяем жителей через музыку, новости и культурные программы. Наша команда работает для вас 24/7.</p>
-            <p>Частота: <strong>93.9 FM</strong> (покрытие: Исфара и прилегающие районы).</p>
+            <p style="font-size: 18px;">Частота: <strong style="color: var(--accent);">93.9 FM</strong></p>
         </div>
     </div>
 
@@ -967,42 +1073,12 @@
     <div class="content-section" id="teamSection">
         <h2 class="section-title">Наша команда</h2>
         <div class="team-grid">
-            <!-- Карточка 1 -->
-            <div class="team-card">
-                <img src="https://via.placeholder.com/100/7a1cff/ffffff?text=Team" alt="Фото">
-                <h3>Рустам Каримов</h3>
-                <p>Ведущий утреннего шоу</p>
-            </div>
-            <!-- Карточка 2 -->
-            <div class="team-card">
-                <img src="https://via.placeholder.com/100/7a1cff/ffffff?text=Team" alt="Фото">
-                <h3>Нигина Амонова</h3>
-                <p>Программа "Салом"</p>
-            </div>
-            <!-- Карточка 3 -->
-            <div class="team-card">
-                <img src="https://via.placeholder.com/100/7a1cff/ffffff?text=Team" alt="Фото">
-                <h3>Фаррух Собиров</h3>
-                <p>Новости и спорт</p>
-            </div>
-            <!-- Карточка 4 -->
-            <div class="team-card">
-                <img src="https://via.placeholder.com/100/7a1cff/ffffff?text=Team" alt="Фото">
-                <h3>Зебо Рахимова</h3>
-                <p>Музыкальный редактор</p>
-            </div>
-            <!-- Карточка 5 -->
-            <div class="team-card">
-                <img src="https://via.placeholder.com/100/7a1cff/ffffff?text=Team" alt="Фото">
-                <h3>Бахром Холов</h3>
-                <p>Звукорежиссёр</p>
-            </div>
-            <!-- Карточка 6 -->
-            <div class="team-card">
-                <img src="https://via.placeholder.com/100/7a1cff/ffffff?text=Team" alt="Фото">
-                <h3>Лола Азизова</h3>
-                <p>Программа "Шом ба хайр"</p>
-            </div>
+            <div class="team-card"><img src="https://via.placeholder.com/120/FF6B35/ffffff?text=Team1"><h3>Рустам Каримов</h3><p>Ведущий</p></div>
+            <div class="team-card"><img src="https://via.placeholder.com/120/FF6B35/ffffff?text=Team2"><h3>Нигина Амонова</h3><p>Ведущая</p></div>
+            <div class="team-card"><img src="https://via.placeholder.com/120/FF6B35/ffffff?text=Team3"><h3>Фаррух Собиров</h3><p>Новости</p></div>
+            <div class="team-card"><img src="https://via.placeholder.com/120/FF6B35/ffffff?text=Team4"><h3>Зебо Рахимова</h3><p>Редактор</p></div>
+            <div class="team-card"><img src="https://via.placeholder.com/120/FF6B35/ffffff?text=Team5"><h3>Бахром Холов</h3><p>Звукорежиссёр</p></div>
+            <div class="team-card"><img src="https://via.placeholder.com/120/FF6B35/ffffff?text=Team6"><h3>Лола Азизова</h3><p>Программы</p></div>
         </div>
     </div>
 
@@ -1010,58 +1086,33 @@
     <div class="content-section" id="partnersSection">
         <h2 class="section-title">Наши партнёры</h2>
         <div class="partners-grid">
-            <!-- Карточка 1 -->
-            <div class="partner-card">
-                <img src="https://via.placeholder.com/80/ffffff/7a1cff?text=Logo" alt="Партнёр">
-                <h3>Банк Эсхата</h3>
-            </div>
-            <!-- Карточка 2 -->
-            <div class="partner-card">
-                <img src="https://via.placeholder.com/80/ffffff/7a1cff?text=Logo" alt="Партнёр">
-                <h3>Мегафон</h3>
-            </div>
-            <!-- Карточка 3 -->
-            <div class="partner-card">
-                <img src="https://via.placeholder.com/80/ffffff/7a1cff?text=Logo" alt="Партнёр">
-                <h3>Kurush Digital</h3>
-            </div>
-            <!-- Карточка 4 -->
-            <div class="partner-card">
-                <img src="https://via.placeholder.com/80/ffffff/7a1cff?text=Logo" alt="Партнёр">
-                <h3>Хукумати Исфара</h3>
-            </div>
-            <!-- Карточка 5 -->
-            <div class="partner-card">
-                <img src="https://via.placeholder.com/80/ffffff/7a1cff?text=Logo" alt="Партнёр">
-                <h3>Сомон Эйр</h3>
-            </div>
-            <!-- Карточка 6 -->
-            <div class="partner-card">
-                <img src="https://via.placeholder.com/80/ffffff/7a1cff?text=Logo" alt="Партнёр">
-                <h3>Фонд Ага Хана</h3>
-            </div>
+            <div class="partner-card"><img src="https://via.placeholder.com/100/ffffff/FF6B35?text=Logo"><h3>Банк Эсхата</h3></div>
+            <div class="partner-card"><img src="https://via.placeholder.com/100/ffffff/FF6B35?text=Logo"><h3>Мегафон</h3></div>
+            <div class="partner-card"><img src="https://via.placeholder.com/100/ffffff/FF6B35?text=Logo"><h3>Kurush Digital</h3></div>
+            <div class="partner-card"><img src="https://via.placeholder.com/100/ffffff/FF6B35?text=Logo"><h3>Хукумати Исфара</h3></div>
+            <div class="partner-card"><img src="https://via.placeholder.com/100/ffffff/FF6B35?text=Logo"><h3>Сомон Эйр</h3></div>
+            <div class="partner-card"><img src="https://via.placeholder.com/100/ffffff/FF6B35?text=Logo"><h3>Фонд Ага Хана</h3></div>
         </div>
     </div>
 
     <!-- Секция Поддержка -->
     <div class="content-section" id="supportSection">
         <h2 class="section-title">Поддержка</h2>
-        <div style="background: var(--glass-bg); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; text-align: center;">
-            <i class="fas fa-headset" style="font-size: 48px; color: var(--accent); margin-bottom: 15px;"></i>
-            <p style="margin-bottom: 20px;">Если у вас есть вопросы или предложения, напишите нам в Telegram.</p>
-            <a href="https://t.me/kurush_digital" class="btn-primary" target="_blank">Написать в поддержку</a>
-            <p style="margin-top: 20px; font-size: 12px; color: rgba(255,255,255,0.5);">Обычно отвечаем в течение нескольких часов</p>
+        <div style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; text-align: center;">
+            <i class="fas fa-headset" style="font-size: 60px; color: var(--accent); margin-bottom: 20px;"></i>
+            <p style="margin-bottom: 25px; font-size: 18px;">Есть вопросы? Напишите нам в Telegram</p>
+            <a href="https://t.me/kurush_digital" class="news-btn" target="_blank">Написать в поддержку</a>
         </div>
     </div>
 
     <!-- Секция Настройки -->
     <div class="content-section" id="settingsSection">
         <h2 class="section-title">Настройки</h2>
-        <div style="background: var(--glass-bg); backdrop-filter: blur(10px); padding: 25px; border-radius: 20px;">
+        <div style="background: rgba(255,255,255,0.05); padding: 25px; border-radius: 20px;">
             <h3 style="color: var(--accent); margin-bottom: 15px;">Язык интерфейса</h3>
-            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <button class="btn-secondary" id="langRu">Русский</button>
-                <button class="btn-secondary" id="langTj">Тоҷикӣ</button>
+            <div style="display: flex; gap: 15px; margin-bottom: 30px;">
+                <button class="news-btn" id="langRu">Русский</button>
+                <button class="news-btn" id="langTj">Тоҷикӣ</button>
             </div>
             
             <h3 style="color: var(--accent); margin-bottom: 15px;">О приложении</h3>
@@ -1073,7 +1124,7 @@
 
     <!-- Футер -->
     <footer>
-        <p style="margin-bottom: 5px;">© 2026 Isfara FM. Все права защищены.</p>
+        <p style="margin-bottom: 8px;">© 2026 Isfara FM. Все права защищены.</p>
         <p>Разработчик: <a href="https://kurushdigital.one" target="_blank" class="footer-link">Kurush Digital</a></p>
     </footer>
 
@@ -1098,12 +1149,16 @@
         const exitNo = document.getElementById('exitNo');
         
         let isPlaying = false;
-        let currentLang = 'ru';
 
         // API ключ для погоды (твой)
         const WEATHER_API_KEY = '3c6b83dfde2d3039e0ef02b1a6fb4454';
 
-        // Расписание программ
+        // Карусель
+        let currentAdSlide = 0;
+        const adSlides = document.querySelectorAll('.ad-slide');
+        const adDots = document.querySelectorAll('.ad-dot');
+
+        // Расписание
         const schedules = {
             monday: [
                 { time: "07:00", title: "Хабар" },
@@ -1162,8 +1217,8 @@
             getCurrencyRates();
             setupMenu();
             setupPlayer();
+            setupAdCarousel();
             setupSchedule();
-            loadSettings();
             
             // Пункты меню
             document.querySelectorAll('.menu-item').forEach(item => {
@@ -1173,9 +1228,8 @@
                 }
             });
 
-            // Кнопки языка
-            document.getElementById('langRu').addEventListener('click', () => switchLanguage('ru'));
-            document.getElementById('langTj').addEventListener('click', () => switchLanguage('tj'));
+            // Показать понедельник
+            showSchedule('monday');
         });
 
         // ========== ПОГОДА ==========
@@ -1193,8 +1247,7 @@
                             `Влажность: ${humidity}% | Ветер: ${wind} м/с`;
                     }
                 })
-                .catch(error => {
-                    console.log('Ошибка погоды, использую заглушку');
+                .catch(() => {
                     document.getElementById('weatherTemp').textContent = '+18°C';
                     document.getElementById('weatherDetails').textContent = 'Влажность: 65% | Ветер: 3 м/с';
                 });
@@ -1214,7 +1267,6 @@
                     document.getElementById('rubRate').textContent = rub.toFixed(2);
                 })
                 .catch(() => {
-                    // Заглушки
                     document.getElementById('usdRate').textContent = '10.95';
                     document.getElementById('eurRate').textContent = '11.82';
                     document.getElementById('rubRate').textContent = '0.12';
@@ -1233,7 +1285,6 @@
                 overlay.classList.remove('active');
             });
 
-            // Выход
             exitMenuItem.addEventListener('click', () => {
                 sideMenu.classList.remove('active');
                 overlay.classList.remove('active');
@@ -1241,12 +1292,10 @@
             });
 
             exitYes.addEventListener('click', () => {
-                if (window.close) {
-                    window.close();
-                } else {
-                    // Если не работает, просто скрываем
+                if (window.close) window.close();
+                else {
                     exitDialog.classList.remove('active');
-                    alert('Для выхода закройте вкладку браузера');
+                    alert('Закройте вкладку браузера');
                 }
             });
 
@@ -1271,9 +1320,7 @@
                     'settings': 'settingsSection'
                 };
                 const secId = secMap[section];
-                if (secId) {
-                    document.getElementById(secId).classList.add('active');
-                }
+                if (secId) document.getElementById(secId).classList.add('active');
             }
             
             sideMenu.classList.remove('active');
@@ -1288,11 +1335,16 @@
                 status.textContent = 'Слушаем Isfara FM...';
                 waveAnimation.classList.add('active');
                 vinyl.classList.add('playing');
+                playBtn.innerHTML = '<i class="fas fa-pause"></i> Пауза';
+                isPlaying = true;
             });
 
             radioStream.addEventListener('pause', () => {
                 waveAnimation.classList.remove('active');
                 vinyl.classList.remove('playing');
+                playBtn.innerHTML = '<i class="fas fa-play"></i> Слушать Isfara FM';
+                isPlaying = false;
+                status.textContent = 'Нажмите кнопку для прослушивания';
             });
 
             radioStream.addEventListener('waiting', () => {
@@ -1302,7 +1354,7 @@
             radioStream.addEventListener('error', () => {
                 status.textContent = 'Ошибка подключения';
                 isPlaying = false;
-                playBtn.innerHTML = '<i class="fas fa-play"></i> Слушать';
+                playBtn.innerHTML = '<i class="fas fa-play"></i> Слушать Isfara FM';
                 vinyl.classList.remove('playing');
                 waveAnimation.classList.remove('active');
             });
@@ -1310,17 +1362,38 @@
 
         function togglePlay() {
             if (!isPlaying) {
-                radioStream.play().then(() => {
-                    isPlaying = true;
-                    playBtn.innerHTML = '<i class="fas fa-pause"></i> Пауза';
-                }).catch(() => {
+                radioStream.play().catch(() => {
                     status.textContent = 'Ошибка подключения';
                 });
             } else {
                 radioStream.pause();
-                isPlaying = false;
-                playBtn.innerHTML = '<i class="fas fa-play"></i> Слушать';
             }
+        }
+
+        // ========== РЕКЛАМНАЯ КАРУСЕЛЬ ==========
+        function setupAdCarousel() {
+            adDots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    changeAdSlide(index);
+                });
+            });
+            
+            setInterval(() => {
+                changeAdSlide(currentAdSlide + 1);
+            }, 6000);
+        }
+        
+        function changeAdSlide(newIndex) {
+            adSlides[currentAdSlide].classList.remove('active');
+            adDots[currentAdSlide].classList.remove('active');
+            
+            if (newIndex >= adSlides.length) newIndex = 0;
+            if (newIndex < 0) newIndex = adSlides.length - 1;
+            
+            adSlides[newIndex].classList.add('active');
+            adDots[newIndex].classList.add('active');
+            currentAdSlide = newIndex;
         }
 
         // ========== РАСПИСАНИЕ ==========
@@ -1329,14 +1402,9 @@
                 btn.addEventListener('click', function() {
                     document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
-                    
-                    const day = this.getAttribute('data-day');
-                    showSchedule(day);
+                    showSchedule(this.getAttribute('data-day'));
                 });
             });
-            
-            // Показать понедельник
-            showSchedule('monday');
         }
 
         function showSchedule(day) {
@@ -1347,30 +1415,9 @@
                 schedules[day].forEach(item => {
                     const div = document.createElement('div');
                     div.className = 'program-item';
-                    div.innerHTML = `
-                        <span class="program-time">${item.time}</span>
-                        <span>${item.title}</span>
-                    `;
+                    div.innerHTML = `<span class="program-time">${item.time}</span><span>${item.title}</span>`;
                     programList.appendChild(div);
                 });
-            }
-        }
-
-        // ========== ЯЗЫК (простая версия) ==========
-        function switchLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('isfaraFM_language', lang);
-            
-            if (lang === 'tj') {
-                // Здесь можно добавить переводы
-                console.log('Переключено на таджикский');
-            }
-        }
-
-        function loadSettings() {
-            const savedLang = localStorage.getItem('isfaraFM_language');
-            if (savedLang) {
-                currentLang = savedLang;
             }
         }
     </script>
