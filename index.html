@@ -725,4 +725,654 @@
             padding: 25px;
             border-radius: 20px;
             border: 2px solid var(--accent);
-         
+            z-index: 2000;
+            text-align: center;
+            min-width: 280px;
+        }
+
+        .exit-dialog.active {
+            display: block;
+        }
+
+        .dialog-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .dialog-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dialog-btn-yes {
+            background: var(--accent);
+            color: white;
+        }
+
+        .dialog-btn-no {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .dialog-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+
+    <!-- Диалог выхода -->
+    <div class="exit-dialog" id="exitDialog">
+        <i class="fas fa-sign-out-alt" style="font-size: 40px; color: var(--accent); margin-bottom: 15px;"></i>
+        <h3 style="margin-bottom: 15px;">Закрыть приложение?</h3>
+        <div class="dialog-buttons">
+            <button class="dialog-btn dialog-btn-yes" id="exitYes">Да</button>
+            <button class="dialog-btn dialog-btn-no" id="exitNo">Нет</button>
+        </div>
+    </div>
+
+    <!-- Шапка -->
+    <header>
+        <div class="logo-container">
+            <img src="https://i.ibb.co/39MLN2z8/photo-2026-01-28-08-19-22-no-bg-preview-carve-photos.png" alt="Isfara FM" class="logo">
+            <div class="logo-text">
+                <h1>Isfara FM</h1>
+                <p>93.9FM</p>
+            </div>
+        </div>
+        <button class="menu-btn" id="menuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- Боковое меню -->
+    <div class="side-menu" id="sideMenu">
+        <div class="menu-header">Меню Isfara FM</div>
+        
+        <div class="menu-item" data-section="main">
+            <i class="fas fa-home"></i> Главная
+        </div>
+        <div class="menu-item" data-section="schedule">
+            <i class="fas fa-calendar-alt"></i> Расписание
+        </div>
+        <div class="menu-item" data-section="about">
+            <i class="fas fa-info-circle"></i> О радио
+        </div>
+        <div class="menu-item" data-section="team">
+            <i class="fas fa-users"></i> Команда
+        </div>
+        <div class="menu-item" data-section="partners">
+            <i class="fas fa-handshake"></i> Партнёры
+        </div>
+        <div class="menu-item" data-section="support">
+            <i class="fas fa-headset"></i> Поддержка
+        </div>
+        <div class="menu-item" data-section="settings">
+            <i class="fas fa-cog"></i> Настройки
+        </div>
+        <div class="menu-item" id="exitMenuItem">
+            <i class="fas fa-sign-out-alt"></i> Назад
+        </div>
+    </div>
+    
+    <div class="overlay" id="overlay"></div>
+
+    <!-- ГЛАВНЫЙ ЭКРАН -->
+    <div class="main-content" id="mainContent">
+        <!-- Плеер -->
+        <div class="player-section">
+            <div class="vinyl-container">
+                <img src="https://i.ibb.co/39MLN2z8/photo-2026-01-28-08-19-22-no-bg-preview-carve-photos.png" alt="Isfara FM" class="vinyl" id="vinyl">
+                <div class="wave-animation" id="waveAnimation">
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                </div>
+            </div>
+            <button class="player-btn" id="playBtn">
+                <i class="fas fa-play"></i> Слушать
+            </button>
+            <div class="status-text" id="status">Нажмите кнопку для прослушивания</div>
+        </div>
+
+        <!-- Погода и Курс валют -->
+        <div class="info-grid">
+            <!-- Погода -->
+            <div class="info-card" id="weatherCard">
+                <div class="card-title">
+                    <i class="fas fa-cloud-sun"></i> Исфара
+                </div>
+                <div class="weather-info" id="weatherTemp">--°C</div>
+                <div class="weather-details" id="weatherDetails">Влажность: --% | Ветер: -- м/с</div>
+            </div>
+            
+            <!-- Курс валют -->
+            <div class="info-card">
+                <div class="card-title">
+                    <i class="fas fa-coins"></i> Курс валют
+                </div>
+                <div class="currency-item">
+                    <span class="currency-code">1 USD</span>
+                    <span id="usdRate">10.95</span> сомони
+                </div>
+                <div class="currency-item">
+                    <span class="currency-code">1 EUR</span>
+                    <span id="eurRate">11.82</span> сомони
+                </div>
+                <div class="currency-item">
+                    <span class="currency-code">1 RUB</span>
+                    <span id="rubRate">0.12</span> сомони
+                </div>
+            </div>
+        </div>
+
+        <!-- Новости Исфары -->
+        <div class="news-section">
+            <div class="section-title">
+                <i class="fas fa-newspaper"></i> НОВОСТИ ИСФАРЫ
+            </div>
+            <div class="news-grid">
+                <div class="news-card">
+                    <i class="fas fa-school"></i>
+                    <h4>Открытие детского сада</h4>
+                    <p>В районе Сомони открылся новый детский сад на 150 мест</p>
+                </div>
+                <div class="news-card">
+                    <i class="fas fa-palette"></i>
+                    <h4>Фестиваль ремесленников</h4>
+                    <p>Ярмарка народных промыслов пройдёт в центре города</p>
+                </div>
+                <div class="news-card">
+                    <i class="fas fa-road"></i>
+                    <h4>Ремонт дорог</h4>
+                    <p>На улице Ленина временные ограничения движения</p>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <a href="#" class="news-btn" onclick="alert('Все новости скоро появятся'); return false;">→ ВСЕ НОВОСТИ</a>
+            </div>
+        </div>
+
+        <!-- Реклама (усиленный блок) -->
+        <div class="ad-section">
+            <div class="ad-title">✨ РЕКЛАМА НА ISFARA FM ✨</div>
+            <div class="ad-features">
+                <div class="feature">
+                    <i class="fas fa-users"></i>
+                    <p>10 000+ слушателей ежедневно</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-microphone-alt"></i>
+                    <p>Прямой эфир в утреннем шоу</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-chart-line"></i>
+                    <p>Гибкие пакеты под любой бюджет</p>
+                </div>
+            </div>
+            <div class="ad-buttons">
+                <a href="https://t.me/kurush_digital" class="btn-primary" target="_blank">ЗАКАЗАТЬ РЕКЛАМУ</a>
+                <a href="https://t.me/kurush_digital" class="btn-secondary" target="_blank">Стать спонсором</a>
+            </div>
+        </div>
+
+        <!-- Соцсети -->
+        <div class="social-section">
+            <div class="social-icons">
+                <a href="https://t.me/isfarafm" class="social-icon telegram" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+                <a href="https://instagram.com/radio_isfara" class="social-icon instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://youtube.com/c/IsfaraFM" class="social-icon youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://wa.me/+992987701465" class="social-icon whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Секция Расписание -->
+    <div class="content-section" id="scheduleSection">
+        <h2 class="section-title">Расписание программ</h2>
+        <div class="days-grid">
+            <button class="day-btn active" data-day="monday">ПН</button>
+            <button class="day-btn" data-day="tuesday">ВТ</button>
+            <button class="day-btn" data-day="wednesday">СР</button>
+            <button class="day-btn" data-day="thursday">ЧТ</button>
+            <button class="day-btn" data-day="friday">ПТ</button>
+            <button class="day-btn" data-day="saturday">СБ</button>
+            <button class="day-btn" data-day="sunday">ВС</button>
+        </div>
+        <div class="program-list" id="programList"></div>
+    </div>
+
+    <!-- Секция О радио -->
+    <div class="content-section" id="aboutSection">
+        <h2 class="section-title">О радио Isfara FM</h2>
+        <div style="background: var(--glass-bg); backdrop-filter: blur(10px); padding: 25px; border-radius: 20px;">
+            <p style="margin-bottom: 15px;"><strong>Isfara FM</strong> — первая радиостанция города Исфара, вещающая с 2012 года.</p>
+            <p style="margin-bottom: 15px;">Мы объединяем жителей через музыку, новости и культурные программы. Наша команда работает для вас 24/7.</p>
+            <p>Частота: <strong>93.9 FM</strong> (покрытие: Исфара и прилегающие районы).</p>
+        </div>
+    </div>
+
+    <!-- Секция Команда (6 карточек) -->
+    <div class="content-section" id="teamSection">
+        <h2 class="section-title">Наша команда</h2>
+        <div class="team-grid">
+            <!-- Карточка 1 -->
+            <div class="team-card">
+                <img src="https://via.placeholder.com/100/7a1cff/ffffff?text=Team" alt="Фото">
+                <h3>Рустам Каримов</h3>
+                <p>Ведущий утреннего шоу</p>
+            </div>
+            <!-- Карточка 2 -->
+            <div class="team-card">
+                <img src="https://via.placeholder.com/100/7a1cff/ffffff?text=Team" alt="Фото">
+                <h3>Нигина Амонова</h3>
+                <p>Программа "Салом"</p>
+            </div>
+            <!-- Карточка 3 -->
+            <div class="team-card">
+                <img src="https://via.placeholder.com/100/7a1cff/ffffff?text=Team" alt="Фото">
+                <h3>Фаррух Собиров</h3>
+                <p>Новости и спорт</p>
+            </div>
+            <!-- Карточка 4 -->
+            <div class="team-card">
+                <img src="https://via.placeholder.com/100/7a1cff/ffffff?text=Team" alt="Фото">
+                <h3>Зебо Рахимова</h3>
+                <p>Музыкальный редактор</p>
+            </div>
+            <!-- Карточка 5 -->
+            <div class="team-card">
+                <img src="https://via.placeholder.com/100/7a1cff/ffffff?text=Team" alt="Фото">
+                <h3>Бахром Холов</h3>
+                <p>Звукорежиссёр</p>
+            </div>
+            <!-- Карточка 6 -->
+            <div class="team-card">
+                <img src="https://via.placeholder.com/100/7a1cff/ffffff?text=Team" alt="Фото">
+                <h3>Лола Азизова</h3>
+                <p>Программа "Шом ба хайр"</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Секция Партнёры (6 карточек) -->
+    <div class="content-section" id="partnersSection">
+        <h2 class="section-title">Наши партнёры</h2>
+        <div class="partners-grid">
+            <!-- Карточка 1 -->
+            <div class="partner-card">
+                <img src="https://via.placeholder.com/80/ffffff/7a1cff?text=Logo" alt="Партнёр">
+                <h3>Банк Эсхата</h3>
+            </div>
+            <!-- Карточка 2 -->
+            <div class="partner-card">
+                <img src="https://via.placeholder.com/80/ffffff/7a1cff?text=Logo" alt="Партнёр">
+                <h3>Мегафон</h3>
+            </div>
+            <!-- Карточка 3 -->
+            <div class="partner-card">
+                <img src="https://via.placeholder.com/80/ffffff/7a1cff?text=Logo" alt="Партнёр">
+                <h3>Kurush Digital</h3>
+            </div>
+            <!-- Карточка 4 -->
+            <div class="partner-card">
+                <img src="https://via.placeholder.com/80/ffffff/7a1cff?text=Logo" alt="Партнёр">
+                <h3>Хукумати Исфара</h3>
+            </div>
+            <!-- Карточка 5 -->
+            <div class="partner-card">
+                <img src="https://via.placeholder.com/80/ffffff/7a1cff?text=Logo" alt="Партнёр">
+                <h3>Сомон Эйр</h3>
+            </div>
+            <!-- Карточка 6 -->
+            <div class="partner-card">
+                <img src="https://via.placeholder.com/80/ffffff/7a1cff?text=Logo" alt="Партнёр">
+                <h3>Фонд Ага Хана</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Секция Поддержка -->
+    <div class="content-section" id="supportSection">
+        <h2 class="section-title">Поддержка</h2>
+        <div style="background: var(--glass-bg); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; text-align: center;">
+            <i class="fas fa-headset" style="font-size: 48px; color: var(--accent); margin-bottom: 15px;"></i>
+            <p style="margin-bottom: 20px;">Если у вас есть вопросы или предложения, напишите нам в Telegram.</p>
+            <a href="https://t.me/kurush_digital" class="btn-primary" target="_blank">Написать в поддержку</a>
+            <p style="margin-top: 20px; font-size: 12px; color: rgba(255,255,255,0.5);">Обычно отвечаем в течение нескольких часов</p>
+        </div>
+    </div>
+
+    <!-- Секция Настройки -->
+    <div class="content-section" id="settingsSection">
+        <h2 class="section-title">Настройки</h2>
+        <div style="background: var(--glass-bg); backdrop-filter: blur(10px); padding: 25px; border-radius: 20px;">
+            <h3 style="color: var(--accent); margin-bottom: 15px;">Язык интерфейса</h3>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button class="btn-secondary" id="langRu">Русский</button>
+                <button class="btn-secondary" id="langTj">Тоҷикӣ</button>
+            </div>
+            
+            <h3 style="color: var(--accent); margin-bottom: 15px;">О приложении</h3>
+            <p>Версия: 2.1.0</p>
+            <p>Разработчик: <a href="https://kurushdigital.one" class="footer-link" target="_blank">Kurush Digital</a></p>
+            <p>Обновлено: Март 2026</p>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <p style="margin-bottom: 5px;">© 2026 Isfara FM. Все права защищены.</p>
+        <p>Разработчик: <a href="https://kurushdigital.one" target="_blank" class="footer-link">Kurush Digital</a></p>
+    </footer>
+
+    <!-- Аудио -->
+    <audio id="radioStream" preload="none">
+        <source src="https://c34.radioboss.fm:8880/stream" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // ========== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ==========
+        const menuBtn = document.getElementById('menuBtn');
+        const sideMenu = document.getElementById('sideMenu');
+        const overlay = document.getElementById('overlay');
+        const playBtn = document.getElementById('playBtn');
+        const radioStream = document.getElementById('radioStream');
+        const status = document.getElementById('status');
+        const vinyl = document.getElementById('vinyl');
+        const waveAnimation = document.getElementById('waveAnimation');
+        const exitDialog = document.getElementById('exitDialog');
+        const exitMenuItem = document.getElementById('exitMenuItem');
+        const exitYes = document.getElementById('exitYes');
+        const exitNo = document.getElementById('exitNo');
+        
+        let isPlaying = false;
+        let currentLang = 'ru';
+
+        // API ключ для погоды (твой)
+        const WEATHER_API_KEY = '3c6b83dfde2d3039e0ef02b1a6fb4454';
+
+        // Расписание программ
+        const schedules = {
+            monday: [
+                { time: "07:00", title: "Хабар" },
+                { time: "08:00-10:00", title: "Салом" },
+                { time: "11:00", title: "Бузургон дар таърих" },
+                { time: "14:00", title: "Савол ба ҳуқуқшинос" },
+                { time: "17:00-19:00", title: "Шом ба хайр" }
+            ],
+            tuesday: [
+                { time: "07:00", title: "Хабар" },
+                { time: "08:00-10:00", title: "Салом" },
+                { time: "11:00", title: "Хазинаи маърифат" },
+                { time: "14:00-16:00", title: "Садои дил" },
+                { time: "17:00-19:00", title: "Шом ба хайр" }
+            ],
+            wednesday: [
+                { time: "07:00", title: "Хабар" },
+                { time: "08:00-10:00", title: "Салом" },
+                { time: "11:00", title: "Бузургон дар таърих" },
+                { time: "14:00", title: "Саломати" },
+                { time: "17:00-19:00", title: "Шом ба хайр" }
+            ],
+            thursday: [
+                { time: "07:00", title: "Хабар" },
+                { time: "08:00-10:00", title: "Салом" },
+                { time: "11:00", title: "Хазинаи маърифат" },
+                { time: "14:00", title: "Зан ва оила" },
+                { time: "17:00-19:00", title: "Шом ба хайр" }
+            ],
+            friday: [
+                { time: "07:00", title: "Хабар" },
+                { time: "08:00-10:00", title: "Салом" },
+                { time: "11:00", title: "Хазинаи маърифат" },
+                { time: "14:00-16:00", title: "Садои дил" },
+                { time: "17:00-19:00", title: "Шом ба хайр" }
+            ],
+            saturday: [
+                { time: "07:00", title: "Хабар" },
+                { time: "08:00-10:00", title: "Салом" },
+                { time: "11:00", title: "Хазинаи маърифат" },
+                { time: "14:00-16:00", title: "Садои дил" },
+                { time: "17:00-19:00", title: "Шом ба хайр" }
+            ],
+            sunday: [
+                { time: "07:00-08:00", title: "Сурудхои шашмаком" },
+                { time: "10:00-11:00", title: "Сурудхои точики" },
+                { time: "11:00", title: "Саломати" },
+                { time: "17:00", title: "Савол ба ҳуқуқшинос" },
+                { time: "20:00-22:00", title: "Мусикихои форам" }
+            ]
+        };
+
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            getWeather();
+            getCurrencyRates();
+            setupMenu();
+            setupPlayer();
+            setupSchedule();
+            loadSettings();
+            
+            // Пункты меню
+            document.querySelectorAll('.menu-item').forEach(item => {
+                const section = item.getAttribute('data-section');
+                if (section) {
+                    item.addEventListener('click', () => showSection(section));
+                }
+            });
+
+            // Кнопки языка
+            document.getElementById('langRu').addEventListener('click', () => switchLanguage('ru'));
+            document.getElementById('langTj').addEventListener('click', () => switchLanguage('tj'));
+        });
+
+        // ========== ПОГОДА ==========
+        function getWeather() {
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=Isfara,TJ&units=metric&appid=${WEATHER_API_KEY}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.main) {
+                        const temp = Math.round(data.main.temp);
+                        const humidity = data.main.humidity;
+                        const wind = data.wind.speed;
+                        
+                        document.getElementById('weatherTemp').textContent = temp + '°C';
+                        document.getElementById('weatherDetails').textContent = 
+                            `Влажность: ${humidity}% | Ветер: ${wind} м/с`;
+                    }
+                })
+                .catch(error => {
+                    console.log('Ошибка погоды, использую заглушку');
+                    document.getElementById('weatherTemp').textContent = '+18°C';
+                    document.getElementById('weatherDetails').textContent = 'Влажность: 65% | Ветер: 3 м/с';
+                });
+        }
+
+        // ========== КУРСЫ ВАЛЮТ ==========
+        function getCurrencyRates() {
+            fetch('https://api.exchangerate-api.com/v4/latest/USD')
+                .then(response => response.json())
+                .then(data => {
+                    const usd = data.rates.TJS || 10.95;
+                    const eur = data.rates.TJS * 1.08 || 11.82;
+                    const rub = data.rates.TJS * 0.012 || 0.12;
+                    
+                    document.getElementById('usdRate').textContent = usd.toFixed(2);
+                    document.getElementById('eurRate').textContent = eur.toFixed(2);
+                    document.getElementById('rubRate').textContent = rub.toFixed(2);
+                })
+                .catch(() => {
+                    // Заглушки
+                    document.getElementById('usdRate').textContent = '10.95';
+                    document.getElementById('eurRate').textContent = '11.82';
+                    document.getElementById('rubRate').textContent = '0.12';
+                });
+        }
+
+        // ========== МЕНЮ ==========
+        function setupMenu() {
+            menuBtn.addEventListener('click', () => {
+                sideMenu.classList.add('active');
+                overlay.classList.add('active');
+            });
+
+            overlay.addEventListener('click', () => {
+                sideMenu.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+
+            // Выход
+            exitMenuItem.addEventListener('click', () => {
+                sideMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                exitDialog.classList.add('active');
+            });
+
+            exitYes.addEventListener('click', () => {
+                if (window.close) {
+                    window.close();
+                } else {
+                    // Если не работает, просто скрываем
+                    exitDialog.classList.remove('active');
+                    alert('Для выхода закройте вкладку браузера');
+                }
+            });
+
+            exitNo.addEventListener('click', () => {
+                exitDialog.classList.remove('active');
+            });
+        }
+
+        function showSection(section) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('mainContent').style.display = 'none';
+            
+            if (section === 'main') {
+                document.getElementById('mainContent').style.display = 'block';
+            } else {
+                const secMap = {
+                    'schedule': 'scheduleSection',
+                    'about': 'aboutSection',
+                    'team': 'teamSection',
+                    'partners': 'partnersSection',
+                    'support': 'supportSection',
+                    'settings': 'settingsSection'
+                };
+                const secId = secMap[section];
+                if (secId) {
+                    document.getElementById(secId).classList.add('active');
+                }
+            }
+            
+            sideMenu.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        // ========== ПЛЕЕР ==========
+        function setupPlayer() {
+            playBtn.addEventListener('click', togglePlay);
+
+            radioStream.addEventListener('playing', () => {
+                status.textContent = 'Слушаем Isfara FM...';
+                waveAnimation.classList.add('active');
+                vinyl.classList.add('playing');
+            });
+
+            radioStream.addEventListener('pause', () => {
+                waveAnimation.classList.remove('active');
+                vinyl.classList.remove('playing');
+            });
+
+            radioStream.addEventListener('waiting', () => {
+                status.textContent = 'Буферизация...';
+            });
+
+            radioStream.addEventListener('error', () => {
+                status.textContent = 'Ошибка подключения';
+                isPlaying = false;
+                playBtn.innerHTML = '<i class="fas fa-play"></i> Слушать';
+                vinyl.classList.remove('playing');
+                waveAnimation.classList.remove('active');
+            });
+        }
+
+        function togglePlay() {
+            if (!isPlaying) {
+                radioStream.play().then(() => {
+                    isPlaying = true;
+                    playBtn.innerHTML = '<i class="fas fa-pause"></i> Пауза';
+                }).catch(() => {
+                    status.textContent = 'Ошибка подключения';
+                });
+            } else {
+                radioStream.pause();
+                isPlaying = false;
+                playBtn.innerHTML = '<i class="fas fa-play"></i> Слушать';
+            }
+        }
+
+        // ========== РАСПИСАНИЕ ==========
+        function setupSchedule() {
+            document.querySelectorAll('.day-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const day = this.getAttribute('data-day');
+                    showSchedule(day);
+                });
+            });
+            
+            // Показать понедельник
+            showSchedule('monday');
+        }
+
+        function showSchedule(day) {
+            const programList = document.getElementById('programList');
+            programList.innerHTML = '';
+            
+            if (schedules[day]) {
+                schedules[day].forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'program-item';
+                    div.innerHTML = `
+                        <span class="program-time">${item.time}</span>
+                        <span>${item.title}</span>
+                    `;
+                    programList.appendChild(div);
+                });
+            }
+        }
+
+        // ========== ЯЗЫК (простая версия) ==========
+        function switchLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('isfaraFM_language', lang);
+            
+            if (lang === 'tj') {
+                // Здесь можно добавить переводы
+                console.log('Переключено на таджикский');
+            }
+        }
+
+        function loadSettings() {
+            const savedLang = localStorage.getItem('isfaraFM_language');
+            if (savedLang) {
+                currentLang = savedLang;
+            }
+        }
+    </script>
+</body>
+</html>
