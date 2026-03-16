@@ -43,7 +43,7 @@
             font-size: 15px;
         }
 
-        /* Плавный фон без стыков */
+        /* Плавный фон */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -74,6 +74,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            cursor: pointer;
         }
 
         .logo-container {
@@ -198,7 +199,7 @@
             width: 100%;
         }
 
-        /* Плеер */
+        /* Плеер с анимацией */
         .player-section {
             text-align: center;
             margin-bottom: 30px;
@@ -206,9 +207,9 @@
 
         .vinyl-container {
             position: relative;
-            width: 180px;
-            height: 180px;
-            margin: 0 auto 15px;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
         }
 
         .vinyl {
@@ -218,7 +219,7 @@
             object-fit: cover;
             animation: rotate 15s linear infinite;
             animation-play-state: paused;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
         }
 
         .vinyl.playing {
@@ -232,14 +233,14 @@
 
         .wave-animation {
             position: absolute;
-            bottom: -15px;
+            bottom: -20px;
             left: 0;
             right: 0;
             display: flex;
             justify-content: center;
-            gap: 3px;
+            gap: 4px;
             opacity: 0;
-            transition: opacity 0.2s;
+            transition: opacity 0.3s;
         }
 
         .wave-animation.active {
@@ -247,44 +248,55 @@
         }
 
         .wave-bar {
-            width: 4px;
-            height: 16px;
+            width: 5px;
             background: var(--accent);
-            border-radius: 2px;
+            border-radius: 3px;
             animation: wave 1.2s ease-in-out infinite;
         }
 
-        .wave-bar:nth-child(2) { animation-delay: 0.1s; height: 20px; }
-        .wave-bar:nth-child(3) { animation-delay: 0.2s; height: 24px; }
-        .wave-bar:nth-child(4) { animation-delay: 0.3s; height: 28px; }
-        .wave-bar:nth-child(5) { animation-delay: 0.4s; height: 24px; }
-        .wave-bar:nth-child(6) { animation-delay: 0.5s; height: 20px; }
-        .wave-bar:nth-child(7) { animation-delay: 0.6s; height: 16px; }
+        .wave-bar:nth-child(1) { height: 25px; animation-delay: 0s; }
+        .wave-bar:nth-child(2) { height: 30px; animation-delay: 0.1s; }
+        .wave-bar:nth-child(3) { height: 35px; animation-delay: 0.2s; }
+        .wave-bar:nth-child(4) { height: 40px; animation-delay: 0.3s; }
+        .wave-bar:nth-child(5) { height: 35px; animation-delay: 0.4s; }
+        .wave-bar:nth-child(6) { height: 30px; animation-delay: 0.5s; }
+        .wave-bar:nth-child(7) { height: 25px; animation-delay: 0.6s; }
 
         @keyframes wave {
             0%, 100% { transform: scaleY(1); }
             50% { transform: scaleY(1.4); }
         }
 
+        /* Кнопка плеера большая с анимацией */
         .player-btn {
             background: var(--accent);
             border: none;
-            border-radius: 40px;
-            padding: 14px 30px;
+            border-radius: 50px;
+            padding: 18px 40px;
             color: white;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            gap: 12px;
             cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 15px rgba(255,107,53,0.2);
-            margin: 10px 0;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(255,107,53,0.3);
+            margin: 15px 0 10px;
+            min-width: 260px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 4px 20px rgba(255,107,53,0.3); }
+            50% { transform: scale(1.02); box-shadow: 0 8px 30px rgba(255,107,53,0.5); }
+            100% { transform: scale(1); box-shadow: 0 4px 20px rgba(255,107,53,0.3); }
         }
 
         .player-btn:hover {
             background: #ff5a24;
+            animation: none;
             transform: scale(1.02);
         }
 
@@ -368,8 +380,8 @@
         }
 
         .news-item {
-            margin-bottom: 20px;
-            padding-bottom: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
@@ -388,7 +400,7 @@
         .news-excerpt {
             font-size: 14px;
             color: rgba(255,255,255,0.7);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             line-height: 1.5;
         }
 
@@ -398,6 +410,8 @@
             text-decoration: none;
             opacity: 0.8;
             transition: opacity 0.2s;
+            cursor: pointer;
+            display: inline-block;
         }
 
         .news-full-link:hover {
@@ -405,7 +419,27 @@
             text-decoration: underline;
         }
 
-        /* Реклама - карусель без рамок */
+        .all-news-btn {
+            display: block;
+            width: fit-content;
+            margin: 20px auto 5px;
+            padding: 12px 30px;
+            background: transparent;
+            border: 1.5px solid var(--accent);
+            border-radius: 40px;
+            color: var(--accent);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .all-news-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Реклама */
         .ad-section {
             margin: 20px 0;
             border-radius: 20px;
@@ -509,12 +543,11 @@
             font-size: 20px;
             color: white;
             transition: all 0.2s;
-            opacity: 0.9;
+            text-decoration: none;
         }
 
         .social-icon:hover {
             transform: translateY(-3px);
-            opacity: 1;
         }
 
         .telegram { background: #0088cc; }
@@ -545,7 +578,7 @@
             border-bottom: 2px solid var(--accent);
         }
 
-        /* Команда и партнёры */
+        /* Команда */
         .team-grid, .partners-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -636,6 +669,30 @@
             font-weight: 500;
         }
 
+        /* Уведомление (toast) */
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            z-index: 3000;
+            border: 1px solid var(--accent);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            animation: slideUp 0.3s ease;
+            white-space: nowrap;
+        }
+
+        @keyframes slideUp {
+            from { transform: translate(-50%, 20px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+
         /* Диалог выхода */
         .exit-dialog {
             display: none;
@@ -650,7 +707,7 @@
             z-index: 2000;
             text-align: center;
             min-width: 260px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid var(--accent);
         }
 
         .exit-dialog.active {
@@ -713,8 +770,8 @@
         </div>
     </div>
 
-    <!-- Шапка -->
-    <header>
+    <!-- Шапка (логотип кликабельный) -->
+    <header id="logoHome">
         <div class="logo-container">
             <img src="https://i.ibb.co/39MLN2z8/photo-2026-01-28-08-19-22-no-bg-preview-carve-photos.png" class="logo">
             <div class="logo-text">
@@ -728,14 +785,14 @@
     <!-- Меню -->
     <div class="side-menu" id="sideMenu">
         <div class="menu-header">Isfara FM</div>
-        <div class="menu-item" data-section="main"><i class="fas fa-home"></i><span class="menu-tg">Асосӣ</span><span class="menu-ru">Главная</span></div>
-        <div class="menu-item" data-section="schedule"><i class="fas fa-calendar-alt"></i><span class="menu-tg">Ҷадвал</span><span class="menu-ru">Расписание</span></div>
-        <div class="menu-item" data-section="about"><i class="fas fa-info-circle"></i><span class="menu-tg">Дар бораи мо</span><span class="menu-ru">О радио</span></div>
-        <div class="menu-item" data-section="team"><i class="fas fa-users"></i><span class="menu-tg">Дастаи мо</span><span class="menu-ru">Команда</span></div>
-        <div class="menu-item" data-section="partners"><i class="fas fa-handshake"></i><span class="menu-tg">Шарикон</span><span class="menu-ru">Партнёры</span></div>
-        <div class="menu-item" data-section="support"><i class="fas fa-headset"></i><span class="menu-tg">Дастгирӣ</span><span class="menu-ru">Поддержка</span></div>
-        <div class="menu-item" data-section="settings"><i class="fas fa-cog"></i><span class="menu-tg">Танзимот</span><span class="menu-ru">Настройки</span></div>
-        <div class="menu-item" id="exitMenuItem"><i class="fas fa-sign-out-alt"></i><span class="menu-tg">Баргашт</span><span class="menu-ru">Назад</span></div>
+        <div class="menu-item" data-section="main" data-tg="Асосӣ" data-ru="Главная"><i class="fas fa-home"></i><span></span></div>
+        <div class="menu-item" data-section="schedule" data-tg="Ҷадвал" data-ru="Расписание"><i class="fas fa-calendar-alt"></i><span></span></div>
+        <div class="menu-item" data-section="about" data-tg="Дар бораи мо" data-ru="О радио"><i class="fas fa-info-circle"></i><span></span></div>
+        <div class="menu-item" data-section="team" data-tg="Дастаи мо" data-ru="Команда"><i class="fas fa-users"></i><span></span></div>
+        <div class="menu-item" data-section="partners" data-tg="Шарикон" data-ru="Партнёры"><i class="fas fa-handshake"></i><span></span></div>
+        <div class="menu-item" data-section="support" data-tg="Дастгирӣ" data-ru="Поддержка"><i class="fas fa-headset"></i><span></span></div>
+        <div class="menu-item" data-section="settings" data-tg="Танзимот" data-ru="Настройки"><i class="fas fa-cog"></i><span></span></div>
+        <div class="menu-item" id="exitMenuItem" data-tg="Баргашт" data-ru="Назад"><i class="fas fa-sign-out-alt"></i><span></span></div>
     </div>
     
     <div class="overlay" id="overlay"></div>
@@ -751,70 +808,62 @@
                     <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
                 </div>
             </div>
-            <button class="player-btn" id="playBtn"><i class="fas fa-play"></i> <span id="playText">Гӯш кардан</span></button>
+            <button class="player-btn" id="playBtn"><i class="fas fa-play"></i> <span>Гӯш кардан</span></button>
             <div class="status-text" id="status">Барои гӯш кардан тугмаро пахш кунед</div>
         </div>
 
         <!-- Погода -->
         <div class="info-block">
-            <div class="info-title"><i class="fas fa-cloud-sun"></i> <span class="tg">Обу ҳаво дар Исфара</span><span class="ru">Погода в Исфаре</span></div>
+            <div class="info-title"><i class="fas fa-cloud-sun"></i> <span data-tg="Обу ҳаво дар Исфара" data-ru="Погода в Исфаре"></span></div>
             <div class="weather-temp" id="weatherTemp">--°C</div>
             <div class="weather-details" id="weatherDetails">Намӣ: --% | Шамол: -- м/с</div>
         </div>
 
         <!-- Курс валют -->
         <div class="info-block">
-            <div class="info-title"><i class="fas fa-coins"></i> <span class="tg">Курби асъор</span><span class="ru">Курс валют</span></div>
-            <div class="currency-item"><span class="currency-code">1 USD</span> <span id="usdRate">10.95</span> сомонӣ</div>
-            <div class="currency-item"><span class="currency-code">1 EUR</span> <span id="eurRate">11.82</span> сомонӣ</div>
-            <div class="currency-item"><span class="currency-code">1 RUB</span> <span id="rubRate">0.12</span> сомонӣ</div>
-            <div class="currency-note tg">*Курб тибқи Бонки Миллӣ, дар бонкҳо фарқ карда метавонад</div>
-            <div class="currency-note ru">*Курс по данным Нацбанка, в банках может отличаться</div>
+            <div class="info-title"><i class="fas fa-coins"></i> <span data-tg="Курби асъор" data-ru="Курс валют"></span></div>
+            <div class="currency-item"><span class="currency-code">1 USD</span> <span id="usdRate">10.95</span> <span data-tg="сомонӣ" data-ru="сомони"></span></div>
+            <div class="currency-item"><span class="currency-code">1 EUR</span> <span id="eurRate">11.82</span> <span data-tg="сомонӣ" data-ru="сомони"></span></div>
+            <div class="currency-item"><span class="currency-code">1 RUB</span> <span id="rubRate">0.12</span> <span data-tg="сомонӣ" data-ru="сомони"></span></div>
+            <div class="currency-note" data-tg="*Курб тибқи Бонки Миллӣ, дар бонкҳо фарқ карда метавонад" data-ru="*Курс по данным Нацбанка, в банках может отличаться"></div>
         </div>
 
         <!-- Новости -->
         <div class="news-block">
-            <div class="news-header"><i class="fas fa-newspaper"></i> <span class="tg">Хабарҳои Исфара</span><span class="ru">Новости Исфары</span></div>
+            <div class="news-header"><i class="fas fa-newspaper"></i> <span data-tg="Хабарҳои Исфара" data-ru="Новости Исфары"></span></div>
             
             <div class="news-item">
-                <div class="news-title tg">Кушодашавии боғчаи бачагона</div>
-                <div class="news-title ru">Открытие детского сада</div>
-                <div class="news-excerpt tg">Дар ноҳияи Сомонӣ боғчаи нави бачагона барои 150 ҷой кушода шуд</div>
-                <div class="news-excerpt ru">В районе Сомони открылся новый детский сад на 150 мест</div>
-                <a href="#" class="news-full-link tg">Хондани пурра →</a>
-                <a href="#" class="news-full-link ru">Читать полностью →</a>
+                <div class="news-title" data-tg="Кушодашавии боғчаи бачагона" data-ru="Открытие детского сада"></div>
+                <div class="news-excerpt" data-tg="Дар ноҳияи Сомонӣ боғчаи нави бачагона барои 150 ҷой кушода шуд" data-ru="В районе Сомони открылся новый детский сад на 150 мест"></div>
+                <a class="news-full-link" onclick="showNewsComingSoon()"><span data-tg="Хондани пурра →" data-ru="Читать полностью →"></span></a>
             </div>
             
             <div class="news-item">
-                <div class="news-title tg">Фестивали ҳунармандон</div>
-                <div class="news-title ru">Фестиваль ремесленников</div>
-                <div class="news-excerpt tg">Дар маркази шаҳр ярмаркаи ҳунарҳои мардумӣ баргузор мешавад</div>
-                <div class="news-excerpt ru">В центре города пройдёт ярмарка народных промыслов</div>
-                <a href="#" class="news-full-link tg">Хондани пурра →</a>
-                <a href="#" class="news-full-link ru">Читать полностью →</a>
+                <div class="news-title" data-tg="Фестивали ҳунармандон" data-ru="Фестиваль ремесленников"></div>
+                <div class="news-excerpt" data-tg="Дар маркази шаҳр ярмаркаи ҳунарҳои мардумӣ баргузор мешавад" data-ru="В центре города пройдёт ярмарка народных промыслов"></div>
+                <a class="news-full-link" onclick="showNewsComingSoon()"><span data-tg="Хондани пурра →" data-ru="Читать полностью →"></span></a>
             </div>
             
             <div class="news-item">
-                <div class="news-title tg">Таъмири роҳҳо</div>
-                <div class="news-title ru">Ремонт дорог</div>
-                <div class="news-excerpt tg">Дар кӯчаи Ленин маҳдудияти муваққатии ҳаракат</div>
-                <div class="news-excerpt ru">На улице Ленина временные ограничения движения</div>
-                <a href="#" class="news-full-link tg">Хондани пурра →</a>
-                <a href="#" class="news-full-link ru">Читать полностью →</a>
+                <div class="news-title" data-tg="Таъмири роҳҳо" data-ru="Ремонт дорог"></div>
+                <div class="news-excerpt" data-tg="Дар кӯчаи Ленин маҳдудияти муваққатии ҳаракат" data-ru="На улице Ленина временные ограничения движения"></div>
+                <a class="news-full-link" onclick="showNewsComingSoon()"><span data-tg="Хондани пурра →" data-ru="Читать полностью →"></span></a>
             </div>
+
+            <a class="all-news-btn" onclick="showNewsComingSoon()"><span data-tg="ҲАМАИ ХАБАРҲО" data-ru="ВСЕ НОВОСТИ"></span></a>
         </div>
 
-        <!-- Реклама - карусель -->
+        <!-- Реклама -->
         <div class="ad-section">
             <div class="ad-carousel" id="adCarousel">
                 <div class="ad-slide active" style="background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800');">
-                    <div class="ad-content"><h3>Реклама дар Isfara FM</h3><a href="#" class="ad-link">Фармоиш</a></div>
+                    <div class="ad-content"><h3 data-tg="Реклама дар Isfara FM" data-ru="Реклама на Isfara FM"></h3><a href="https://t.me/kurush_digital" class="ad-link" target="_blank"><span data-tg="Фармоиш" data-ru="Заказать"></span></a></div>
                 </div>
                 <div class="ad-slide" style="background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800');">
-                    <div class="ad-content"><h3>Сарпарастии барномаҳо</h3><a href="#" class="ad-link">Сарпараст шавед</a></div>
+                    <div class="ad-content"><h3 data-tg="Сарпарастии барномаҳо" data-ru="Спонсорство программ"></h3><a href="https://t.me/kurush_digital" class="ad-link" target="_blank"><span data-tg="Сарпараст шавед" data-ru="Стать спонсором"></span></a></div>
                 </div>
                 <div class="ad-slide" style="background-image: url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800');">
-                    <div class="ad-content"><h3>Шарикии тиҷоратӣ</h3><a href="#" class="ad-link">Пешниҳод</a></div>
+                    <div class="ad-content"><h3 data-tg="Шарикии тиҷоратӣ" data-ru="Партнёрство"></h3><a href="https://t.me/kurush_digital" class="ad-link" target="_blank"><span data-tg="Пешниҳод" data-ru="Предложить"></span></a></div>
                 </div>
             </div>
             <div class="ad-controls">
@@ -825,56 +874,51 @@
         <!-- Соцсети -->
         <div class="social-section">
             <div class="social-icons">
-                <a href="#" class="social-icon telegram"><i class="fab fa-telegram-plane"></i></a>
-                <a href="#" class="social-icon instagram"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="social-icon youtube"><i class="fab fa-youtube"></i></a>
-                <a href="#" class="social-icon whatsapp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://t.me/isfarafm" class="social-icon telegram" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+                <a href="https://instagram.com/radio_isfara" class="social-icon instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://youtube.com/c/IsfaraFM" class="social-icon youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://wa.me/+992987701465" class="social-icon whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
             </div>
         </div>
     </div>
 
     <!-- Секция Расписание -->
     <div class="content-section" id="scheduleSection">
-        <h2 class="section-title tg">Ҷадвали барномаҳо</h2>
-        <h2 class="section-title ru">Расписание программ</h2>
+        <h2 class="section-title" data-tg="Ҷадвали барномаҳо" data-ru="Расписание программ"></h2>
         <div class="days-grid">
-            <button class="day-btn active" data-day="monday">ДШ</button>
-            <button class="day-btn" data-day="tuesday">СШ</button>
-            <button class="day-btn" data-day="wednesday">ЧШ</button>
-            <button class="day-btn" data-day="thursday">ПШ</button>
-            <button class="day-btn" data-day="friday">ҶМ</button>
-            <button class="day-btn" data-day="saturday">ШН</button>
-            <button class="day-btn" data-day="sunday">ЯШ</button>
+            <button class="day-btn active" data-day="monday"><span data-tg="ДШ" data-ru="ПН"></span></button>
+            <button class="day-btn" data-day="tuesday"><span data-tg="СШ" data-ru="ВТ"></span></button>
+            <button class="day-btn" data-day="wednesday"><span data-tg="ЧШ" data-ru="СР"></span></button>
+            <button class="day-btn" data-day="thursday"><span data-tg="ПШ" data-ru="ЧТ"></span></button>
+            <button class="day-btn" data-day="friday"><span data-tg="ҶМ" data-ru="ПТ"></span></button>
+            <button class="day-btn" data-day="saturday"><span data-tg="ШН" data-ru="СБ"></span></button>
+            <button class="day-btn" data-day="sunday"><span data-tg="ЯШ" data-ru="ВС"></span></button>
         </div>
         <div class="program-list" id="programList"></div>
     </div>
 
     <!-- Секция О радио -->
     <div class="content-section" id="aboutSection">
-        <h2 class="section-title tg">Дар бораи радио</h2>
-        <h2 class="section-title ru">О радио</h2>
+        <h2 class="section-title" data-tg="Дар бораи радио" data-ru="О радио"></h2>
         <div style="background: var(--glass); padding: 20px; border-radius: 20px;">
-            <p class="tg"><strong>Isfara FM</strong> — аввалин радиостанцияи шаҳри Исфара, ки аз соли 2012 пахш мекунад.</p>
-            <p class="ru"><strong>Isfara FM</strong> — первая радиостанция города Исфара, вещающая с 2012 года.</p>
+            <p data-tg="<strong>Isfara FM</strong> — аввалин радиостанцияи шаҳри Исфара, ки аз соли 2012 пахш мекунад." data-ru="<strong>Isfara FM</strong> — первая радиостанция города Исфара, вещающая с 2012 года."></p>
         </div>
     </div>
 
     <!-- Секция Команда -->
     <div class="content-section" id="teamSection">
-        <h2 class="section-title tg">Дастаи мо</h2>
-        <h2 class="section-title ru">Наша команда</h2>
+        <h2 class="section-title" data-tg="Дастаи мо" data-ru="Наша команда"></h2>
         <div class="team-grid">
-            <div class="team-card"><img src="https://via.placeholder.com/90/FF6B35/ffffff"><h3>Рустам Каримов</h3><p class="tg">роҳбар</p><p class="ru">ведущий</p></div>
-            <div class="team-card"><img src="https://via.placeholder.com/90/FF6B35/ffffff"><h3>Нигина Амонова</h3><p class="tg">роҳбар</p><p class="ru">ведущая</p></div>
-            <div class="team-card"><img src="https://via.placeholder.com/90/FF6B35/ffffff"><h3>Фаррух Собиров</h3><p class="tg">хабарнигор</p><p class="ru">журналист</p></div>
-            <div class="team-card"><img src="https://via.placeholder.com/90/FF6B35/ffffff"><h3>Зебо Рахимова</h3><p class="tg">муҳаррир</p><p class="ru">редактор</p></div>
+            <div class="team-card"><img src="https://via.placeholder.com/90/FF6B35/ffffff"><h3>Рустам Каримов</h3><p data-tg="роҳбар" data-ru="ведущий"></p></div>
+            <div class="team-card"><img src="https://via.placeholder.com/90/FF6B35/ffffff"><h3>Нигина Амонова</h3><p data-tg="роҳбар" data-ru="ведущая"></p></div>
+            <div class="team-card"><img src="https://via.placeholder.com/90/FF6B35/ffffff"><h3>Фаррух Собиров</h3><p data-tg="хабарнигор" data-ru="журналист"></p></div>
+            <div class="team-card"><img src="https://via.placeholder.com/90/FF6B35/ffffff"><h3>Зебо Рахимова</h3><p data-tg="муҳаррир" data-ru="редактор"></p></div>
         </div>
     </div>
 
     <!-- Секция Партнёры -->
     <div class="content-section" id="partnersSection">
-        <h2 class="section-title tg">Шарикони мо</h2>
-        <h2 class="section-title ru">Наши партнёры</h2>
+        <h2 class="section-title" data-tg="Шарикони мо" data-ru="Наши партнёры"></h2>
         <div class="partners-grid">
             <div class="partner-card"><img src="https://via.placeholder.com/70/ffffff/FF6B35"><h3>Банк Эсхата</h3></div>
             <div class="partner-card"><img src="https://via.placeholder.com/70/ffffff/FF6B35"><h3>Мегафон</h3></div>
@@ -885,34 +929,29 @@
 
     <!-- Секция Поддержка -->
     <div class="content-section" id="supportSection">
-        <h2 class="section-title tg">Дастгирӣ</h2>
-        <h2 class="section-title ru">Поддержка</h2>
+        <h2 class="section-title" data-tg="Дастгирӣ" data-ru="Поддержка"></h2>
         <div style="background: var(--glass); padding: 25px; border-radius: 20px; text-align: center;">
-            <p class="tg">Савол доред? Ба мо дар Telegram нависед</p>
-            <p class="ru">Есть вопросы? Напишите нам в Telegram</p>
-            <a href="#" class="player-btn" style="margin-top: 15px;">Telegram</a>
+            <p data-tg="Савол доред? Ба мо дар Telegram нависед" data-ru="Есть вопросы? Напишите нам в Telegram"></p>
+            <a href="https://t.me/kurush_digital" class="player-btn" style="margin-top: 15px; padding: 12px 25px; font-size: 16px; animation: none;" target="_blank">Telegram</a>
         </div>
     </div>
 
     <!-- Секция Настройки -->
     <div class="content-section" id="settingsSection">
-        <h2 class="section-title tg">Танзимот</h2>
-        <h2 class="section-title ru">Настройки</h2>
+        <h2 class="section-title" data-tg="Танзимот" data-ru="Настройки"></h2>
         <div style="background: var(--glass); padding: 20px; border-radius: 20px;">
-            <h3 style="color: var(--accent); margin-bottom: 15px;" class="tg">Забон</h3>
-            <h3 style="color: var(--accent); margin-bottom: 15px;" class="ru">Язык</h3>
+            <h3 style="color: var(--accent); margin-bottom: 15px;" data-tg="Забон" data-ru="Язык"></h3>
             <div style="display: flex; gap: 10px;">
-                <button class="player-btn" id="langTg" style="padding: 8px 20px;">Тоҷикӣ</button>
-                <button class="player-btn" id="langRu" style="padding: 8px 20px;">Русский</button>
+                <button class="player-btn" id="langTg" style="padding: 10px 20px; font-size: 15px; animation: none;">Тоҷикӣ</button>
+                <button class="player-btn" id="langRu" style="padding: 10px 20px; font-size: 15px; animation: none;">Русский</button>
             </div>
         </div>
     </div>
 
     <!-- Футер -->
     <footer>
-        <p class="tg">© 2026 Isfara FM. Ҳама ҳуқуқҳо ҳифз шудаанд.</p>
-        <p class="ru">© 2026 Isfara FM. Все права защищены.</p>
-        <p><span class="tg">Таҳиягар:</span> <span class="ru">Разработчик:</span> <a href="#" class="footer-link">Kurush Digital</a></p>
+        <p data-tg="© 2026 Isfara FM. Ҳама ҳуқуқҳо ҳифз шудаанд." data-ru="© 2026 Isfara FM. Все права защищены."></p>
+        <p><span data-tg="Таҳиягар:" data-ru="Разработчик:"></span> <a href="https://kurushdigital.one" class="footer-link" target="_blank">Kurush Digital</a></p>
     </footer>
 
     <audio id="radioStream" preload="none"><source src="https://c34.radioboss.fm:8880/stream" type="audio/mpeg"></audio>
@@ -961,6 +1000,16 @@
             ]
         };
 
+        // Функция для уведомления "В разработке"
+        function showNewsComingSoon() {
+            const message = currentLang === 'tg' ? 'Ба зудӣ автоматикӣ кор мекунад 🤖' : 'Скоро заработает автоматически 🤖';
+            const toast = document.createElement('div');
+            toast.className = 'toast-message';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        }
+
         // Инициализация
         document.addEventListener('DOMContentLoaded', () => {
             getWeather();
@@ -969,10 +1018,14 @@
             setupPlayer();
             setupSchedule();
             setupAdCarousel();
-            setLanguage('tg');
+            setupLanguage();
             
-            document.getElementById('langTg').addEventListener('click', () => setLanguage('tg'));
-            document.getElementById('langRu').addEventListener('click', () => setLanguage('ru'));
+            // Логотип ведёт на главную
+            document.getElementById('logoHome').addEventListener('click', (e) => {
+                if(e.target.tagName !== 'BUTTON' && !e.target.closest('.menu-btn')) {
+                    showSection('main');
+                }
+            });
             
             document.querySelectorAll('.menu-item').forEach(item => {
                 let section = item.getAttribute('data-section');
@@ -986,19 +1039,40 @@
                     showSchedule(this.getAttribute('data-day'));
                 });
             });
+            
             showSchedule('monday');
+            setLanguage('tg');
         });
+
+        function setupLanguage() {
+            document.getElementById('langTg').addEventListener('click', () => setLanguage('tg'));
+            document.getElementById('langRu').addEventListener('click', () => setLanguage('ru'));
+        }
 
         function setLanguage(lang) {
             currentLang = lang;
-            document.querySelectorAll('.tg, .ru').forEach(el => {
-                if(el.classList.contains(lang)) el.style.display = 'inline';
-                else if(el.classList.contains('tg') || el.classList.contains('ru')) el.style.display = 'none';
+            document.querySelectorAll('[data-tg]').forEach(el => {
+                if(el.tagName === 'P' && el.getAttribute('data-tg').includes('<strong>')) {
+                    el.innerHTML = lang === 'tg' ? el.getAttribute('data-tg') : el.getAttribute('data-ru');
+                } else {
+                    el.textContent = lang === 'tg' ? el.getAttribute('data-tg') : el.getAttribute('data-ru');
+                }
             });
-            if(document.getElementById('status')){
-                if(lang == 'tg') document.getElementById('status').innerText = 'Барои гӯш кардан тугмаро пахш кунед';
-                else document.getElementById('status').innerText = 'Нажмите кнопку для прослушивания';
+            
+            document.querySelectorAll('.menu-item').forEach(item => {
+                const span = item.querySelector('span');
+                if(span) span.textContent = lang === 'tg' ? item.getAttribute('data-tg') : item.getAttribute('data-ru');
+            });
+            
+            document.getElementById('exitTitle').textContent = lang === 'tg' ? 'Барномаро пӯшем?' : 'Закрыть приложение?';
+            
+            const playSpan = document.querySelector('#playBtn span');
+            if(playSpan) playSpan.textContent = lang === 'tg' ? 'Гӯш кардан' : 'Слушать';
+            
+            if(!isPlaying) {
+                document.getElementById('status').textContent = lang === 'tg' ? 'Барои гӯш кардан тугмаро пахш кунед' : 'Нажмите кнопку для прослушивания';
             }
+            
             showSchedule(document.querySelector('.day-btn.active')?.getAttribute('data-day') || 'monday');
         }
 
@@ -1007,11 +1081,11 @@
                 .then(r => r.json()).then(d => {
                     if(d.main){
                         document.getElementById('weatherTemp').innerText = Math.round(d.main.temp)+'°C';
-                        document.getElementById('weatherDetails').innerText = `Намӣ: ${d.main.humidity}% | Шамол: ${d.wind.speed} м/с`;
+                        document.getElementById('weatherDetails').innerHTML = (currentLang=='tg'?`Намӣ: ${d.main.humidity}% | Шамол: ${d.wind.speed} м/с`:`Влажность: ${d.main.humidity}% | Ветер: ${d.wind.speed} м/с`);
                     }
                 }).catch(() => {
                     document.getElementById('weatherTemp').innerText = '+18°C';
-                    document.getElementById('weatherDetails').innerText = 'Намӣ: 65% | Шамол: 3 м/с';
+                    document.getElementById('weatherDetails').innerHTML = currentLang=='tg'?'Намӣ: 65% | Шамол: 3 м/с':'Влажность: 65% | Ветер: 3 м/с';
                 });
         }
 
@@ -1030,7 +1104,8 @@
         }
 
         function setupMenu(){
-            document.getElementById('menuBtn').addEventListener('click', ()=>{
+            document.getElementById('menuBtn').addEventListener('click', (e)=>{
+                e.stopPropagation();
                 document.getElementById('sideMenu').classList.add('active');
                 document.getElementById('overlay').classList.add('active');
             });
@@ -1045,7 +1120,10 @@
             });
             document.getElementById('exitYes').addEventListener('click', ()=>{
                 if(window.close) window.close();
-                else { document.getElementById('exitDialog').classList.remove('active'); alert('Закройте вкладку'); }
+                else { 
+                    document.getElementById('exitDialog').classList.remove('active'); 
+                    alert(currentLang=='tg'?'Хатогии браузер, закройте вкладку':'Закройте вкладку браузера'); 
+                }
             });
             document.getElementById('exitNo').addEventListener('click', ()=> document.getElementById('exitDialog').classList.remove('active'));
         }
@@ -1072,32 +1150,28 @@
                 if(!isPlaying){
                     audio.play().then(()=>{
                         isPlaying = true;
-                        btn.innerHTML = '<i class="fas fa-pause"></i> '+ (currentLang=='tg'?'Таваққуф':'Пауза');
+                        btn.innerHTML = '<i class="fas fa-pause"></i> <span>' + (currentLang=='tg'?'Таваққуф':'Пауза') + '</span>';
                         wave.classList.add('active');
                         vinyl.classList.add('playing');
-                        status.innerText = currentLang=='tg'?'Гӯш карда истодаед...':'Слушаем...';
-                    }).catch(()=> status.innerText = currentLang=='tg'?'Хатогӣ':'Ошибка');
+                        status.textContent = currentLang=='tg'?'Гӯш карда истодаед...':'Слушаем...';
+                    }).catch(()=> status.textContent = currentLang=='tg'?'Хатогӣ':'Ошибка');
                 } else {
                     audio.pause();
                     isPlaying = false;
-                    btn.innerHTML = '<i class="fas fa-play"></i> '+ (currentLang=='tg'?'Гӯш кардан':'Слушать');
+                    btn.innerHTML = '<i class="fas fa-play"></i> <span>' + (currentLang=='tg'?'Гӯш кардан':'Слушать') + '</span>';
                     wave.classList.remove('active');
                     vinyl.classList.remove('playing');
-                    status.innerText = currentLang=='tg'?'Барои гӯш кардан тугмаро пахш кунед':'Нажмите кнопку';
+                    status.textContent = currentLang=='tg'?'Барои гӯш кардан тугмаро пахш кунед':'Нажмите кнопку';
                 }
             });
-            audio.addEventListener('waiting', ()=> status.innerText = currentLang=='tg'?'Интизор шавед...':'Буферизация...');
+            audio.addEventListener('waiting', ()=> status.textContent = currentLang=='tg'?'Интизор шавед...':'Буферизация...');
             audio.addEventListener('error', ()=>{
-                status.innerText = currentLang=='tg'?'Хатогӣ':'Ошибка';
+                status.textContent = currentLang=='tg'?'Хатогӣ':'Ошибка';
                 isPlaying = false;
-                btn.innerHTML = '<i class="fas fa-play"></i> '+ (currentLang=='tg'?'Гӯш кардан':'Слушать');
+                btn.innerHTML = '<i class="fas fa-play"></i> <span>' + (currentLang=='tg'?'Гӯш кардан':'Слушать') + '</span>';
                 wave.classList.remove('active');
                 vinyl.classList.remove('playing');
             });
-        }
-
-        function setupSchedule(){
-            showSchedule('monday');
         }
 
         function showSchedule(day){
@@ -1111,6 +1185,10 @@
                     list.appendChild(div);
                 });
             }
+        }
+
+        function setupSchedule(){
+            showSchedule('monday');
         }
 
         function setupAdCarousel(){
