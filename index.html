@@ -447,6 +447,16 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
+        .ad-top-text {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 1px;
+        }
+
         .ad-carousel {
             position: relative;
             width: 100%;
@@ -669,6 +679,36 @@
             font-weight: 500;
         }
 
+        /* Настройки */
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-label {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .settings-desc {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 4px;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent);
+        }
+
         /* Уведомление (toast) */
         .toast-message {
             position: fixed;
@@ -693,53 +733,6 @@
             to { transform: translate(-50%, 0); opacity: 1; }
         }
 
-        /* Диалог выхода */
-        .exit-dialog {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(42, 11, 94, 0.98);
-            backdrop-filter: blur(20px);
-            padding: 25px;
-            border-radius: 24px;
-            z-index: 2000;
-            text-align: center;
-            min-width: 260px;
-            border: 1px solid var(--accent);
-        }
-
-        .exit-dialog.active {
-            display: block;
-        }
-
-        .dialog-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .dialog-btn {
-            padding: 10px 24px;
-            border: none;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .dialog-btn-yes {
-            background: var(--accent);
-            color: white;
-        }
-
-        .dialog-btn-no {
-            background: rgba(255,255,255,0.1);
-            color: white;
-        }
-
         /* Футер */
         footer {
             text-align: center;
@@ -760,17 +753,7 @@
 <body>
     <div class="animated-bg"></div>
 
-    <!-- Диалог выхода -->
-    <div class="exit-dialog" id="exitDialog">
-        <i class="fas fa-sign-out-alt" style="font-size: 40px; color: var(--accent); margin-bottom: 10px;"></i>
-        <h3 id="exitTitle">Барномаро пӯшем?</h3>
-        <div class="dialog-buttons">
-            <button class="dialog-btn dialog-btn-yes" id="exitYes">Ҳа</button>
-            <button class="dialog-btn dialog-btn-no" id="exitNo">Не</button>
-        </div>
-    </div>
-
-    <!-- Шапка (логотип кликабельный) -->
+    <!-- Шапка -->
     <header id="logoHome">
         <div class="logo-container">
             <img src="https://i.ibb.co/39MLN2z8/photo-2026-01-28-08-19-22-no-bg-preview-carve-photos.png" class="logo">
@@ -782,7 +765,7 @@
         <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
     </header>
 
-    <!-- Меню -->
+    <!-- Меню с иконками -->
     <div class="side-menu" id="sideMenu">
         <div class="menu-header">Isfara FM</div>
         <div class="menu-item" data-section="main" data-tg="Асосӣ" data-ru="Главная"><i class="fas fa-home"></i><span></span></div>
@@ -792,7 +775,6 @@
         <div class="menu-item" data-section="partners" data-tg="Шарикон" data-ru="Партнёры"><i class="fas fa-handshake"></i><span></span></div>
         <div class="menu-item" data-section="support" data-tg="Дастгирӣ" data-ru="Поддержка"><i class="fas fa-headset"></i><span></span></div>
         <div class="menu-item" data-section="settings" data-tg="Танзимот" data-ru="Настройки"><i class="fas fa-cog"></i><span></span></div>
-        <div class="menu-item" id="exitMenuItem" data-tg="Баргашт" data-ru="Назад"><i class="fas fa-sign-out-alt"></i><span></span></div>
     </div>
     
     <div class="overlay" id="overlay"></div>
@@ -853,8 +835,11 @@
             <a class="all-news-btn" onclick="showNewsComingSoon()"><span data-tg="ҲАМАИ ХАБАРҲО" data-ru="ВСЕ НОВОСТИ"></span></a>
         </div>
 
-        <!-- Реклама -->
+        <!-- Реклама с надписью -->
         <div class="ad-section">
+            <div class="ad-top-text">
+                <span data-tg="✨ ЗЕМО МЕТАВОНАД РЕКЛАМАИ ШУМО БОШАД ✨" data-ru="✨ ЗДЕСЬ МОЖЕТ БЫТЬ ВАША РЕКЛАМА ✨"></span>
+            </div>
             <div class="ad-carousel" id="adCarousel">
                 <div class="ad-slide active" style="background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800');">
                     <div class="ad-content"><h3 data-tg="Реклама дар Isfara FM" data-ru="Реклама на Isfara FM"></h3><a href="https://t.me/kurush_digital" class="ad-link" target="_blank"><span data-tg="Фармоиш" data-ru="Заказать"></span></a></div>
@@ -897,11 +882,14 @@
         <div class="program-list" id="programList"></div>
     </div>
 
-    <!-- Секция О радио -->
+    <!-- Секция О радио (полная версия как в оригинале) -->
     <div class="content-section" id="aboutSection">
         <h2 class="section-title" data-tg="Дар бораи радио" data-ru="О радио"></h2>
-        <div style="background: var(--glass); padding: 20px; border-radius: 20px;">
-            <p data-tg="<strong>Isfara FM</strong> — аввалин радиостанцияи шаҳри Исфара, ки аз соли 2012 пахш мекунад." data-ru="<strong>Isfara FM</strong> — первая радиостанция города Исфара, вещающая с 2012 года."></p>
+        <div style="background: var(--glass); padding: 25px; border-radius: 20px;">
+            <p style="margin-bottom: 15px;"><strong data-tg="Isfara FM" data-ru="Isfara FM"></strong> <span data-tg="— аввалин радиостанцияи шаҳри Исфара, ки аз соли 2012 пахш мекунад." data-ru="— первая радиостанция города Исфара, начавшая вещание в 2012 году."></span></p>
+            <p style="margin-bottom: 15px;" data-tg="Мо зиёда аз дах сол аст, ки овози шаҳри худ буда, сокинонро тавассути мусиқӣ, хабарҳо ва барномаҳои фарҳангӣ муттаҳид мекунем. Радиои мо ҷудонашавандаи зиндагии исфариниҳо гардидааст." data-ru="На протяжении более десяти лет мы являемся голосом нашего города, объединяя жителей через музыку, новости и культурные программы. Наша радиостанция стала неотъемлемой частью жизни исфаринцев."></p>
+            <p style="margin-bottom: 15px;" data-tg="Мо ифтихор дорем, ки анъанаҳоро нигоҳ медорем ва дар баробари ин навовариҳоро ба радиошунавонӣ ворид мекунем. Дастаи мутахассисони мо шабонарӯз кор мекунанд, то шумо ҳамеша аз воқеаҳо огоҳ бошед ва аз мусиқии баландсифат баҳра баред." data-ru="Мы гордимся тем, что сохраняем традиции и одновременно внедряем инновации в радиовещании. Наша команда профессионалов работает круглосуточно, чтобы вы всегда были в курсе событий и наслаждались качественной музыкой."></p>
+            <p><strong data-tg="93.9 FM" data-ru="93.9 FM"></strong> <span data-tg="— дар тамоми шаҳри Исфара ва ноҳияҳои атроф." data-ru="— покрываем весь город Исфара и прилегающие районы."></span></p>
         </div>
     </div>
 
@@ -927,23 +915,64 @@
         </div>
     </div>
 
-    <!-- Секция Поддержка -->
+    <!-- Секция Поддержка (полная версия) -->
     <div class="content-section" id="supportSection">
         <h2 class="section-title" data-tg="Дастгирӣ" data-ru="Поддержка"></h2>
-        <div style="background: var(--glass); padding: 25px; border-radius: 20px; text-align: center;">
-            <p data-tg="Савол доред? Ба мо дар Telegram нависед" data-ru="Есть вопросы? Напишите нам в Telegram"></p>
-            <a href="https://t.me/kurush_digital" class="player-btn" style="margin-top: 15px; padding: 12px 25px; font-size: 16px; animation: none;" target="_blank">Telegram</a>
+        <div style="background: var(--glass); padding: 30px; border-radius: 20px; text-align: center;">
+            <i class="fas fa-headset" style="font-size: 50px; color: var(--accent); margin-bottom: 15px;"></i>
+            <p style="margin-bottom: 15px; font-size: 18px;" data-tg="Мо ҳамеша ба кӯмак омодаем!" data-ru="Мы всегда рады помочь!"></p>
+            <p style="margin-bottom: 20px;" data-tg="Агар савол, пешниҳод ё хатои техникӣ пайдо кардед, лутфан бо мо тамос гиред. Андешаи шумо барои мо хеле муҳим аст!" data-ru="Если у вас есть вопросы, предложения по улучшению или вы обнаружили техническую ошибку, пожалуйста, свяжитесь с нами. Ваше мнение очень важно для нас!"></p>
+            <a href="https://t.me/kurush_digital" class="player-btn" style="margin-top: 10px; padding: 12px 30px; font-size: 16px; animation: none;" target="_blank"><i class="fab fa-telegram-plane"></i> <span data-tg="Навиштан ба дастгирӣ" data-ru="Написать в поддержку"></span></a>
+            <p style="margin-top: 20px; font-size: 12px; opacity: 0.6;" data-tg="Одатан дар давоми чанд соат ҷавоб медиҳем" data-ru="Обычно отвечаем в течение нескольких часов"></p>
         </div>
     </div>
 
-    <!-- Секция Настройки -->
+    <!-- Секция Настройки (полная версия) -->
     <div class="content-section" id="settingsSection">
         <h2 class="section-title" data-tg="Танзимот" data-ru="Настройки"></h2>
         <div style="background: var(--glass); padding: 20px; border-radius: 20px;">
-            <h3 style="color: var(--accent); margin-bottom: 15px;" data-tg="Забон" data-ru="Язык"></h3>
-            <div style="display: flex; gap: 10px;">
-                <button class="player-btn" id="langTg" style="padding: 10px 20px; font-size: 15px; animation: none;">Тоҷикӣ</button>
-                <button class="player-btn" id="langRu" style="padding: 10px 20px; font-size: 15px; animation: none;">Русский</button>
+            <div class="settings-item">
+                <div>
+                    <div class="settings-label" data-tg="Забон" data-ru="Язык"></div>
+                    <div class="settings-desc" data-tg="Тоҷикӣ / Русский" data-ru="Таджикский / Русский"></div>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="player-btn" id="langTg" style="padding: 8px 16px; font-size: 14px; animation: none;">Тоҷикӣ</button>
+                    <button class="player-btn" id="langRu" style="padding: 8px 16px; font-size: 14px; animation: none;">Русский</button>
+                </div>
+            </div>
+            
+            <div class="settings-item">
+                <div>
+                    <div class="settings-label" data-tg="Автоматӣ пахш кардан" data-ru="Автовоспроизведение"></div>
+                    <div class="settings-desc" data-tg="Ҳангоми ворид шудан радио автоматикӣ пахш шавад" data-ru="Автоматически включать радио при входе"></div>
+                </div>
+                <input type="checkbox" class="checkbox" id="autoplayCheckbox">
+            </div>
+            
+            <div class="settings-item">
+                <div>
+                    <div class="settings-label" data-tg="Огоҳиномаҳо" data-ru="Уведомления"></div>
+                    <div class="settings-desc" data-tg="Дар бораи барномаҳои нав хабар гиред" data-ru="Получать оповещения о новых программах"></div>
+                </div>
+                <input type="checkbox" class="checkbox" id="notificationsCheckbox" checked>
+            </div>
+            
+            <div class="settings-item">
+                <div>
+                    <div class="settings-label" data-tg="Тарзи торик" data-ru="Тёмная тема"></div>
+                    <div class="settings-desc" data-tg="Тарзи торики интерфейс" data-ru="Тёмное оформление интерфейса"></div>
+                </div>
+                <input type="checkbox" class="checkbox" id="darkThemeCheckbox" checked>
+            </div>
+            
+            <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);">
+                <div class="settings-label" data-tg="Дар бораи барнома" data-ru="О приложении"></div>
+                <div style="margin-top: 10px; font-size: 14px;">
+                    <p><span data-tg="Версия:" data-ru="Версия:"></span> 2.2.0</p>
+                    <p><span data-tg="Таҳиягар:" data-ru="Разработчик:"></span> <a href="https://kurushdigital.one" class="footer-link" target="_blank">Kurush Digital</a></p>
+                    <p><span data-tg="Навсозӣ:" data-ru="Обновлено:"></span> Март 2026</p>
+                </div>
             </div>
         </div>
     </div>
@@ -1018,7 +1047,7 @@
             setupPlayer();
             setupSchedule();
             setupAdCarousel();
-            setupLanguage();
+            setupSettings();
             
             // Логотип ведёт на главную
             document.getElementById('logoHome').addEventListener('click', (e) => {
@@ -1044,9 +1073,25 @@
             setLanguage('tg');
         });
 
-        function setupLanguage() {
+        function setupSettings() {
             document.getElementById('langTg').addEventListener('click', () => setLanguage('tg'));
             document.getElementById('langRu').addEventListener('click', () => setLanguage('ru'));
+            
+            // Загружаем настройки
+            document.getElementById('autoplayCheckbox').checked = localStorage.getItem('autoplay') === 'true';
+            document.getElementById('notificationsCheckbox').checked = localStorage.getItem('notifications') !== 'false';
+            document.getElementById('darkThemeCheckbox').checked = localStorage.getItem('darkTheme') !== 'false';
+            
+            // Сохраняем настройки
+            document.getElementById('autoplayCheckbox').addEventListener('change', function() {
+                localStorage.setItem('autoplay', this.checked);
+            });
+            document.getElementById('notificationsCheckbox').addEventListener('change', function() {
+                localStorage.setItem('notifications', this.checked);
+            });
+            document.getElementById('darkThemeCheckbox').addEventListener('change', function() {
+                localStorage.setItem('darkTheme', this.checked);
+            });
         }
 
         function setLanguage(lang) {
@@ -1063,8 +1108,6 @@
                 const span = item.querySelector('span');
                 if(span) span.textContent = lang === 'tg' ? item.getAttribute('data-tg') : item.getAttribute('data-ru');
             });
-            
-            document.getElementById('exitTitle').textContent = lang === 'tg' ? 'Барномаро пӯшем?' : 'Закрыть приложение?';
             
             const playSpan = document.querySelector('#playBtn span');
             if(playSpan) playSpan.textContent = lang === 'tg' ? 'Гӯш кардан' : 'Слушать';
@@ -1113,19 +1156,6 @@
                 document.getElementById('sideMenu').classList.remove('active');
                 document.getElementById('overlay').classList.remove('active');
             });
-            document.getElementById('exitMenuItem').addEventListener('click', ()=>{
-                document.getElementById('sideMenu').classList.remove('active');
-                document.getElementById('overlay').classList.remove('active');
-                document.getElementById('exitDialog').classList.add('active');
-            });
-            document.getElementById('exitYes').addEventListener('click', ()=>{
-                if(window.close) window.close();
-                else { 
-                    document.getElementById('exitDialog').classList.remove('active'); 
-                    alert(currentLang=='tg'?'Хатогии браузер, закройте вкладку':'Закройте вкладку браузера'); 
-                }
-            });
-            document.getElementById('exitNo').addEventListener('click', ()=> document.getElementById('exitDialog').classList.remove('active'));
         }
 
         function showSection(section){
