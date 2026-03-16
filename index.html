@@ -1430,23 +1430,23 @@
                     }
                 }).catch(() => {
                     document.getElementById('weatherTemp').innerText = '+18°C';
-                    document.getElementById('weatherDetails').innerHTML = currentLang=='tg'?'Намӣ: 65% | Шамол: 3 м/с':'Влажность: 65% | Ветер: 3 м/с';
+                    document.getElementById('weatherDetails').innerHTML = currentLang=='tg'?'Намнокӣ: 65% | Шамол: 3 м/с':'Влажность: 65% | Ветер: 3 м/с';
                 });
         }
 
-        function getCurrency(){
-            fetch('https://api.exchangerate-api.com/v4/latest/USD')
-                .then(r => r.json()).then(d => {
-                    let tjs = d.rates.TJS || 10.95;
-                    document.getElementById('usdRate').innerText = tjs.toFixed(2);
-                    document.getElementById('eurRate').innerText = (tjs*1.08).toFixed(2);
-                    document.getElementById('rubRate').innerText = (tjs*0.012).toFixed(2);
-                }).catch(() => {
-                    document.getElementById('usdRate').innerText = '10.95';
-                    document.getElementById('eurRate').innerText = '11.82';
-                    document.getElementById('rubRate').innerText = '0.12';
-                });
-        }
+       function getCurrency(){
+    fetch('https://api.exchangerate-api.com/v4/latest/USD')
+        .then(r => r.json()).then(d => {
+            let tjs = d.rates.TJS || 10.95;
+            document.getElementById('usdRate').innerText = Math.round(tjs * 100);
+            document.getElementById('eurRate').innerText = Math.round(tjs * 1.08 * 100);
+            document.getElementById('rubRate').innerText = Math.round(tjs * 0.012 * 1000);
+        }).catch(() => {
+            document.getElementById('usdRate').innerText = '1095';
+            document.getElementById('eurRate').innerText = '1182';
+            document.getElementById('rubRate').innerText = '116';
+        });
+}
 
         function setupMenu(){
             document.getElementById('menuBtn').addEventListener('click', (e)=>{
