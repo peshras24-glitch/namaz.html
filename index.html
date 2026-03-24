@@ -1201,23 +1201,15 @@
         let currentLang = 'tg';
         let isPlaying = false;
 
-        // Данные команды
-        const teamData = [
-            { name: 'Рустам Каримов', role_tg: 'роҳбар', role_ru: 'ведущий', bio_tg: 'Рустам 10 сол аст, ки дар радио кор мекунад. Ӯ барномаи пагоҳиро мебарад ва мусоҳибаҳои ҷолиб бо меҳмонон дорад. Ӯ мусиқии тоҷикиро дӯст медорад ва ҳамеша ба шунавандагони худ орзуи рӯзи хуб мекунад.', bio_ru: 'Рустам работает на радио 10 лет. Он ведет утреннюю программу и берет интересные интервью у гостей. Любит таджикскую музыку и всегда желает слушателям хорошего дня.', instagram: 'https://instagram.com/rustam', telegram: 'https://t.me/rustam' },
-            { name: 'Нигина Амонова', role_tg: 'роҳбар', role_ru: 'ведущая', bio_tg: 'Нигина овози дилнишини радио аст. Вай барномаи "Салом"-ро мебарад ва ҳамеша паёмҳои шунавандагони азизро хонда, ба онҳо суханҳои гарм мегӯяд.', bio_ru: 'Нигина — голос радио. Она ведет программу "Салом", всегда читает сообщения слушателей и дарит им тепло.', instagram: 'https://instagram.com/nigina', telegram: 'https://t.me/nigina' },
-            { name: 'Фаррух Собиров', role_tg: 'хабарнигор', role_ru: 'журналист', bio_tg: 'Фаррух хабарҳои охиринро аз Исфара ва тамоми Тоҷикистон оварда мерасонад. Ӯ ҳамеша дар маркази рӯйдодҳост ва аввалин шуда хабарҳои муҳимро нашр мекунад.', bio_ru: 'Фаррух приносит последние новости из Исфары и всего Таджикистана. Он всегда в центре событий и первым публикует важные новости.', instagram: 'https://instagram.com/farrukh', telegram: 'https://t.me/farrukh' },
-            { name: 'Зебо Рахимова', role_tg: 'муҳаррир', role_ru: 'редактор', bio_tg: 'Зебо мусиқиҳоеро интихоб мекунад, ки шумо дар мавҷи мо мешунавед. Ба шарофати завқи ӯ, сурудҳои беҳтарини тоҷикӣ ва хориҷӣ дар эфири Isfara FM садо медиҳанд.', bio_ru: 'Зебо выбирает музыку, которую вы слышите на нашей волне. Благодаря её вкусу в эфире Isfara FM звучат лучшие таджикские и зарубежные песни.', instagram: 'https://instagram.com/zebo', telegram: 'https://t.me/zebo' }
-        ];
-
-        // Данные партнёров
-        const partnersData = [
-            { name: 'Рахш Такси', url: 'https://www.eskhata.com', logo: 'https://i.ibb.co/0j01xYBK/file-000000006bcc72469e6d386464cbf48a.png' },
-            { name: 'Kurush Digital', url: ''https:/kurushdigital.one', logo: 'https://i.ibb.co/QFbCYK9Z/1773819630256-edit-392829590193115.png' },
-            { name: 'Sim Sim', url: 'https://simsim.tj', logo: 'https://https://i.ibb.co/JW5HkJ6P/1773819334057.png' },
-            { name: 'Ҳукумати Исфара', url: 'https://www.isfara.tj', logo: 'https://via.placeholder.com/70/ffffff/FF6B35?text=Исфара' },
-            { name: 'Сомон Эйр', url: 'https://www.somonair.com', logo: 'https://via.placeholder.com/70/ffffff/FF6B35?text=Сомон' },
-            { name: 'Фонд Ага Хана', url: 'https://akdn.org', logo: 'https://via.placeholder.com/70/ffffff/FF6B35?text=AKF' }
-        ];
+      // Данные партнёров
+const partnersData = [
+    { name: 'Рахш Такси', url: 'https://www.eskhata.com', logo: 'https://i.ibb.co/0j01xYBK/file-000000006bcc72469e6d386464cbf48a.png' },
+    { name: 'Kurush Digital', url: 'https://kurushdigital.one', logo: 'https://i.ibb.co/QFbCYK9Z/1773819630256-edit-392829590193115.png' },
+    { name: 'Sim Sim', url: 'https://simsim.tj', logo: 'https://i.ibb.co/JW5HkJ6P/1773819334057.png' },
+    { name: 'Ҳукумати Исфара', url: 'https://www.isfara.tj', logo: 'https://via.placeholder.com/70/ffffff/FF6B35?text=Исфара' },
+    { name: 'Сомон Эйр', url: 'https://www.somonair.com', logo: 'https://via.placeholder.com/70/ffffff/FF6B35?text=Сомон' },
+    { name: 'Фонд Ага Хана', url: 'https://akdn.org', logo: 'https://via.placeholder.com/70/ffffff/FF6B35?text=AKF' }
+];
 
         const schedules = {
             monday: [
