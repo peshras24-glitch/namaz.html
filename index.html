@@ -43,7 +43,6 @@
             font-size: 15px;
         }
 
-        /* Анимированный фон */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -579,7 +578,7 @@
             gap: 20px;
         }
 
-        .team-card, .partner-card {
+        .team-card {
             background: var(--card-bg);
             border-radius: 20px;
             padding: 20px;
@@ -589,12 +588,12 @@
             cursor: pointer;
         }
 
-        .team-card:hover, .partner-card:hover {
+        .team-card:hover {
             border-color: var(--accent);
             transform: translateY(-5px);
         }
 
-        .team-card img, .partner-card img {
+        .team-card img {
             width: 100px;
             height: 100px;
             border-radius: 50%;
@@ -602,21 +601,46 @@
             margin-bottom: 12px;
         }
 
-        .partner-card img {
-            border-radius: 0;
-            width: 80px;
-            height: 80px;
-            filter: brightness(0) invert(1);
-        }
-
-        .team-card h3, .partner-card h3 {
+        .team-card h3 {
             font-size: 16px;
             margin-bottom: 5px;
         }
 
-        .team-card p, .partner-link {
+        .team-card p {
             font-size: 13px;
             color: var(--accent);
+        }
+
+        /* Партнёры */
+        .partner-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+
+        .partner-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .partner-card img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 12px;
+            filter: brightness(0) invert(1);
+        }
+
+        .partner-card h3 {
+            font-size: 14px;
+            color: white;
+            margin-top: 8px;
         }
 
         /* Расписание */
@@ -806,7 +830,7 @@
         <div class="glass-card">
             <div class="info-title"><i class="fas fa-cloud-sun"></i> <span data-tg="Обу ҳаво дар Исфара" data-ru="Погода в Исфаре"></span></div>
             <div class="weather-temp" id="weatherTemp">--°C</div>
-            <div class="weather-details" id="weatherDetails">Намноки: --% | Шамол: -- м/с</div>
+            <div class="weather-details" id="weatherDetails">Намӣ: --% | Шамол: -- м/с</div>
         </div>
 
         <!-- Курс валют -->
@@ -829,7 +853,7 @@
 
         <!-- Счётчик слушателей -->
         <div class="glass-card">
-            <div class="info-title"><i class="fas fa-users"></i> <span data-tg="Шунавандагон" data-ru="Слушатели"></span></div>
+            <div class="info-title"><i class="fas fa-users"></i> <span data-tg="Гӯшкунандагон" data-ru="Слушатели"></span></div>
             <div class="listener-count" id="listenerCount">127</div>
             <div class="weather-details" data-tg="ҳозир онлайн" data-ru="сейчас онлайн"></div>
         </div>
@@ -840,7 +864,7 @@
             
             <div class="news-item">
                 <div class="news-title" data-tg="Кушодашавии боғчаи бачагона" data-ru="Открытие детского сада"></div>
-                <div class="news-excerpt" data-tg="Дар шаҳраки Шуроб боғчаи нави бачагона барои 150 ҷой кушода шуд" data-ru="В Шуробе открылся новый детский сад на 150 мест"></div>
+                <div class="news-excerpt" data-tg="Дар ноҳияи Сомонӣ боғчаи нави бачагона барои 150 ҷой кушода шуд" data-ru="В районе Сомони открылся новый детский сад на 150 мест"></div>
                 <a class="news-full-link" onclick="showToast()"><span data-tg="Хондани пурра →" data-ru="Читать полностью →"></span></a>
             </div>
             
@@ -852,25 +876,25 @@
             
             <div class="news-item">
                 <div class="news-title" data-tg="Таъмири роҳҳо" data-ru="Ремонт дорог"></div>
-                <div class="news-excerpt" data-tg="Дар кӯчаи Навобод ҳаракат муваққатан маҳдуд мегардад " data-ru="На улице Навобод временные ограничения"></div>
+                <div class="news-excerpt" data-tg="Дар кӯчаи Ленин маҳдудияти муваққатӣ" data-ru="На улице Ленина временные ограничения"></div>
                 <a class="news-full-link" onclick="showToast()"><span data-tg="Хондани пурра →" data-ru="Читать полностью →"></span></a>
             </div>
 
-            <a class="all-news-btn" onclick="showToast()"><span data-tg="Ҳамаи хабарҳо" data-ru="ВСЕ НОВОСТИ"></span></a>
+            <a class="all-news-btn" onclick="showToast()"><span data-tg="ҲАМАИ ХАБАРҲО" data-ru="ВСЕ НОВОСТИ"></span></a>
         </div>
 
         <!-- Реклама -->
         <div class="ad-section">
             <div class="ad-top-text"><span data-tg="✨ Ҷой барои рекламаи Шумо ✨" data-ru="✨ ЗДЕСЬ МОЖЕТ БЫТЬ ВАША РЕКЛАМА ✨"></span></div>
             <div class="ad-carousel" id="adCarousel">
-                <div class="ad-slide active" style="background-image: url(https://i.ibb.co/7JkbMzLK/Telegram-bot-20260318-003846-0000.png);">
-                    <div class="ad-content"><h3 data-tg="" data-ru=""></h3><a href="https://t.me/kurush_digital" class="ad-link" target="_blank"><span data-tg="Фармоиш" data-ru="Заказать"></span></a></div>
+                <div class="ad-slide active" style="background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800');">
+                    <div class="ad-content"><h3 data-tg="Реклама дар Isfara FM" data-ru="Реклама на Isfara FM"></h3><a href="https://t.me/kurush_digital" class="ad-link" target="_blank"><span data-tg="Фармоиш" data-ru="Заказать"></span></a></div>
                 </div>
-                <div class="ad-slide" style="background-image: url(https://i.ibb.co/BRmgFpM/Telegram-bot-20260318-004558-0000.png);">
-                    <div class="ad-content"><h3 data-tg="" data-ru=""></h3><a href="https://t.me/kurush_digital" class="ad-link" target="_blank"><span data-tg="Фармоиш" data-ru="Заказать"></span></a></div>
+                <div class="ad-slide" style="background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800');">
+                    <div class="ad-content"><h3 data-tg="Сарпарастии барномаҳо" data-ru="Спонсорство программ"></h3><a href="https://t.me/kurush_digital" class="ad-link" target="_blank"><span data-tg="Фармоиш" data-ru="Заказать"></span></a></div>
                 </div>
-                <div class="ad-slide" style="background-image: url(https://i.ibb.co/07Sx98k/Telegram-bot-20260316-112715-0000.png);">
-                    <div class="ad-content"><h3 data-tg="" data-ru=""></h3><a href="https://t.me/kurush_digital" class="ad-link" target="_blank"><span data-tg="Фармоиш" data-ru="Заказать"></span></a></div>
+                <div class="ad-slide" style="background-image: url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800');">
+                    <div class="ad-content"><h3 data-tg="Шарикии тиҷоратӣ" data-ru="Партнёрство"></h3><a href="https://t.me/kurush_digital" class="ad-link" target="_blank"><span data-tg="Фармоиш" data-ru="Заказать"></span></a></div>
                 </div>
             </div>
             <div class="ad-controls"><div class="ad-dot active"></div><div class="ad-dot"></div><div class="ad-dot"></div></div>
@@ -882,7 +906,7 @@
                 <a href="https://t.me/isfarafm" class="social-icon telegram" target="_blank"><i class="fab fa-telegram-plane"></i></a>
                 <a href="https://instagram.com/radio_isfara" class="social-icon instagram" target="_blank"><i class="fab fa-instagram"></i></a>
                 <a href="https://youtube.com/c/IsfaraFM" class="social-icon youtube" target="_blank"><i class="fab fa-youtube"></i></a>
-                <a href="https://wa.me/+992987071465" class="social-icon whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://wa.me/+992987701465" class="social-icon whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
             </div>
         </div>
     </div>
@@ -899,8 +923,8 @@
         <h2 class="section-title"><i class="fas fa-info-circle"></i> <span data-tg="Дар бораи радио" data-ru="О радио"></span></h2>
         <div class="glass-card">
             <p style="margin-bottom: 15px;"><strong>Isfara FM</strong> — аввалин радиостанцияи шаҳри Исфара, ки аз соли 2012 пахш мекунад.</p>
-            <p style="margin-bottom: 15px;">Мо зиёда аз дах сол аст, ки овози шаҳри худ буда, сокинонро муттаҳид мекунем.</p>
-            <p style="margin-bottom: 15px;">Дастаи мутахассисони мо шабонарӯз кор мекунанд.</p>
+            <p style="margin-bottom: 15px;">Мо зиёда аз дах сол аст, ки овози шаҳри худ буда, сокинонро тавассути мусиқӣ, хабарҳо ва барномаҳои фарҳангӣ муттаҳид мекунем. Радиои мо ҷудонашавандаи зиндагии исфариниҳо гардидааст.</p>
+            <p style="margin-bottom: 15px;">Мо ифтихор дорем, ки анъанаҳоро нигоҳ медорем ва дар баробари ин навовариҳоро ба радиошунавонӣ ворид мекунем. Дастаи мутахассисони мо шабонарӯз кор мекунанд, то шумо ҳамеша аз воқеаҳо огоҳ бошед ва аз мусиқии баландсифат баҳра баред.</p>
             <p><strong>93.9 FM</strong> — дар тамоми шаҳри Исфара ва ноҳияҳои атроф.</p>
             <p style="margin-top: 15px; font-size: 12px; opacity: 0.6;">✨ Сайт ва барнома таҳияи <a href="https://kurushdigital.one" target="_blank" class="footer-link">Kurush Digital</a></p>
         </div>
@@ -923,8 +947,10 @@
         <h2 class="section-title"><i class="fas fa-headset"></i> <span data-tg="Дастгирӣ" data-ru="Поддержка"></span></h2>
         <div class="glass-card" style="text-align: center;">
             <i class="fas fa-headset" style="font-size: 48px; color: var(--accent); margin-bottom: 15px;"></i>
-            <p data-tg="Мо ҳамеша ба кӯмак омодаем!" data-ru="Мы всегда рады помочь!"></p>
-            <a href="https://t.me/kurush_digital" class="player-btn" style="margin-top: 15px; padding: 10px 25px; font-size: 14px;" target="_blank"><i class="fab fa-telegram-plane"></i> <span data-tg="Навиштан" data-ru="Написать"></span></a>
+            <p style="margin-bottom: 15px;" data-tg="Мо ҳамеша ба кӯмак омодаем!" data-ru="Мы всегда рады помочь!"></p>
+            <p style="margin-bottom: 20px;" data-tg="Агар савол, пешниҳод ё хатои техникӣ пайдо кардед, лутфан бо мо тамос гиред. Андешаи шумо барои мо хеле муҳим аст!" data-ru="Если у вас есть вопросы, предложения по улучшению или вы обнаружили техническую ошибку, пожалуйста, свяжитесь с нами. Ваше мнение очень важно для нас!"></p>
+            <a href="https://t.me/kurush_digital" class="player-btn" style="margin-top: 10px; padding: 10px 25px; font-size: 14px; display: inline-flex; width: auto;" target="_blank"><i class="fab fa-telegram-plane"></i> <span data-tg="Навиштан ба дастгирӣ" data-ru="Написать в поддержку"></span></a>
+            <p style="margin-top: 20px; font-size: 12px; opacity: 0.6;" data-tg="Одатан дар давоми чанд соат ҷавоб медиҳем" data-ru="Обычно отвечаем в течение нескольких часов"></p>
         </div>
     </div>
 
@@ -945,7 +971,7 @@
             </div>
             <div class="about-block">
                 <div class="settings-group-title"><i class="fas fa-info-circle"></i> <span data-tg="Дар бораи барнома" data-ru="О приложении"></span></div>
-                <div class="about-row"><span>Версия:</span><span>1.1.4</span></div>
+                <div class="about-row"><span>Версия:</span><span>2.2.0</span></div>
                 <div class="about-row"><span>Разработчик:</span><a href="https://kurushdigital.one" class="footer-link" target="_blank">Kurush Digital</a></div>
                 <div class="about-row"><span data-tg="Навсозӣ:" data-ru="Обновлено:"></span><span>Март 2026</span></div>
             </div>
@@ -975,9 +1001,9 @@
 
         // Партнёры
         const partnersData = [
-            { name: 'Рахш Такси', url: 'https://play.google.com/store/apps/details?id=ru.taximaster.tmtaxicaller.id2371', logo: 'https://i.ibb.co/0j01xYBK/file-000000006bcc72469e6d386464cbf48a.png' },
-            { name: 'Cим-Сим', url: 'https://www.simsim.tj', logo: 'https://i.ibb.co/JW5HkJ6P/1773819334057.png' },
-            { name: 'Kurush Digital', url: 'https://kurushdigital.one', logo: 'https://i.ibb.co/QFbCYK9Z/1773819630256-edit-392829590193115.png' },
+            { name: 'Банк Эсхата', url: 'https://www.eskhata.com', logo: 'https://via.placeholder.com/80/ffffff/FF6B35?text=Эсхата' },
+            { name: 'Мегафон', url: 'https://www.megafon.tj', logo: 'https://via.placeholder.com/80/ffffff/FF6B35?text=MegaFon' },
+            { name: 'Kurush Digital', url: 'https://kurushdigital.one', logo: 'https://via.placeholder.com/80/ffffff/FF6B35?text=Kurush' },
             { name: 'Ҳукумати Исфара', url: 'https://www.isfara.tj', logo: 'https://via.placeholder.com/80/ffffff/FF6B35?text=Исфара' }
         ];
 
@@ -994,8 +1020,119 @@
 
         const dayNames = { monday: 'Душанбе', tuesday: 'Сешанбе', wednesday: 'Чоршанбе', thursday: 'Панҷшанбе', friday: 'Ҷумъа', saturday: 'Шанбе', sunday: 'Якшанбе' };
 
-        function showToast(msg) {
-            const message = msg || (currentLang === 'tg' ? 'Ба зудӣ 🤖' : 'Скоро 🤖');
+        // Функция для перевода времени в часы
+        function parseTime(timeStr) {
+            const parts = timeStr.trim().split(':');
+            let hours = parseInt(parts[0]);
+            const minutes = parts[1] ? parseInt(parts[1]) : 0;
+            return hours + minutes / 60;
+        }
+
+        // Функция для определения текущей программы
+        function getCurrentProgram() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            const currentTime = currentHour + currentMinute / 60;
+            
+            const weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            const today = weekdays[now.getDay()];
+            const schedule = schedules[today];
+            
+            if (!schedule) {
+                document.getElementById('currentProgram').textContent = 'Шом ба хайр';
+                document.getElementById('programTime').textContent = '17:00-19:00';
+                return;
+            }
+            
+            let currentProgram = null;
+            let nextProgram = null;
+            
+            for (let i = 0; i < schedule.length; i++) {
+                const prog = schedule[i];
+                let startTime = 0;
+                let endTime = 24;
+                
+                if (prog.time.includes('-')) {
+                    const times = prog.time.split('-');
+                    startTime = parseTime(times[0]);
+                    endTime = parseTime(times[1]);
+                } else {
+                    startTime = parseTime(prog.time);
+                    endTime = startTime + 2;
+                }
+                
+                if (currentTime >= startTime && currentTime < endTime) {
+                    currentProgram = prog;
+                    break;
+                }
+                
+                if (!nextProgram && startTime > currentTime) {
+                    nextProgram = prog;
+                }
+            }
+            
+            if (currentProgram) {
+                document.getElementById('currentProgram').textContent = currentProgram.title;
+                document.getElementById('programTime').textContent = currentProgram.time;
+            } else if (nextProgram) {
+                const timeLeft = Math.round((parseTime(nextProgram.time.split('-')[0]) - currentTime) * 60);
+                document.getElementById('currentProgram').textContent = nextProgram.title;
+                document.getElementById('programTime').textContent = `баъди ${timeLeft} дақ / через ${timeLeft} мин`;
+            } else {
+                const lastProgram = schedule[schedule.length - 1];
+                document.getElementById('currentProgram').textContent = lastProgram.title;
+                document.getElementById('programTime').textContent = lastProgram.time;
+            }
+        }
+
+        // Функция счётчика слушателей
+        function initListenerCounter() {
+            const hour = new Date().getHours();
+            let baseListeners = 25;
+            
+            if (hour >= 6 && hour < 10) baseListeners = 45;
+            else if (hour >= 10 && hour < 14) baseListeners = 65;
+            else if (hour >= 14 && hour < 18) baseListeners = 85;
+            else if (hour >= 18 && hour < 22) baseListeners = 120;
+            else if (hour >= 22 || hour < 6) baseListeners = 35;
+            
+            let display = baseListeners + Math.floor(Math.random() * 30) - 15;
+            if (display < 15) display = 15;
+            if (display > 180) display = 180;
+            
+            const counter = document.getElementById('listenerCount');
+            counter.textContent = display;
+            
+            setInterval(() => {
+                const currentHour = new Date().getHours();
+                let newBase = 25;
+                
+                if (currentHour >= 6 && currentHour < 10) newBase = 45;
+                else if (currentHour >= 10 && currentHour < 14) newBase = 65;
+                else if (currentHour >= 14 && currentHour < 18) newBase = 85;
+                else if (currentHour >= 18 && currentHour < 22) newBase = 120;
+                else if (currentHour >= 22 || currentHour < 6) newBase = 35;
+                
+                let newVal = newBase + Math.floor(Math.random() * 30) - 15;
+                if (newVal < 15) newVal = 15;
+                if (newVal > 180) newVal = 180;
+                
+                let currentVal = parseInt(counter.textContent);
+                let step = newVal > currentVal ? 1 : -1;
+                let interval = setInterval(() => {
+                    if (currentVal === newVal) {
+                        clearInterval(interval);
+                    } else {
+                        currentVal += step;
+                        counter.textContent = currentVal;
+                    }
+                }, 30);
+            }, 40000 + Math.random() * 20000);
+        }
+
+        function showToast() {
+            const message = currentLang === 'tg' ? 'Ба зудӣ 🤖' : 'Скоро 🤖';
             const toast = document.createElement('div');
             toast.className = 'toast-message';
             toast.textContent = message;
@@ -1023,7 +1160,7 @@
                 card.href = p.url;
                 card.target = '_blank';
                 card.className = 'partner-card';
-                card.innerHTML = `<img src="${p.logo}"><h3>${p.name}</h3><div class="partner-link"><i class="fas fa-external-link-alt"></i> Сайт</div>`;
+                card.innerHTML = `<img src="${p.logo}"><h3>${p.name}</h3>`;
                 grid.appendChild(card);
             });
         }
@@ -1055,36 +1192,6 @@
                 div.innerHTML = `<span class="program-time">${item.time}</span><span>${item.title}</span>`;
                 list.appendChild(div);
             });
-        }
-
-        function getCurrentProgram() {
-            const now = new Date();
-            const hour = now.getHours();
-            const weekday = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][now.getDay()];
-            const schedule = schedules[weekday];
-            for (let prog of schedule) {
-                let start = parseInt(prog.time.split('-')[0]);
-                if (hour >= start && hour < start + 2) {
-                    document.getElementById('currentProgram').textContent = prog.title;
-                    document.getElementById('programTime').textContent = prog.time;
-                    return;
-                }
-            }
-            document.getElementById('currentProgram').textContent = schedules[weekday][0]?.title || 'Шом ба хайр';
-            document.getElementById('programTime').textContent = schedules[weekday][0]?.time || '17:00-19:00';
-        }
-
-        function initListenerCounter() {
-            let real = 5;
-            let display = real * 3 + 15;
-            let counter = document.getElementById('listenerCount');
-            counter.textContent = display;
-            setInterval(() => {
-                let change = Math.floor(Math.random() * 7) - 3;
-                let newVal = display + change;
-                if (newVal > 20 && newVal < 300) display = newVal;
-                counter.textContent = display;
-            }, 30000);
         }
 
         function getWeather() {
@@ -1120,24 +1227,76 @@
             const status = document.getElementById('status');
             const vinyl = document.getElementById('vinyl');
             const wave = document.getElementById('waveAnimation');
+            
             btn.onclick = () => {
+                if (!navigator.onLine) {
+                    status.textContent = currentLang === 'tg' ? '⚠️ Интернет не пайваст! Лутфан пайвастро санҷед.' : '⚠️ Нет интернета! Проверьте соединение.';
+                    status.style.color = '#ffaa44';
+                    setTimeout(() => status.style.color = '', 3000);
+                    return;
+                }
+                
+                btn.style.transform = 'scale(0.98)';
+                setTimeout(() => btn.style.transform = '', 150);
+                
                 if (!isPlaying) {
+                    status.textContent = currentLang === 'tg' ? '📡 Пайваст шуда истодааст...' : '📡 Подключаемся...';
+                    status.style.color = '#ffaa44';
+                    
                     audio.play().then(() => {
                         isPlaying = true;
                         btn.innerHTML = '<i class="fas fa-pause"></i> <span>' + (currentLang === 'tg' ? 'Таваққуф' : 'Пауза') + '</span>';
                         wave.classList.add('active');
                         vinyl.classList.add('playing');
-                        status.textContent = currentLang === 'tg' ? 'Гӯш карда истодаед...' : 'Слушаем...';
-                    }).catch(() => status.textContent = currentLang === 'tg' ? 'Хатогӣ' : 'Ошибка');
+                        status.textContent = currentLang === 'tg' ? '🎙 Гӯш карда истодаед...' : '🎙 Слушаем...';
+                        status.style.color = '';
+                    }).catch((error) => {
+                        let errorMsg = '';
+                        if (error.name === 'NotAllowedError') {
+                            errorMsg = currentLang === 'tg' ? '❌ Барои гӯш кардан, лутфан тугмаро пахш кунед.' : '❌ Нажмите кнопку для прослушивания.';
+                        } else {
+                            errorMsg = currentLang === 'tg' ? '❌ Хатогӣ дар пайвастшавӣ. Интернетро санҷед.' : '❌ Ошибка подключения. Проверьте интернет.';
+                        }
+                        status.textContent = errorMsg;
+                        status.style.color = '#ff8888';
+                        setTimeout(() => status.style.color = '', 4000);
+                        isPlaying = false;
+                        btn.innerHTML = '<i class="fas fa-play"></i> <span>' + (currentLang === 'tg' ? 'Гӯш кардан' : 'Слушать') + '</span>';
+                        wave.classList.remove('active');
+                        vinyl.classList.remove('playing');
+                    });
                 } else {
                     audio.pause();
                     isPlaying = false;
                     btn.innerHTML = '<i class="fas fa-play"></i> <span>' + (currentLang === 'tg' ? 'Гӯш кардан' : 'Слушать') + '</span>';
                     wave.classList.remove('active');
                     vinyl.classList.remove('playing');
-                    status.textContent = currentLang === 'tg' ? 'Барои гӯш кардан тугмаро пахш кунед' : 'Нажмите кнопку';
+                    status.textContent = currentLang === 'tg' ? '⏸ Таваққуф карда шуд' : '⏸ Остановлено';
+                    status.style.color = '#ffaa44';
+                    setTimeout(() => {
+                        if (!isPlaying) status.textContent = currentLang === 'tg' ? 'Барои гӯш кардан тугмаро пахш кунед' : 'Нажмите кнопку для прослушивания';
+                        status.style.color = '';
+                    }, 2000);
                 }
             };
+            
+            window.addEventListener('online', () => {
+                status.textContent = currentLang === 'tg' ? '✅ Интернет пайваст шуд. Акнун гӯш кардан мумкин.' : '✅ Интернет подключён. Можно слушать.';
+                status.style.color = '#88ff88';
+                setTimeout(() => status.style.color = '', 3000);
+            });
+            
+            window.addEventListener('offline', () => {
+                if (isPlaying) {
+                    audio.pause();
+                    isPlaying = false;
+                    btn.innerHTML = '<i class="fas fa-play"></i> <span>' + (currentLang === 'tg' ? 'Гӯш кардан' : 'Слушать') + '</span>';
+                    wave.classList.remove('active');
+                    vinyl.classList.remove('playing');
+                }
+                status.textContent = currentLang === 'tg' ? '⚠️ Интернет қатъ шуд. Пайвастро санҷед.' : '⚠️ Интернет пропал. Проверьте соединение.';
+                status.style.color = '#ff8888';
+            });
         }
 
         function setupMenu() {
