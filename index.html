@@ -994,9 +994,9 @@
         // Команда
         const teamData = [
             { name: 'Фирдавс Қодири', role_tg: 'рови', role_ru: 'ведущий', photo: 'https://via.placeholder.com/100/FF6B35/ffffff?text=R', bio_tg: 'Фирдавс фаъолияти меҳнатии худро дар соҳаи радио аз 1 майи соли 2016 оғоз намуда, дар радиоҳои вилоят таҷрибаи ғанӣ андӯхтааст. ', bio_ru: 'Фирдавс начал свою трудовую деятельность в сфере радио 1 мая 2016 года, наработав богатый опыт в областных радиостанциях.' },
-            { name: 'Нигина Амонова', role_tg: 'роҳбар', role_ru: 'ведущая', photo: 'https://via.placeholder.com/100/FF6B35/ffffff?text=N', bio_tg: 'Нигина овози дилнишини радио', bio_ru: 'Нигина — голос радио' },
-            { name: 'Фаррух Собиров', role_tg: 'хабарнигор', role_ru: 'журналист', photo: 'https://via.placeholder.com/100/FF6B35/ffffff?text=F', bio_tg: 'Хабарҳои охиринро меорад', bio_ru: 'Приносит последние новости' },
-            { name: 'Зебо Рахимова', role_tg: 'муҳаррир', role_ru: 'редактор', photo: 'https://via.placeholder.com/100/FF6B35/ffffff?text=Z', bio_tg: 'Мусиқиҳоро интихоб мекунад', bio_ru: 'Выбирает музыку' }
+            { name: 'Меҳрулло Мусоев', role_tg: 'рови', role_ru: 'ведущий', photo: 'https://via.placeholder.com/100/FF6B35/ffffff?text=N', bio_tg: 'Нигина овози дилнишини радио', bio_ru: 'Нигина — голос радио' },
+            { name: 'Собитова Заррина', role_tg: 'рови', role_ru: 'ведущая', photo: 'https://via.placeholder.com/100/FF6B35/ffffff?text=F', bio_tg: 'Хабарҳои охиринро меорад', bio_ru: 'Приносит последние новости' },
+            { name: 'Муродҷон М', role_tg: 'муҳандиси овоз', role_ru: 'Звукорежиссёр', photo: 'https://via.placeholder.com/100/FF6B35/ffffff?text=Z', bio_tg: 'Мусиқиҳоро интихоб мекунад', bio_ru: 'Выбирает музыку' }
         ];
 
         // Партнёры
@@ -1230,7 +1230,7 @@
             
             btn.onclick = () => {
                 if (!navigator.onLine) {
-                    status.textContent = currentLang === 'tg' ? '⚠️ Интернет не пайваст! Лутфан пайвастро санҷед.' : '⚠️ Нет интернета! Проверьте соединение.';
+                    status.textContent = currentLang === 'tg' ? '⚠️ Интернет нест! Лутфан санҷед.' : '⚠️ Нет интернета! Проверьте соединение.';
                     status.style.color = '#ffaa44';
                     setTimeout(() => status.style.color = '', 3000);
                     return;
@@ -1281,7 +1281,7 @@
             };
             
             window.addEventListener('online', () => {
-                status.textContent = currentLang === 'tg' ? '✅ Интернет пайваст шуд. Акнун гӯш кардан мумкин.' : '✅ Интернет подключён. Можно слушать.';
+                status.textContent = currentLang === 'tg' ? '✅ Интернет пайваст шуд. Акнун гӯш кунед.' : '✅ Интернет подключён. Можно слушать.';
                 status.style.color = '#88ff88';
                 setTimeout(() => status.style.color = '', 3000);
             });
@@ -1294,7 +1294,7 @@
                     wave.classList.remove('active');
                     vinyl.classList.remove('playing');
                 }
-                status.textContent = currentLang === 'tg' ? '⚠️ Интернет қатъ шуд. Пайвастро санҷед.' : '⚠️ Интернет пропал. Проверьте соединение.';
+                status.textContent = currentLang === 'tg' ? '⚠️ Интернет қатъ шуд. Онро санҷед.' : '⚠️ Интернет пропал. Проверьте соединение.';
                 status.style.color = '#ff8888';
             });
         }
