@@ -923,7 +923,7 @@
         <h2 class="section-title"><i class="fas fa-info-circle"></i> <span data-tg="Дар бораи радио" data-ru="О радио"></span></h2>
         <div class="glass-card">
             <p style="margin-bottom: 15px;"><strong>Isfara FM</strong> — аввалин радиостанцияи шаҳри Исфара, ки аз соли 2012 пахш мекунад.</p>
-            <p style="margin-bottom: 15px;">Мо тули 15 сол аст, ки овози шаҳри худ буда, сокинонро тавассути мусиқӣ, хабарҳо ва барномаҳои фарҳангӣ муттаҳид мекунем. Радиои мо ҷудонашавандаи зиндагии исфарагиҳо гардидааст.</p>
+            <p style="margin-bottom: 15px;">Мо тули 15 сол аст, ки овози шаҳри худ буда, сокинонро тавассути мусиқӣ, хабарҳо ва барномаҳои фарҳангӣ муттаҳид мекунем. Радиои мо қисми ҷудонашавандаи зиндагии исфарагиҳо гардидааст.</p>
             <p style="margin-bottom: 15px;">Мо ифтихор дорем, ки анъанаҳоро нигоҳ медорем ва дар баробари ин навовариҳоро ба радио ворид мекунем. Дастаи мутахассисони мо шабонарӯз кор мекунанд, то шумо ҳамеша аз воқеаҳо огоҳ бошед ва аз мусиқии баландсифат баҳра баред.</p>
             <p><strong>93.9 FM</strong> — дар тамоми шаҳри Исфара ва шаҳру ноҳияҳои атроф.</p>
             <p style="margin-top: 15px; font-size: 12px; opacity: 0.6;">✨ Сайт ва барномаи мобилӣ таҳияи <a href="https://kurushdigital.one" target="_blank" class="footer-link">Kurush Digital</a></p>
@@ -971,7 +971,7 @@
             </div>
             <div class="about-block">
                 <div class="settings-group-title"><i class="fas fa-info-circle"></i> <span data-tg="Дар бораи барнома" data-ru="О приложении"></span></div>
-                <div class="about-row"><span>Версия:</span><span>2.2.0</span></div>
+                <div class="about-row"><span>Версия:</span><span>1.1.4</span></div>
                 <div class="about-row"><span>Разработчик:</span><a href="https://kurushdigital.one" class="footer-link" target="_blank">Kurush Digital</a></div>
                 <div class="about-row"><span data-tg="Навсозӣ:" data-ru="Обновлено:"></span><span>Март 2026</span></div>
             </div>
@@ -1003,8 +1003,8 @@
         const partnersData = [
             { name: 'Рахш Такси', url: 'https://play.google.com/store/apps/details?id=ru.taximaster.tmtaxicaller.id2371', logo: 'https://i.ibb.co/JFHWwhFG/file-000000006bcc72469e6d386464cbf48a-edit-62882377350490.png' },
             { name: 'Сим- Сим', url: 'https://www.simsim.tj', logo: 'https://i.ibb.co/JW5HkJ6P/1773819334057.png' },
-            { name: 'Kurush Digital', url: 'https://kurushdigital.one', logo: 'https://i.ibb.co/LXPPbt7B/IMG-20260326-163944-edit-82881477168434.png' },
-            { name: 'Ҳукумати Исфара', url: 'https://www.isfara.tj', logo: 'https://via.placeholder.com/80/ffffff/FF6B35?text=Исфара' }
+            { name: 'Kurush Digital', url: 'https://kurushdigital.one', logo: 'https://i.ibb.co/W4Y1706Y/IMG-20260326-163944-edit-102945769607135.png' },
+            { name: 'Бренди Шумо', url: 'https://www.isfarafm.com', logo: 'https://i.ibb.co/MxxwkC7v/file-00000000649872469a72b806abb54a0d.png' }
         ];
 
         // Расписание
@@ -1199,11 +1199,11 @@
                 .then(r => r.json()).then(d => {
                     if (d.main) {
                         document.getElementById('weatherTemp').innerText = Math.round(d.main.temp) + '°C';
-                        document.getElementById('weatherDetails').innerHTML = `Намӣ: ${d.main.humidity}% | Шамол: ${d.wind.speed} м/с`;
+                        document.getElementById('weatherDetails').innerHTML = `Намнокӣ: ${d.main.humidity}% | Шамол: ${d.wind.speed} м/с`;
                     }
                 }).catch(() => {
                     document.getElementById('weatherTemp').innerText = '+18°C';
-                    document.getElementById('weatherDetails').innerHTML = 'Намӣ: 65% | Шамол: 3 м/с';
+                    document.getElementById('weatherDetails').innerHTML = 'Намнокӣ: 65% | Шамол: 3 м/с';
                 });
         }
 
