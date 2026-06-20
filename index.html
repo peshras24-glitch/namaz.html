@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Радиохои Тоҷикистон</title>
+    <title>Радиоҳои Тоҷикистон</title>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -663,7 +663,7 @@
     <header>
         <div class="logo-area" onclick="showPage('main')">
             <img src="https://i.ibb.co/5g1NGVRD/file-000000001bd071fbb0d2fc8bbcb0138a.png" alt="Logo" class="logo" id="mainLogo">
-            <span class="app-title">Радиохои <span>Тоҷикистон</span></span>
+            <span class="app-title">Радиоҳои <span>Тоҷикистон</span></span>
         </div>
     </header>
 
@@ -678,7 +678,7 @@
             <!-- Уведомление об интернете -->
             <div class="internet-warning" id="internetWarning">
                 <strong id="warningTitle">⚠️ Интернети шумо суст аст!</strong>
-                <p id="warningText" style="margin-top: 6px;">Мусиқӣ қатъ шуд. Мехоҳед дубора кӯшиш кунед?</p>
+                <p id="warningText" style="margin-top: 6px;">Мусиқӣ қатъ шуд. Мехоҳед дубора фаъол кунед?</p>
                 <div class="btn-group">
                     <button class="btn-primary" id="retryBtn">🔄 Такрор кардан</button>
                     <button class="btn-secondary" id="closeWarningBtn">🚪 Баромадан</button>
@@ -722,13 +722,21 @@
                 <div id="currencyDisplay">100 USD = 1095 сомонӣ</div>
             </div>
 
-            <!-- Реклама -->
-            <div class="glass-card" style="text-align: center; min-height: 140px; display: flex; align-items: center; justify-content: center;">
-                <div id="adPlaceholder">
-                    <img src="https://via.placeholder.com/600x120/F5C842/0A1128?text=Реклама" alt="Реклама" style="width: 100%; max-width: 600px; border-radius: 12px;">
-                </div>
-            </div>
-        </div>
+           // ===== РЕКЛАМА (меняй здесь) =====
+const ADS = [
+    {
+        image: 'https://via.placeholder.com/600x200/F5C842/0A1128?text=Реклама+1',
+        text: 'Реклама 1'
+    },
+    {
+        image: 'https://via.placeholder.com/600x200/F5C842/0A1128?text=Реклама+2',
+        text: 'Реклама 2'
+    },
+    {
+        image: 'https://via.placeholder.com/600x200/F5C842/0A1128?text=Реклама+3',
+        text: 'Реклама 3'
+    }
+];
 
         <!-- ========================== -->
         <!-- РАДИО -->
