@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Радиохои Тоҷикистон</title>
+    <title>Радиоҳои Тоҷикистон</title>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -627,7 +627,7 @@
     <header>
         <div class="logo-area" onclick="showPage('main')">
             <img src="https://i.ibb.co/5g1NGVRD/file-000000001bd071fbb0d2fc8bbcb0138a.png" alt="Logo" class="logo" id="mainLogo">
-            <span class="app-title">Радиохои <span>Тоҷикистон</span></span>
+            <span class="app-title">Радиоҳои <span>Тоҷикистон</span></span>
         </div>
     </header>
 
@@ -638,7 +638,7 @@
 
             <div class="internet-warning" id="internetWarning">
                 <strong id="warningTitle">⚠️ Интернети шумо суст аст!</strong>
-                <p id="warningText" style="margin-top: 6px;">Мусиқӣ қатъ шуд. Мехоҳед дубора кӯшиш кунед?</p>
+                <p id="warningText" style="margin-top: 6px;">Мусиқӣ қатъ шуд. Мехоҳед дубора фаъол кунед?</p>
                 <div class="btn-group">
                     <button class="btn-primary" id="retryBtn">🔄 Такрор кардан</button>
                     <button class="btn-secondary" id="closeWarningBtn">🚪 Баромадан</button>
@@ -670,7 +670,7 @@
             </div>
 
             <div class="glass-card">
-                <div style="color: var(--accent); font-weight: 600; margin-bottom: 8px;">💰 Курс валют</div>
+                <div style="color: var(--accent); font-weight: 600; margin-bottom: 8px;">💰 Қурби асъор</div>
                 <div id="currencyDisplay">100 USD = 1095 сомонӣ</div>
             </div>
 
@@ -740,7 +740,7 @@
                 <div class="profile-subsection" id="copyrightSection">
                     <p data-tg="Ин барнома танҳо як агрегатор барои гӯш кардани радиоҳои Тоҷикистон мебошад. Мо аз ин зарабе намебарем. Агар шумо соҳиби радио ҳастед ва намехоҳед, ки радиои шумо дар ин ҷо бошад, ба мо нависед — мо онро фавран нест мекунем."
                         data-ru="Это приложение — всего лишь агрегатор для прослушивания радио Таджикистана. Мы не зарабатываем на этом. Если вы являетесь владельцем радио и не хотите, чтобы ваше радио было здесь, напишите нам — мы его немедленно удалим.">
-                        Ин барнома танҳо як агрегатор барои гӯш кардани радиоҳои Тоҷикистон мебошад. Мо аз ин зарабе намебарем. Агар шумо соҳиби радио ҳастед ва намехоҳед, ки радиои шумо дар ин ҷо бошад, ба мо нависед — мо онро фавран нест мекунем.
+                        Ин барнома танҳо як агрегатор барои гӯш кардани радиоҳои Тоҷикистон мебошад. Мо аз ин фоидае намегирем. Агар шумо соҳиби радио ҳастед ва намехоҳед, ки радиои шумо дар ин ҷо бошад, ба мо нависед — мо онро фавран нест мекунем.
                     </p>
                     <button class="btn-primary" onclick="openTelegram()">📨 Навиштан ба мо</button>
                 </div>
@@ -752,12 +752,12 @@
                 <div class="profile-subsection" id="donateSection">
                     <p data-tg="Агар ба шумо ин барнома маъқул бошад, метавонед моро тавассути яке аз роҳҳои зер дастгирӣ кунед:"
                         data-ru="Если вам нравится это приложение, вы можете поддержать нас одним из способов:">
-                        Агар ба шумо ин барнома маъқул бошад, метавонед моро тавассути яке аз роҳҳои зер дастгирӣ кунед:
+                        Агар ба шумо ин барнома маъқул бошад, метавонед кори моро дастгирӣ кунед:
                     </p>
                     <div style="background: var(--bg-card); padding: 16px; border-radius: 16px; margin: 12px 0;">
                         <div style="color: var(--accent); font-weight: 600;">💳 Номер карта:</div>
-                        <div style="font-size: 18px; letter-spacing: 2px; font-weight: 700;">XXXX XXXX XXXX XXXX</div>
-                        <div style="font-size: 13px; color: var(--text-secondary);">(Эсхата / Алиф)</div>
+                        <div style="font-size: 18px; letter-spacing: 2px; font-weight: 700;">5413 5252 0028 0531</div>
+                        <div style="font-size: 13px; color: var(--text-secondary);">(Алиф Бонк)</div>
                     </div>
                     <button class="btn-primary" onclick="window.open('https://t.me/kurush_digital', '_blank')"
                         style="width: 100%;">
@@ -831,41 +831,41 @@
         const APP_LOGO = 'https://i.ibb.co/5g1NGVRD/file-000000001bd071fbb0d2fc8bbcb0138a.png';
 
         const RADIOS = [
-            { name: 'Зет FM', freq: '103.0 FM', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-zetfm' },
-            { name: 'Радио Диёр', freq: '105.5 FM', stream: 'https://c16.radioboss.fm/stream/234' },
-            { name: 'Радио Наво', freq: '96.5 FM', stream: 'https://radio.navo.tj:8443/live' },
-            { name: 'Радио Пайванд', freq: '100.6 FM', stream: 'https://c6.radioboss.fm/stream/234' },
-            { name: 'Хамсадо', freq: '94.5 FM', stream: 'https://c23.radioboss.fm/stream/102' },
-            { name: 'Радио Канд', freq: '87.7 FM', stream: 'https://listen7.myradio24.com/tamish' },
-            { name: 'Радио Ватан', freq: '106.0 FM', stream: 'https://liveradio24.com/api/v1/stream/vatan' },
-            { name: 'Ти роз', freq: '103.7 FM', stream: 'https://eu1.fastcast4u.com/proxy/khusrav/stream?n=b742a6676ac1f8543fc2' },
-            { name: 'Радио Нав', freq: '95.5 FM', stream: 'https://c38.radioboss.fm:8172/stream' },
-            { name: 'Шахри ман', freq: '97.7 FM', stream: 'https://c16.radioboss.fm:8438/stream' },
-            { name: 'Радио Исфара', freq: '93.9 FM', stream: 'https://c34.radioboss.fm:8880/stream' }
+            { name: 'ZET FM', freq: '103.0 FM', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-zetfm' },
+            { name: 'Радиои Диёр', freq: '105.5 FM', stream: 'https://c16.radioboss.fm/stream/234' },
+            { name: 'Радиои Наво', freq: '96.5 FM', stream: 'https://radio.navo.tj:8443/live' },
+            { name: 'Радиои Пайванд', freq: '100.6 FM', stream: 'https://c6.radioboss.fm/stream/234' },
+            { name: 'Радиои Хамсадо', freq: '94.5 FM', stream: 'https://c23.radioboss.fm/stream/102' },
+            { name: 'Радиои Қанд', freq: '87.7 FM', stream: 'https://listen7.myradio24.com/tamish' },
+            { name: 'Радиои Ватан', freq: '106.0 FM', stream: 'https://liveradio24.com/api/v1/stream/vatan },
+            { name: 'Радиои Тироз', freq: '103.7 FM', stream: 'https://eu1.fastcast4u.com/proxy/khusrav/stream?n=b742a6676ac1f8543fc2' },
+            { name: 'Радиои Нав', freq: '95.5 FM', stream: 'https://c38.radioboss.fm:8172/stream' },
+            { name: 'Радиои Шахри ман', freq: '97.7 FM', stream: 'https://c16.radioboss.fm:8438/stream' },
+            { name: 'Радиои Исфара', freq: '93.9 FM', stream: 'https://c34.radioboss.fm:8880/stream' }
         ];
 
         const FAQ_DATA = [
             { q: '🎧 Чӣ тавр радиоро гӯш кардан мумкин?',
                 a: 'Тугмаи "Гӯш кардан"-ро дар назди ҳар як радио пахш кунед. Ё ба радиои дилхоҳ клик кунед, то плеер кушода шавад.' },
-            { q: '❓ Чаро радио намепазад?',
-                a: 'Пайвасти интернети худро санҷед. Агар мушкилот боқӣ монад — саҳифаро бор кунед ё радиои дигарро интихоб кунед.' },
+            { q: '❓ Чаро радио кор намекунад?',
+                a: 'Пайвасти интернети худро санҷед. Агар мушкилот боқӣ монад — саҳифаро навсози кунед ё радиои дигарро интихоб кунед.' },
             { q: '⭐ Чӣ тавр радиоро ба "Дӯстдошта" илова кардан мумкин?',
                 a: 'Дар назди номи радио тугмаи ❤️ (дил)-ро пахш кунед. Радио дар бахши "Дӯстдошта" нигоҳ дошта мешавад.' },
             { q: '📢 Чӣ тавр радиои худро пешниҳод кардан мумкин?',
-                a: 'Ба мо дар Telegram тавассути бахши "Пешниҳоди радио" ё "Бо мо тамос гиред" нависед. Мо онро дар наздиктарин вақт илова мекунем.' },
+                a: 'Ба мо дар тавассути бахши "Пешниҳоди радио" ё "Тамос бо мо" нависед. Мо онро дар наздиктарин вақт илова мекунем.' },
             { q: '📱 Чӣ тавр барномаро бо дигарон мубодила кардан мумкин?',
                 a: 'Тугмаи "Мубодила"-ро дар меню ё профил пахш кунед. Истинодро нусхабардорӣ кунед ё тавассути Telegram, WhatsApp ба дӯстонатон фиристед.' },
             { q: '👨‍💻 Кӣ таҳиягар аст?',
-                a: 'Барнома аз ҷониби студияи Kurush Digital сохта шудааст. Агар ба шумо монанди он лозим бошад — дар Telegram нависед: @kurush_digital' },
+                a: 'Барнома аз ҷониби студияи Kurush Digital сохта шудааст. Агар ба шумо низ баронома лозим бошад — дар Telegram нависед: @kurush_digital' },
             { q: '⚖️ Ман соҳиби ҳуқуқ ҳастам. Чӣ тавр радиои худро нест кардан мумкин?',
-                a: 'Ба мо дар Telegram тавассути бахши "Ба соҳибони ҳуқуқ" нависед. Мо дарҳол радиоро нест мекунем.' },
+                a: 'Ба мо тавассути бахши "Ба соҳибони ҳуқуқ" нависед. Мо дарҳол радиоро нест мекунем.' },
             { q: '🔄 Чӣ тавр рӯйхати радиоро нав кардан мумкин?',
                 a: 'Рӯйхати радио худидоракунанда аст. Вақте ки мо радиои нав илова мекунем, он барои ҳама корбарон пайдо мешавад.' },
-            { q: '💸 Барнома пуласт?', a: 'Не! Комелан ройгон. Мо барои гӯш кардани радио пул намегирем.' },
+            { q: '💸 Барнома пулаки аст?', a: 'Не! Комелан ройгон. Мо барои гӯш кардани радио пул намегирем.' },
             { q: '📊 Оё дар замина гӯш кардан мумкин аст?',
-                a: 'Ҳа. Радио ҳатто вақте ки шумо саҳифаро мепӯшед ё телефони худро қулф мекунед, боз ҳам мепазад (дар дастгоҳҳои мобилӣ).' },
+                a: 'Ҳа. Радио ҳатто вақте ки шумо саҳифаро мепӯшед ё телефони худро қулф мекунед, боз ҳам кор мекунад (дар дастгоҳҳои мобилӣ).' },
             { q: '🔊 Чаро садо қатъ мешавад?',
-                a: 'Эҳтимол мушкилот бо интернет ё сервери радио. Кӯшиш кунед, ки радиоро дубора бор кунед.' },
+                a: 'Эҳтимол мушкилот бо интернет ё сервери радио. Кӯшиш кунед, ки радиоро дубора фаъол кунед.' },
             { q: '📅 Оё радиои нав илова карда мешаванд?',
                 a: 'Бале! Мо пайваста радиои нави Тоҷикистонро ҷустуҷӯ ва илова мекунем.' }
         ];
@@ -972,9 +972,9 @@
         function getGreeting() {
             const hour = new Date().getHours();
             if (hour < 6) return 'Шаби хуш! 🌙';
-            if (hour < 12) return 'Субҳи хайр! ☀️';
-            if (hour < 18) return 'Рӯзи хайр! 🌤️';
-            return 'Шоми хайр! 🌅';
+            if (hour < 12) return 'Субҳ ба хайр! ☀️';
+            if (hour < 18) return 'Рӯз ба хайр! 🌤️';
+            return 'Шом ба хайр! 🌅';
         }
 
         function updateMainUI() {
@@ -1043,7 +1043,7 @@
             document.querySelectorAll('.play-btn-small').forEach(btn => {
                 const idx = parseInt(btn.dataset.index);
                 if (idx === currentStationIndex && isPlaying) {
-                    btn.innerHTML = '⏸ Пауза';
+                    btn.innerHTML = '⏸ Таваққуф';
                     btn.classList.add('playing');
                 } else {
                     btn.innerHTML = currentLang === 'tg' ? '▶ Гӯш кардан' : '▶ Слушать';
@@ -1214,7 +1214,7 @@
         }
 
         function exitApp() {
-            if (confirm(currentLang === 'tg' ? 'Оё шумо мехоҳед баромадед?' : 'Вы уверены, что хотите выйти?')) {
+            if (confirm(currentLang === 'tg' ? 'Оё шумо баромадед мехоҳед?' : 'Вы уверены, что хотите выйти?')) {
                 window.close();
             }
         }
@@ -1246,14 +1246,14 @@
 
         function getWeather() {
             window.weatherText = {
-                tg: '+18°C · Исфара · Намӣ: 65%',
+                tg: '+18°C · Исфара · Намнокӣ: 65%',
                 ru: '+18°C · Исфара · Влажность: 65%'
             };
             updateWeatherDisplay();
         }
 
         function updateWeatherDisplay() {
-            const w = window.weatherText || { tg: '+18°C · Исфара · Намӣ: 65%', ru: '+18°C · Исфара · Влажность: 65%' };
+            const w = window.weatherText || { tg: '+18°C · Исфара · Намнокӣ: 65%', ru: '+18°C · Исфара · Влажность: 65%' };
             document.getElementById('weatherDisplay').textContent = currentLang === 'tg' ? w.tg : w.ru;
         }
 
