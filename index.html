@@ -731,7 +731,7 @@
                     <i class="fas fa-balance-scale"></i> <span data-tg="Ба соҳибони ҳуқуқ" data-ru="Правообладателям">Правообладателям</span>
                 </div>
                 <div class="profile-subsection" id="copyrightSection">
-                    <p data-tg="Ин барнома танҳо як агрегатор барои гӯш кардани радиоҳои Тоҷикистон мебошад. Мо аз ин зарабе намебарем. Агар шумо соҳиби радио ҳастед ва намехоҳед, ки радиои шумо дар ин ҷо бошад, ба мо нависед — мо онро фавран нест мекунем."
+                    <p data-tg="Ин барнома танҳо як агрегатор барои гӯш кардани радиоҳои Тоҷикистон мебошад. Мо аз ин фоидае намебарем. Агар шумо соҳиби радио ҳастед ва намехоҳед, ки радиои шумо дар ин ҷо бошад, ба мо нависед — мо онро фавран нест мекунем."
                         data-ru="Это приложение — всего лишь агрегатор для прослушивания радио Таджикистана. Мы не зарабатываем на этом. Если вы являетесь владельцем радио и не хотите, чтобы ваше радио было здесь, напишите нам — мы его немедленно удалим.">
                         Ин барнома танҳо як агрегатор барои гӯш кардани радиоҳои Тоҷикистон мебошад. Мо аз ин фоидае намегирем. Агар шумо соҳиби радио ҳастед ва намехоҳед, ки радиои шумо дар ин ҷо бошад, ба мо нависед — мо онро фавран нест мекунем.
                     </p>
@@ -785,39 +785,109 @@
     <audio id="audioPlayer"></audio>
 
     <script>
-        // ============================================================
-        // НАСТРОЙКИ РЕКЛАМЫ (меняй здесь)
-        // ============================================================
-        const ADS = [{
-            image: 'https://i.ibb.co/7JkbMzLK/Telegram-bot-20260318-003846-0000.png',
-            title: 'Заголовок 1',
-            link: 'https://t.me/kurush_digital'
-        }, {
-            image: 'https://i.ibb.co/BRmgFpM/Telegram-bot-20260318-004558-0000.png',
-            title: 'Заголовок 2',
-            link: 'https://t.me/kurush_digital'
-        }, {
-            image: 'https://i.ibb.co/07Sx98k/Telegram-bot-20260316-112715-0000.png',
-            title: 'Заголовок 3',
-            link: 'https://t.me/kurush_digital'
-        }];
+        <!-- ===== РЕКЛАМНЫЙ СЛАЙДЕР ===== -->
+<div class="glass-card" style="padding: 0; overflow: hidden;">
+    <div class="ad-slider-container" id="adSlider">
+        <div class="ad-slides-wrapper" id="adSlidesWrapper">
+            <!-- Заполняется JavaScript -->
+        </div>
+    </div>
+    <div class="ad-dots" id="adDots">
+        <!-- Заполняется JavaScript -->
+    </div>
+</div>
 
-        // ============================================================
-        // ОСТАЛЬНЫЕ ДАННЫЕ
-        // ============================================================
+<script>
+    // ============================================================
+    // НАСТРОЙКИ РЕКЛАМЫ (меняй ссылки здесь)
+    // ============================================================
+    const ADS = [
+        {
+            image: 'https://i.ibb.co/07Sx98k/Telegram-bot-20260316-112715-0000.png',
+            link: 'https://t.me/kurush_digital'
+        },
+        {
+            image: 'https://i.ibb.co/BRmgFpM/Telegram-bot-20260318-004558-0000.png',
+            link: 'https://t.me/kurush_digital'
+        },
+        {
+            image: 'https://i.ibb.co/7JkbMzLK/Telegram-bot-20260318-003846-0000.png',
+            link: 'https://t.me/kurush_digital'
+        }
+    ];
+
+    // ============================================================
+    // ФУНКЦИЯ ДЛЯ ОТРИСОВКИ СЛАЙДЕРА
+    // ============================================================
+    let currentAdSlide = 0;
+    let adInterval = null;
+
+    function renderAdSlider() {
+        const wrapper = document.getElementById('adSlidesWrapper');
+        const dotsContainer = document.getElementById('adDots');
+        wrapper.innerHTML = '';
+        dotsContainer.innerHTML = '';
+
+        ADS.forEach((ad, index) => {
+            // Создаём слайд
+            const slide = document.createElement('div');
+            slide.className = 'ad-slide';
+            slide.innerHTML = `
+                <img src="${ad.image}" alt="Реклама">
+                <div class="ad-slide-content">
+                    <a href="${ad.link}" target="_blank" class="btn-primary" style="display: inline-block; text-decoration: none;">Заказать</a>
+                </div>
+            `;
+            wrapper.appendChild(slide);
+
+            // Создаём точку для навигации
+            const dot = document.createElement('button');
+            dot.className = 'ad-dot' + (index === 0 ? ' active' : '');
+            dot.dataset.index = index;
+            dot.addEventListener('click', () => goToAdSlide(index));
+            dotsContainer.appendChild(dot);
+        });
+
+        // Устанавливаем ширину контейнера для слайдов
+        wrapper.style.width = `${ADS.length * 100}%`;
+
+        // Запускаем автопереключение
+        if (adInterval) clearInterval(adInterval);
+        adInterval = setInterval(() => {
+            const next = (currentAdSlide + 1) % ADS.length;
+            goToAdSlide(next);
+        }, 5000);
+    }
+
+    function goToAdSlide(index) {
+        if (index < 0 || index >= ADS.length) return;
+        currentAdSlide = index;
+
+        const wrapper = document.getElementById('adSlidesWrapper');
+        const dots = document.querySelectorAll('.ad-dot');
+
+        wrapper.style.transform = `translateX(-${index * 100 / ADS.length}%)`;
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+    }
+
+    // Вызови эту функцию при загрузке страницы
+    document.addEventListener('DOMContentLoaded', renderAdSlider);
+</script>
 
         const APP_LOGO = 'https://i.ibb.co/5g1NGVRD/file-000000001bd071fbb0d2fc8bbcb0138a.png';
 
         const RADIOS = [
-            { name: 'Зет FM', freq: '103.0 FM', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-zetfm' },
-            { name: 'Радио Диёр', freq: '105.5 FM', stream: 'https://c16.radioboss.fm/stream/234' },
-            { name: 'Радио Наво', freq: '96.5 FM', stream: 'https://radio.navo.tj:8443/live' },
-            { name: 'Радио Пайванд', freq: '100.6 FM', stream: 'https://c6.radioboss.fm/stream/234' },
-            { name: 'Хамсадо', freq: '94.5 FM', stream: 'https://c23.radioboss.fm/stream/102' },
-            { name: 'Радио Канд', freq: '87.7 FM', stream: 'https://listen7.myradio24.com/tamish' },
-            { name: 'Радио Ватан', freq: '106.0 FM', stream: 'https://liveradio24.com/api/v1/stream/vatan' },
-            { name: 'Ти роз', freq: '103.7 FM', stream: 'https://eu1.fastcast4u.com/proxy/khusrav/stream?n=b742a6676ac1f8543fc2' },
-            { name: 'Радио Нав', freq: '95.5 FM', stream: 'https://c38.radioboss.fm:8172/stream' },
+            { name: 'ZET FM', freq: '103.0 FM', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-zetfm' },
+            { name: 'Радиои Диёр', freq: '105.5 FM', stream: 'https://c16.radioboss.fm/stream/234' },
+            { name: 'Радиои Наво', freq: '96.5 FM', stream: 'https://radio.navo.tj:8443/live' },
+            { name: 'Радиои Пайванд', freq: '100.6 FM', stream: 'https://c6.radioboss.fm/stream/234' },
+            { name: 'Радиои Хамсадо', freq: '94.5 FM', stream: 'https://c23.radioboss.fm/stream/102' },
+            { name: 'Радиои Қанд', freq: '87.7 FM', stream: 'https://listen7.myradio24.com/tamish' },
+            { name: 'Радиои Ватан', freq: '106.0 FM', stream: 'https://liveradio24.com/api/v1/stream/vatan' },
+            { name: 'Радиои Тироз', freq: '103.7 FM', stream: 'https://eu1.fastcast4u.com/proxy/khusrav/stream?n=b742a6676ac1f8543fc2' },
+            { name: 'Радиои Нав', freq: '95.5 FM', stream: 'https://c38.radioboss.fm:8172/stream' },
             { name: 'Шахри ман', freq: '97.7 FM', stream: 'https://c16.radioboss.fm:8438/stream' },
             { name: 'Радио Исфара', freq: '93.9 FM', stream: 'https://c34.radioboss.fm:8880/stream' }
         ];
