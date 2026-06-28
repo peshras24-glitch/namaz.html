@@ -39,7 +39,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding-bottom: 70px;
+            padding-bottom: 130px;
         }
 
         .glass-card {
@@ -59,14 +59,8 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* ===== ШАПКА ===== */
@@ -168,6 +162,86 @@
             background: rgba(255, 255, 255, 0.05);
         }
 
+        /* ===== МИНИ-ПЛЕЕР ===== */
+        .mini-player {
+            position: fixed;
+            bottom: 62px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 17, 40, 0.95);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border-glass);
+            border-bottom: 1px solid var(--border-glass);
+            padding: 10px 16px;
+            z-index: 150;
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+
+        .mini-player.show {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .mini-player-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .mini-player-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .mini-player-name {
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .mini-player-status {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .mini-player-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mini-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 18px;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 4px 8px;
+        }
+
+        .mini-btn:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .mini-btn.play-btn {
+            color: var(--accent);
+            font-size: 22px;
+        }
+
+        .mini-btn.play-btn:hover {
+            color: var(--accent-hover);
+        }
+
         /* ===== ПЛЕЕР ===== */
         .player-circle {
             position: relative;
@@ -204,18 +278,9 @@
         }
 
         @keyframes pulseRing {
-            0% {
-                transform: scale(1);
-                opacity: 0.5;
-            }
-            50% {
-                transform: scale(1.15);
-                opacity: 0.1;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 0.5;
-            }
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.15); opacity: 0.1; }
+            100% { transform: scale(1); opacity: 0.5; }
         }
 
         .particle {
@@ -229,51 +294,21 @@
             animation: orbit 5s linear infinite;
         }
 
-        .particle:nth-child(1) {
-            top: -10px;
-            left: 50%;
-            animation-delay: 0s;
-        }
-        .particle:nth-child(2) {
-            top: 20%;
-            right: -16px;
-            animation-delay: 0.7s;
-        }
-        .particle:nth-child(3) {
-            bottom: -10px;
-            left: 50%;
-            animation-delay: 1.4s;
-        }
-        .particle:nth-child(4) {
-            top: 20%;
-            left: -16px;
-            animation-delay: 2.1s;
-        }
-        .particle:nth-child(5) {
-            top: 50%;
-            right: -20px;
-            animation-delay: 2.8s;
-        }
-        .particle:nth-child(6) {
-            top: 50%;
-            left: -20px;
-            animation-delay: 3.5s;
-        }
+        .particle:nth-child(1) { top: -10px; left: 50%; animation-delay: 0s; }
+        .particle:nth-child(2) { top: 20%; right: -16px; animation-delay: 0.7s; }
+        .particle:nth-child(3) { bottom: -10px; left: 50%; animation-delay: 1.4s; }
+        .particle:nth-child(4) { top: 20%; left: -16px; animation-delay: 2.1s; }
+        .particle:nth-child(5) { top: 50%; right: -20px; animation-delay: 2.8s; }
+        .particle:nth-child(6) { top: 50%; left: -20px; animation-delay: 3.5s; }
 
         .particle.stopped {
             animation-play-state: paused;
         }
 
         @keyframes orbit {
-            0% {
-                transform: rotate(0deg) translateX(90px) scale(1);
-            }
-            50% {
-                transform: rotate(180deg) translateX(90px) scale(1.3);
-            }
-            100% {
-                transform: rotate(360deg) translateX(90px) scale(1);
-            }
+            0% { transform: rotate(0deg) translateX(90px) scale(1); }
+            50% { transform: rotate(180deg) translateX(90px) scale(1.3); }
+            100% { transform: rotate(360deg) translateX(90px) scale(1); }
         }
 
         .wave-ring {
@@ -297,14 +332,8 @@
         }
 
         @keyframes waveExpand {
-            0% {
-                transform: scale(0.5);
-                opacity: 0.7;
-            }
-            100% {
-                transform: scale(1.6);
-                opacity: 0;
-            }
+            0% { transform: scale(0.5); opacity: 0.7; }
+            100% { transform: scale(1.6); opacity: 0; }
         }
 
         .current-station-name {
@@ -319,54 +348,6 @@
             color: var(--listener-color);
             text-align: center;
             margin-bottom: 6px;
-        }
-
-        .player-controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 28px;
-            margin: 8px 0;
-        }
-
-        .player-control {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 30px;
-            cursor: pointer;
-            transition: var(--transition);
-            padding: 8px;
-        }
-
-        .player-control:hover {
-            color: var(--accent);
-            transform: scale(1.05);
-        }
-
-        .player-control.play-btn {
-            background: var(--accent);
-            border-radius: 50%;
-            width: 64px;
-            height: 64px;
-            color: #0A1128;
-            font-size: 26px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 25px rgba(245, 200, 66, 0.3);
-        }
-
-        .player-control.play-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 35px rgba(245, 200, 66, 0.5);
-        }
-
-        .player-status {
-            font-size: 14px;
-            color: var(--text-secondary);
-            text-align: center;
-            margin-top: 4px;
         }
 
         .btn-primary {
@@ -640,6 +621,29 @@
             border-color: var(--accent);
         }
 
+        /* ===== ФАКТЫ (СО СТРЕЛКАМИ) ===== */
+        .fact-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .fact-nav {
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px 12px;
+            transition: var(--transition);
+        }
+
+        .fact-nav:hover {
+            color: var(--text-primary);
+            transform: scale(1.2);
+        }
+
         /* ===== ПРОФИЛЬ ===== */
         .profile-item {
             display: flex;
@@ -763,7 +767,7 @@
 
         .toast-message {
             position: fixed;
-            bottom: 90px;
+            bottom: 130px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(10, 17, 40, 0.95);
@@ -777,14 +781,8 @@
         }
 
         @keyframes toastUp {
-            from {
-                opacity: 0;
-                transform: translate(-50%, 20px);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, 0);
-            }
+            from { opacity: 0; transform: translate(-50%, 20px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
         }
 
         .fa-spinner {
@@ -792,12 +790,8 @@
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -836,7 +830,7 @@
 
                 <div class="player-circle" id="playerCircle">
                     <img src="https://i.ibb.co/5g1NGVRD/file-000000001bd071fbb0d2fc8bbcb0138a.png" class="logo-img" id="vinylMain">
-                    <div class="ring pulse" id="pulseRing"></div>
+                    <div class="ring" id="pulseRing"></div>
                     <div class="wave-ring" id="waveRing1"></div>
                     <div class="wave-ring" id="waveRing2"></div>
                     <div class="particle" id="particle1"></div>
@@ -852,14 +846,16 @@
                 <button class="btn-primary" id="playBtnMain" style="width: 100%; max-width: 300px; margin: 8px auto; padding: 14px; font-size: 18px; border-radius: 40px;">
                     <i class="fas fa-play"></i> <span>Слушать</span>
                 </button>
-
-                <div class="player-status" id="playerStatus">▶ Нажмите кнопку</div>
             </div>
 
-            <!-- ФАКТ ДНЯ -->
+            <!-- ФАКТЫ -->
             <div class="glass-card" style="text-align: center;">
                 <div style="font-weight: 600; margin-bottom: 4px;">💡 Факти имрӯз</div>
-                <div id="factOfDay" style="font-size: 15px; color: var(--text-secondary); line-height: 1.6;"></div>
+                <div class="fact-container">
+                    <button class="fact-nav" id="factPrev"><i class="fas fa-chevron-left"></i></button>
+                    <div id="factOfDay" style="font-size: 15px; color: var(--text-secondary); line-height: 1.6; flex: 1; padding: 0 8px;"></div>
+                    <button class="fact-nav" id="factNext"><i class="fas fa-chevron-right"></i></button>
+                </div>
             </div>
 
             <!-- РЕКЛАМА -->
@@ -894,8 +890,6 @@
                 <button class="btn-primary" id="detailPlayBtn" style="width: 100%; max-width: 300px; margin: 12px auto; padding: 14px; font-size: 18px; border-radius: 40px;">
                     <i class="fas fa-play"></i> <span>Слушать</span>
                 </button>
-
-                <div class="player-status" id="detailStatus">▶ Нажмите кнопку</div>
             </div>
 
             <div class="glass-card">
@@ -1026,7 +1020,21 @@
 
     </div>
 
-    <!-- НИЖНЯЯ НАВИГАЦИЯ -->
+    <!-- ===== МИНИ-ПЛЕЕР ===== -->
+    <div class="mini-player" id="miniPlayer">
+        <div class="mini-player-content">
+            <div class="mini-player-info">
+                <div class="mini-player-name" id="miniPlayerName">Радио не выбрано</div>
+                <div class="mini-player-status" id="miniPlayerStatus">⏸ Пауза</div>
+            </div>
+            <div class="mini-player-controls">
+                <button class="mini-btn play-btn" id="miniPlayBtn"><i class="fas fa-play"></i></button>
+                <button class="mini-btn" id="miniCloseBtn"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== НИЖНЯЯ НАВИГАЦИЯ ===== -->
     <nav class="bottom-nav">
         <button class="nav-item active" data-page="main"><i class="fas fa-home"></i></button>
         <button class="nav-item" data-page="radio"><i class="fas fa-list-ul"></i></button>
@@ -1123,6 +1131,8 @@
         let listeners = {};
         const listenerIntervals = {};
 
+        let currentFactIndex = Math.floor(Math.random() * FACTS.length);
+
         function generateListenerCount() {
             return Math.floor(Math.random() * (150 - 12 + 1)) + 12;
         }
@@ -1181,7 +1191,7 @@
             renderRadios();
             renderFavorites();
             renderRecent();
-            updatePlayerUI();
+            syncAnimation();
         }
 
         function showPage(pageId) {
@@ -1193,18 +1203,26 @@
             if (pageId === 'radio') { renderRadiosFull();
                 updateRadioListenersUI(); }
             if (pageId === 'main') { renderRecent();
-                updatePlayerUI(); }
-            if (pageId === 'radio-detail') { /* уже открыто */ }
+                syncAnimation(); }
+            if (pageId === 'radio-detail') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            updateMiniPlayer();
         }
 
         // ============================================================
-        // ФАКТ ДНЯ
+        // ФАКТЫ (СО СТРЕЛКАМИ)
         // ============================================================
 
-        function getRandomFact() {
-            const randomIndex = Math.floor(Math.random() * FACTS.length);
-            document.getElementById('factOfDay').textContent = FACTS[randomIndex];
+        function showFact(index) {
+            if (index < 0) index = FACTS.length - 1;
+            if (index >= FACTS.length) index = 0;
+            currentFactIndex = index;
+            document.getElementById('factOfDay').textContent = FACTS[currentFactIndex];
         }
+
+        document.getElementById('factPrev').addEventListener('click', () => showFact(currentFactIndex - 1));
+        document.getElementById('factNext').addEventListener('click', () => showFact(currentFactIndex + 1));
 
         // ============================================================
         // НЕДАВНО СЛУШАЛИ
@@ -1242,46 +1260,46 @@
         }
 
         // ============================================================
-        // ПЛЕЕР
+        // СИНХРОНИЗАЦИЯ АНИМАЦИИ
         // ============================================================
 
-        function updatePlayerUI() {
-            const playBtn = document.getElementById('playBtnMain');
-            const status = document.getElementById('playerStatus');
+        function syncAnimation() {
             const vinyl = document.getElementById('vinylMain');
+            const pulseRing = document.getElementById('pulseRing');
+            const waveRing1 = document.getElementById('waveRing1');
+            const waveRing2 = document.getElementById('waveRing2');
+            const particles = document.querySelectorAll('.particle');
+            const playBtn = document.getElementById('playBtnMain');
             const detailPlayBtn = document.getElementById('detailPlayBtn');
-            const detailStatus = document.getElementById('detailStatus');
 
             if (isPlaying) {
-                playBtn.innerHTML = '<i class="fas fa-pause"></i> <span>Пауза</span>';
-                status.textContent = currentLang === 'tg' ? 'Гӯш карда истодаед...' : 'Слушаем...';
+                vinyl.classList.add('playing');
+                pulseRing.classList.add('pulse');
+                waveRing1.classList.add('active');
+                waveRing2.classList.add('active');
+                particles.forEach(p => p.classList.remove('stopped'));
+                if (playBtn) {
+                    playBtn.innerHTML = '<i class="fas fa-pause"></i> <span>Пауза</span>';
+                    playBtn.disabled = false;
+                }
                 if (detailPlayBtn) {
                     detailPlayBtn.innerHTML = '<i class="fas fa-pause"></i> <span>Пауза</span>';
+                    detailPlayBtn.disabled = false;
                 }
-                if (detailStatus) {
-                    detailStatus.textContent = currentLang === 'tg' ? 'Гӯш карда истодаед...' : 'Слушаем...';
-                }
-                document.getElementById('pulseRing').classList.add('pulse');
-                document.getElementById('waveRing1').classList.add('active');
-                document.getElementById('waveRing2').classList.add('active');
-                document.querySelectorAll('.particle').forEach(p => p.classList.remove('stopped'));
-                if (playBtn) playBtn.disabled = false;
-                if (detailPlayBtn) detailPlayBtn.disabled = false;
             } else {
-                playBtn.innerHTML = '<i class="fas fa-play"></i> <span>Слушать</span>';
-                status.textContent = currentLang === 'tg' ? '▶ Нажмите кнопку' : '▶ Нажмите кнопку';
+                vinyl.classList.remove('playing');
+                pulseRing.classList.remove('pulse');
+                waveRing1.classList.remove('active');
+                waveRing2.classList.remove('active');
+                particles.forEach(p => p.classList.add('stopped'));
+                if (playBtn) {
+                    playBtn.innerHTML = '<i class="fas fa-play"></i> <span>Слушать</span>';
+                    playBtn.disabled = false;
+                }
                 if (detailPlayBtn) {
                     detailPlayBtn.innerHTML = '<i class="fas fa-play"></i> <span>Слушать</span>';
+                    detailPlayBtn.disabled = false;
                 }
-                if (detailStatus) {
-                    detailStatus.textContent = currentLang === 'tg' ? '▶ Нажмите кнопку' : '▶ Нажмите кнопку';
-                }
-                document.getElementById('pulseRing').classList.remove('pulse');
-                document.getElementById('waveRing1').classList.remove('active');
-                document.getElementById('waveRing2').classList.remove('active');
-                document.querySelectorAll('.particle').forEach(p => p.classList.add('stopped'));
-                if (playBtn) playBtn.disabled = false;
-                if (detailPlayBtn) detailPlayBtn.disabled = false;
             }
 
             const nowPlaying = document.getElementById('mainNowPlaying');
@@ -1299,6 +1317,8 @@
                 nowPlaying.textContent = currentLang === 'tg' ? 'Радио интихоб нашудааст' : 'Радио не выбрано';
                 document.getElementById('mainListenerCount').textContent = '● 0 нафари шунаванда';
             }
+
+            updateMiniPlayer();
         }
 
         // ============================================================
@@ -1333,9 +1353,18 @@
             telegram.href = radio.telegram;
             telegram.innerHTML = `<i class="fab fa-telegram-plane"></i> Telegram`;
 
+            // Обновляем кнопку в зависимости от того, играет ли это радио
+            const detailPlayBtn = document.getElementById('detailPlayBtn');
+            if (currentStationIndex === index && isPlaying) {
+                detailPlayBtn.innerHTML = '<i class="fas fa-pause"></i> <span>Пауза</span>';
+            } else {
+                detailPlayBtn.innerHTML = '<i class="fas fa-play"></i> <span>Слушать</span>';
+            }
+
             showPage('radio-detail');
-            updatePlayerUI();
+            syncAnimation();
             renderRecent();
+            updateMiniPlayer();
         }
 
         // ============================================================
@@ -1346,10 +1375,11 @@
             if (currentStationIndex === index && isPlaying) {
                 audio.pause();
                 isPlaying = false;
-                updatePlayerUI();
+                syncAnimation();
                 renderRecent();
                 updateRadiosListUI();
                 updateFavoritesUI();
+                updateMiniPlayer();
                 return;
             }
             playRadio(index);
@@ -1361,8 +1391,6 @@
 
             const playBtn = document.getElementById('playBtnMain');
             const detailPlayBtn = document.getElementById('detailPlayBtn');
-            const status = document.getElementById('playerStatus');
-            const detailStatus = document.getElementById('detailStatus');
 
             // === ПОКАЗЫВАЕМ ЗАГРУЗКУ ===
             if (playBtn) {
@@ -1372,12 +1400,6 @@
             if (detailPlayBtn) {
                 detailPlayBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Загрузка...</span>';
                 detailPlayBtn.disabled = true;
-            }
-            if (status) {
-                status.textContent = currentLang === 'tg' ? '⏳ Пайваст шава истодааст...' : '⏳ Подключаемся...';
-            }
-            if (detailStatus) {
-                detailStatus.textContent = currentLang === 'tg' ? '⏳ Пайваст шава истодааст...' : '⏳ Подключаемся...';
             }
 
             audio.src = radio.stream;
@@ -1391,7 +1413,7 @@
                     isPlaying = true;
                     addRecentRadio(index);
                     // === УБИРАЕМ ЗАГРУЗКУ ===
-                    updatePlayerUI();
+                    syncAnimation();
                     renderRecent();
                     updateRadiosListUI();
                     updateFavoritesUI();
@@ -1400,6 +1422,7 @@
                     }
                     if (playBtn) playBtn.disabled = false;
                     if (detailPlayBtn) detailPlayBtn.disabled = false;
+                    updateMiniPlayer();
                 }).catch(() => {
                     isPlaying = false;
                     // === ОШИБКА ===
@@ -1411,18 +1434,60 @@
                         detailPlayBtn.innerHTML = '<i class="fas fa-play"></i> <span>Слушать</span>';
                         detailPlayBtn.disabled = false;
                     }
-                    if (status) {
-                        status.textContent = currentLang === 'tg' ? '❌ Пайваст нашуд. Интернетро санҷед.' :
-                            '❌ Не удалось подключиться. Проверьте интернет.';
-                    }
-                    if (detailStatus) {
-                        detailStatus.textContent = currentLang === 'tg' ? '❌ Пайваст нашуд. Интернетро санҷед.' :
-                            '❌ Не удалось подключиться. Проверьте интернет.';
-                    }
-                    updatePlayerUI();
+                    syncAnimation();
+                    updateMiniPlayer();
                 });
             }
         }
+
+        // ============================================================
+        // МИНИ-ПЛЕЕР
+        // ============================================================
+
+        const miniPlayer = document.getElementById('miniPlayer');
+        const miniPlayerName = document.getElementById('miniPlayerName');
+        const miniPlayerStatus = document.getElementById('miniPlayerStatus');
+        const miniPlayBtn = document.getElementById('miniPlayBtn');
+        const miniCloseBtn = document.getElementById('miniCloseBtn');
+
+        function updateMiniPlayer() {
+            if (currentRadio) {
+                miniPlayerName.textContent = currentRadio.name;
+                miniPlayerStatus.textContent = isPlaying ? '🎵 Слушаем...' : '⏸ Пауза';
+                miniPlayBtn.innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
+                miniPlayer.classList.add('show');
+            } else {
+                miniPlayer.classList.remove('show');
+            }
+        }
+
+        miniPlayBtn.addEventListener('click', function() {
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+                syncAnimation();
+                updateMiniPlayer();
+                updateRadiosListUI();
+                updateFavoritesUI();
+            } else {
+                if (currentStationIndex === -1) {
+                    playRadio(0);
+                } else {
+                    playRadio(currentStationIndex);
+                }
+                syncAnimation();
+                updateMiniPlayer();
+            }
+        });
+
+        miniCloseBtn.addEventListener('click', function() {
+            audio.pause();
+            isPlaying = false;
+            syncAnimation();
+            updateMiniPlayer();
+            updateRadiosListUI();
+            updateFavoritesUI();
+        });
 
         // ============================================================
         // КНОПКИ УПРАВЛЕНИЯ
@@ -1432,10 +1497,11 @@
             if (isPlaying) {
                 audio.pause();
                 isPlaying = false;
-                updatePlayerUI();
+                syncAnimation();
                 renderRecent();
                 updateRadiosListUI();
                 updateFavoritesUI();
+                updateMiniPlayer();
             } else {
                 if (currentStationIndex === -1) {
                     playRadio(0);
@@ -1449,10 +1515,11 @@
             if (isPlaying) {
                 audio.pause();
                 isPlaying = false;
-                updatePlayerUI();
+                syncAnimation();
                 renderRecent();
                 updateRadiosListUI();
                 updateFavoritesUI();
+                updateMiniPlayer();
             } else {
                 if (currentStationIndex === -1) {
                     playRadio(0);
@@ -1636,7 +1703,17 @@
 
         function exitApp() {
             if (confirm(currentLang === 'tg' ? 'Оё шумо мехоҳед баромадед?' : 'Вы уверены, что хотите выйти?')) {
-                window.close();
+                try {
+                    window.close();
+                } catch (e) {
+                    window.location.href = 'about:blank';
+                    window.history.go(-999);
+                }
+                try {
+                    if (window.android && window.android.closeApp) {
+                        window.android.closeApp();
+                    }
+                } catch (e) {}
             }
         }
 
@@ -1656,12 +1733,12 @@
             });
 
             initListeners();
-            getRandomFact();
+            showFact(currentFactIndex);
             renderRadios();
             renderRadiosFull();
             renderFavorites();
             renderRecent();
-            updatePlayerUI();
+            syncAnimation();
             showPage('main');
 
             document.getElementById('greeting').textContent = getGreeting() + ' 👋';
