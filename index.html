@@ -9,58 +9,95 @@
     <meta http-equiv="Expires" content="0">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         :root {
-            --bg-primary: #0A1128;
-            --bg-card: rgba(255, 255, 255, 0.05);
-            --accent: #F5C842;
-            --accent-hover: #e6b830;
-            --text-primary: #FFFFFF;
-            --text-secondary: rgba(255, 255, 255, 0.6);
-            --border-glass: rgba(255, 255, 255, 0.06);
-            --radius: 20px;
-            --transition: all 0.3s ease;
-            --listener-color: #4CAF50;
+            --bg-1: #0A0D24;
+            --bg-2: #170F3A;
+            --gold: #F0B429;
+            --gold-dim: #C8961F;
+            --terracotta: #E8623D;
+            --teal: #34C7B4;
+            --text: #F7F4EC;
+            --text-dim: rgba(247, 244, 236, 0.6);
+            --text-faint: rgba(247, 244, 236, 0.4);
+            --glass: rgba(255, 255, 255, 0.045);
+            --glass-hover: rgba(255, 255, 255, 0.075);
+            --border: rgba(255, 255, 255, 0.09);
+            --border-strong: rgba(240, 180, 41, 0.45);
+            --radius-lg: 26px;
+            --radius-md: 18px;
+            --radius-sm: 12px;
+            --font-display: 'Sora', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        html { scrollbar-width: none; }
+
         body {
-            background: var(--bg-primary);
-            font-family: 'Inter', sans-serif;
-            color: var(--text-primary);
+            background:
+                radial-gradient(ellipse 90% 60% at 15% -10%, rgba(240, 180, 41, 0.10), transparent),
+                radial-gradient(ellipse 70% 50% at 100% 10%, rgba(232, 98, 61, 0.10), transparent),
+                linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+            background-attachment: fixed;
+            font-family: var(--font-body);
+            color: var(--text);
             line-height: 1.5;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding-bottom: 130px;
+            padding-bottom: 132px;
+            position: relative;
+        }
+
+        /* subtle ornament pattern, evokes adras/suzani geometry without being loud */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.05;
+            background-image:
+                repeating-linear-gradient(45deg, var(--gold) 0, var(--gold) 1px, transparent 1px, transparent 26px),
+                repeating-linear-gradient(-45deg, var(--gold) 0, var(--gold) 1px, transparent 1px, transparent 26px);
         }
 
         .glass-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(8px);
-            border: 1px solid var(--border-glass);
-            border-radius: var(--radius);
+            position: relative;
+            z-index: 1;
+            background: var(--glass);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
             padding: 20px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             transition: var(--transition);
             animation: fadeIn 0.5s ease;
         }
 
-        .glass-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
+        .card-label {
+            font-family: var(--font-display);
+            font-size: 12.5px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 12px;
         }
 
         /* ===== ШАПКА ===== */
@@ -68,730 +105,426 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(10, 17, 40, 0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-glass);
-            padding: 12px 16px;
+            background: rgba(10, 13, 36, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 13px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-        }
+        .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; }
 
         .logo {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             object-fit: contain;
             border-radius: 10px;
         }
 
         .app-title {
-            font-size: 18px;
+            font-family: var(--font-display);
+            font-size: 17px;
             font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.5px;
+            color: var(--text);
+            letter-spacing: -0.2px;
         }
 
-        .app-title span {
-            color: var(--accent);
+        .app-title span { color: var(--gold); }
+
+        .live-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--terracotta);
+            background: rgba(232, 98, 61, 0.12);
+            border: 1px solid rgba(232, 98, 61, 0.3);
+            padding: 5px 10px;
+            border-radius: 20px;
         }
+
+        .live-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--terracotta);
+            animation: blink 1.4s ease-in-out infinite;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
 
         /* ===== ОСНОВНОЙ КОНТЕЙНЕР ===== */
-        .container {
-            flex: 1;
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 16px 16px 30px;
-            width: 100%;
-        }
-
-        .page {
-            display: none;
-        }
-
-        .page.active {
-            display: block;
-        }
+        .container { flex: 1; max-width: 720px; margin: 0 auto; padding: 16px 16px 30px; width: 100%; position: relative; z-index: 1; }
+        .page { display: none; }
+        .page.active { display: block; }
 
         /* ===== НИЖНЯЯ НАВИГАЦИЯ ===== */
         .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(10, 17, 40, 0.95);
-            backdrop-filter: blur(12px);
-            border-top: 1px solid var(--border-glass);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(10, 13, 36, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid var(--border);
+            display: flex; justify-content: space-around; align-items: center;
             padding: 6px 0;
             padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
             z-index: 200;
         }
 
         .nav-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 24px;
-            cursor: pointer;
-            transition: all 0.2s;
-            padding: 10px;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+            background: none; border: none; color: var(--text-faint);
+            font-size: 19px; cursor: pointer; transition: var(--transition);
+            padding: 8px; border-radius: 16px; width: 58px; height: 50px;
         }
 
-        .nav-item.active {
-            color: var(--accent);
-            background: rgba(245, 200, 66, 0.1);
-        }
-
-        .nav-item:hover {
-            color: var(--text-primary);
-            background: rgba(255, 255, 255, 0.05);
-        }
+        .nav-item .nav-label { font-size: 9.5px; font-weight: 600; letter-spacing: 0.02em; }
+        .nav-item.active { color: var(--gold); background: rgba(240, 180, 41, 0.1); }
+        .nav-item:hover { color: var(--text); }
 
         /* ===== МИНИ-ПЛЕЕР ===== */
         .mini-player {
-            position: fixed;
-            bottom: 62px;
-            left: 0;
-            right: 0;
-            background: rgba(10, 17, 40, 0.95);
-            backdrop-filter: blur(12px);
-            border-top: 1px solid var(--border-glass);
-            border-bottom: 1px solid var(--border-glass);
-            padding: 10px 16px;
+            position: fixed; bottom: 62px; left: 0; right: 0;
+            background: rgba(10, 13, 36, 0.94);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid var(--border);
+            padding: 10px 14px;
             z-index: 150;
             display: none;
             animation: slideUp 0.3s ease;
         }
 
-        .mini-player.show {
-            display: block;
+        .mini-player.show { display: block; }
+
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .mini-player-content { display: flex; align-items: center; gap: 12px; }
+
+        .mini-avatar {
+            width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-display); font-weight: 700; font-size: 13px; color: rgba(0,0,0,0.75);
+            cursor: pointer;
         }
 
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        .mini-player-info { flex: 1; min-width: 0; cursor: pointer; }
+        .mini-player-name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .mini-player-status { font-size: 11.5px; color: var(--text-dim); font-family: var(--font-mono); }
 
-        .mini-player-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .mini-player-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .mini-player-name {
-            font-weight: 600;
-            font-size: 14px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .mini-player-status {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .mini-player-controls {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .mini-player-controls { display: flex; align-items: center; gap: 6px; }
 
         .mini-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 18px;
-            cursor: pointer;
-            transition: var(--transition);
-            padding: 4px 8px;
+            background: none; border: none; color: var(--text-dim); font-size: 16px; cursor: pointer;
+            transition: var(--transition); width: 34px; height: 34px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        .mini-btn:hover {
-            color: var(--accent);
-            transform: scale(1.1);
-        }
+        .mini-btn:hover { color: var(--text); background: var(--glass-hover); }
+        .mini-btn.play-btn { color: var(--bg-1); background: var(--gold); font-size: 15px; }
+        .mini-btn.play-btn:hover { background: var(--gold-dim); }
 
-        .mini-btn.play-btn {
-            color: var(--accent);
-            font-size: 22px;
-        }
-
-        .mini-btn.play-btn:hover {
-            color: var(--accent-hover);
-        }
-
-        /* ===== ПЛЕЕР ===== */
-        .player-circle {
-            position: relative;
-            width: 160px;
-            height: 160px;
-            margin: 12px auto;
-        }
-
-        .player-circle .logo-img {
-            width: 100%;
-            height: 100%;
+        /* ===== АВАТАРЫ СТАНЦИЙ (монограммы) ===== */
+        .station-avatar {
             border-radius: 50%;
-            object-fit: cover;
-            position: relative;
-            z-index: 2;
-            border: 3px solid var(--accent);
-            box-shadow: 0 0 30px rgba(245, 200, 66, 0.2);
-        }
-
-        .player-circle .ring {
-            position: absolute;
-            top: -12px;
-            left: -12px;
-            width: calc(100% + 24px);
-            height: calc(100% + 24px);
-            border-radius: 50%;
-            border: 4px solid var(--accent);
-            opacity: 0.5;
-            z-index: 1;
-        }
-
-        .player-circle .ring.pulse {
-            animation: pulseRing 1.8s ease-in-out infinite;
-        }
-
-        @keyframes pulseRing {
-            0% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.15); opacity: 0.1; }
-            100% { transform: scale(1); opacity: 0.5; }
-        }
-
-        .particle {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            z-index: 3;
-            box-shadow: 0 0 15px var(--accent);
-            animation: orbit 5s linear infinite;
-        }
-
-        .particle:nth-child(1) { top: -10px; left: 50%; animation-delay: 0s; }
-        .particle:nth-child(2) { top: 20%; right: -16px; animation-delay: 0.7s; }
-        .particle:nth-child(3) { bottom: -10px; left: 50%; animation-delay: 1.4s; }
-        .particle:nth-child(4) { top: 20%; left: -16px; animation-delay: 2.1s; }
-        .particle:nth-child(5) { top: 50%; right: -20px; animation-delay: 2.8s; }
-        .particle:nth-child(6) { top: 50%; left: -20px; animation-delay: 3.5s; }
-
-        .particle.stopped {
-            animation-play-state: paused;
-        }
-
-        @keyframes orbit {
-            0% { transform: rotate(0deg) translateX(90px) scale(1); }
-            50% { transform: rotate(180deg) translateX(90px) scale(1.3); }
-            100% { transform: rotate(360deg) translateX(90px) scale(1); }
-        }
-
-        .wave-ring {
-            position: absolute;
-            top: -30px;
-            left: -30px;
-            width: calc(100% + 60px);
-            height: calc(100% + 60px);
-            border-radius: 50%;
-            border: 2px solid var(--accent);
-            opacity: 0;
-            z-index: 0;
-        }
-
-        .wave-ring.active {
-            animation: waveExpand 2.5s ease-out infinite;
-        }
-
-        .wave-ring:nth-child(2) {
-            animation-delay: 0.8s;
-        }
-
-        @keyframes waveExpand {
-            0% { transform: scale(0.5); opacity: 0.7; }
-            100% { transform: scale(1.6); opacity: 0; }
-        }
-
-        .current-station-name {
-            font-size: 24px;
-            font-weight: 700;
-            text-align: center;
-            margin: 8px 0 4px;
-        }
-
-        .listener-count {
-            font-size: 14px;
-            color: var(--listener-color);
-            text-align: center;
-            margin-bottom: 6px;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            border: none;
-            border-radius: 40px;
-            padding: 8px 20px;
-            color: #0A1128;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            transform: scale(1.02);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        /* ===== НЕДАВНО СЛУШАЛИ ===== */
-        .recent-scroll {
-            display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            padding: 8px 0 12px;
-            scrollbar-width: none;
-        }
-
-        .recent-scroll::-webkit-scrollbar {
-            display: none;
-        }
-
-        .recent-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-width: 70px;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-            background: none;
-            color: var(--text-primary);
-        }
-
-        .recent-item:hover {
-            transform: translateY(-4px);
-        }
-
-        .recent-item .circle {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--accent);
-            margin-bottom: 6px;
-        }
-
-        .recent-item .name {
-            font-size: 12px;
-            text-align: center;
-            line-height: 1.2;
-            max-width: 70px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        /* ===== КАРТОЧКИ РАДИО ===== */
-        .radio-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 16px;
-            background: var(--bg-card);
-            border-radius: 16px;
-            border: 1px solid var(--border-glass);
-            margin-bottom: 10px;
-            transition: var(--transition);
-            border-bottom: none;
-            cursor: pointer;
-        }
-
-        .radio-item:hover {
-            border-color: var(--accent);
-            transform: translateX(4px);
-        }
-
-        .radio-logo-small {
-            width: 56px;
-            height: 56px;
-            border-radius: 12px;
-            object-fit: cover;
-            background: var(--bg-card);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-display); font-weight: 700;
+            color: rgba(0,0,0,0.72);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25);
             flex-shrink: 0;
         }
 
-        .radio-info {
-            flex: 1;
+        /* ===== ГЕРОЙ / ПЛЕЕР ===== */
+        .player-hero { text-align: center; padding: 26px 18px 22px; }
+        .now-playing-label { font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+
+        .player-circle { position: relative; width: 168px; height: 168px; margin: 4px auto 14px; }
+
+        .player-circle .station-avatar {
+            width: 100%; height: 100%; font-size: 40px;
+            position: relative; z-index: 2;
+            border: 3px solid var(--gold);
+            box-shadow: 0 0 40px rgba(240, 180, 41, 0.22);
         }
 
-        .radio-name {
-            font-weight: 600;
-            font-size: 17px;
+        .player-circle .ring {
+            position: absolute; top: -12px; left: -12px;
+            width: calc(100% + 24px); height: calc(100% + 24px);
+            border-radius: 50%; border: 2px solid var(--gold); opacity: 0.5; z-index: 1;
         }
 
-        .radio-freq {
-            font-size: 13px;
-            color: var(--text-secondary);
+        .player-circle .ring.pulse { animation: pulseRing 1.8s ease-in-out infinite; }
+
+        @keyframes pulseRing {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.16); opacity: 0.08; }
+            100% { transform: scale(1); opacity: 0.5; }
         }
 
-        .radio-listeners {
-            font-size: 12px;
-            color: var(--listener-color);
-            margin-top: 2px;
+        .wave-ring {
+            position: absolute; top: -28px; left: -28px;
+            width: calc(100% + 56px); height: calc(100% + 56px);
+            border-radius: 50%; border: 1.5px solid var(--terracotta); opacity: 0; z-index: 0;
         }
 
-        .radio-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .wave-ring.active { animation: waveExpand 2.5s ease-out infinite; }
+        .wave-ring:nth-child(3) { animation-delay: 0.9s; }
+
+        @keyframes waveExpand {
+            0% { transform: scale(0.55); opacity: 0.6; }
+            100% { transform: scale(1.55); opacity: 0; }
         }
 
-        .favorite-btn {
-            background: none;
-            border: none;
-            font-size: 22px;
-            cursor: pointer;
-            color: var(--text-secondary);
-            transition: var(--transition);
-            padding: 4px;
+        .current-station-name { font-family: var(--font-display); font-size: 23px; font-weight: 700; margin: 4px 0 2px; }
+        .listener-count { font-size: 13px; color: var(--teal); font-family: var(--font-mono); margin-bottom: 14px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .listener-count .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); }
+
+        /* ===== ЭКВАЛАЙЗЕР ===== */
+        .equalizer { display: flex; align-items: flex-end; justify-content: center; gap: 4px; height: 20px; margin: 0 0 16px; }
+        .eq-bar { width: 4px; background: var(--gold); border-radius: 2px; height: 4px; transition: height 0.15s ease; opacity: 0.35; }
+        .equalizer.playing .eq-bar {
+            opacity: 1;
+            animation: eqBounce 0.9s ease-in-out infinite;
+        }
+        .eq-bar:nth-child(1) { animation-duration: 0.7s !important; }
+        .eq-bar:nth-child(2) { animation-duration: 1.0s !important; animation-delay: 0.1s; }
+        .eq-bar:nth-child(3) { animation-duration: 0.6s !important; animation-delay: 0.05s; }
+        .eq-bar:nth-child(4) { animation-duration: 0.95s !important; animation-delay: 0.15s; }
+        .eq-bar:nth-child(5) { animation-duration: 0.75s !important; animation-delay: 0.2s; }
+
+        @keyframes eqBounce {
+            0%, 100% { height: 4px; }
+            50% { height: 20px; }
         }
 
-        .favorite-btn.active {
-            color: #ff4444;
+        /* ===== FM-ШКАЛА НАСТРОЙКИ (сигнатурный элемент) ===== */
+        .tuning-dial { margin: 6px auto 18px; max-width: 320px; position: relative; }
+        .tuning-freq-display {
+            font-family: var(--font-mono); font-weight: 700; font-size: 15px; color: var(--gold);
+            margin-bottom: 8px; letter-spacing: 0.03em;
         }
+        .tuning-track {
+            position: relative; height: 34px; border-radius: 8px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.15));
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+        .tuning-ticks {
+            position: absolute; inset: 0;
+            background-image: repeating-linear-gradient(90deg, var(--text-faint) 0, var(--text-faint) 1px, transparent 1px, transparent calc(100% / 21));
+            opacity: 0.5;
+        }
+        .tuning-ticks::after {
+            content: '';
+            position: absolute; left: 0; right: 0; bottom: 0; height: 55%;
+            background-image: repeating-linear-gradient(90deg, transparent 0, transparent calc(100% / 42 - 1px), var(--text-faint) calc(100% / 42 - 1px), var(--text-faint) calc(100% / 42));
+            opacity: 0.6;
+        }
+        .tuning-scale-labels {
+            position: absolute; inset: 0; display: flex; justify-content: space-between;
+            align-items: flex-end; padding: 0 4px 3px; font-family: var(--font-mono);
+            font-size: 8.5px; color: var(--text-faint);
+        }
+        .tuning-needle {
+            position: absolute; top: 0; bottom: 0; width: 2px;
+            background: var(--terracotta);
+            box-shadow: 0 0 8px var(--terracotta);
+            transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            left: 50%;
+        }
+        .tuning-needle::before {
+            content: ''; position: absolute; top: -4px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
+            border-top: 6px solid var(--terracotta);
+        }
+
+        .btn-primary {
+            background: var(--gold); border: none; border-radius: 40px; padding: 9px 22px;
+            color: var(--bg-1); font-weight: 700; font-family: var(--font-display);
+            cursor: pointer; transition: var(--transition);
+        }
+        .btn-primary:hover { background: var(--gold-dim); transform: scale(1.02); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-primary:active { transform: scale(0.98); }
+
+        .btn-secondary {
+            background: var(--glass); border: 1px solid var(--border); border-radius: 40px;
+            padding: 9px 18px; color: var(--text); font-weight: 600; font-family: var(--font-body);
+            font-size: 14px; cursor: pointer; transition: var(--transition);
+            display: flex; align-items: center; gap: 7px;
+        }
+        .btn-secondary:hover { border-color: var(--border-strong); color: var(--gold); }
+
+        .player-actions { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+
+        /* ===== НЕДАВНО СЛУШАЛИ ===== */
+        .recent-scroll { display: flex; gap: 14px; overflow-x: auto; padding: 4px 2px 6px; scrollbar-width: none; }
+        .recent-scroll::-webkit-scrollbar { display: none; }
+
+        .recent-item {
+            display: flex; flex-direction: column; align-items: center; min-width: 66px;
+            cursor: pointer; transition: var(--transition); border: none; background: none; color: var(--text);
+        }
+        .recent-item:hover { transform: translateY(-3px); }
+        .recent-item .station-avatar { width: 56px; height: 56px; font-size: 17px; border: 2px solid rgba(240,180,41,0.4); margin-bottom: 6px; }
+        .recent-item .name { font-size: 11.5px; text-align: center; line-height: 1.2; max-width: 66px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-dim); }
+
+        .empty-recent { color: var(--text-faint); font-size: 13.5px; padding: 10px 2px; }
+
+        /* ===== КАРТОЧКИ РАДИО ===== */
+        .radio-item {
+            display: flex; align-items: center; gap: 13px; padding: 13px 14px;
+            background: var(--glass); border-radius: var(--radius-md); border: 1px solid var(--border);
+            margin-bottom: 9px; transition: var(--transition); cursor: pointer;
+        }
+        .radio-item:hover { border-color: var(--border-strong); transform: translateX(3px); background: var(--glass-hover); }
+        .radio-item.is-live { border-color: rgba(232, 98, 61, 0.4); }
+
+        .radio-item .station-avatar { width: 52px; height: 52px; font-size: 15px; }
+        .radio-info { flex: 1; min-width: 0; }
+        .radio-name { font-weight: 600; font-size: 16px; font-family: var(--font-display); }
+        .radio-freq { font-size: 12.5px; color: var(--text-dim); font-family: var(--font-mono); margin-top: 1px; }
+        .radio-listeners { font-size: 11.5px; color: var(--teal); margin-top: 3px; font-family: var(--font-mono); }
+
+        .radio-actions { display: flex; align-items: center; gap: 8px; }
+
+        .favorite-btn { background: none; border: none; font-size: 19px; cursor: pointer; color: var(--text-faint); transition: var(--transition); padding: 4px; }
+        .favorite-btn.active { color: var(--terracotta); }
 
         .play-btn-small {
-            background: var(--accent);
-            border: none;
-            border-radius: 30px;
-            padding: 6px 14px;
-            color: #0A1128;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            background: var(--gold); border: none; border-radius: 30px; width: 38px; height: 38px;
+            color: var(--bg-1); font-size: 14px; cursor: pointer; transition: var(--transition);
+            display: flex; align-items: center; justify-content: center;
         }
+        .play-btn-small.playing { background: var(--terracotta); color: white; }
+        .play-btn-small:hover { transform: scale(1.08); }
 
-        .play-btn-small.playing {
-            background: #ff6b35;
-            color: white;
+        .see-all-btn {
+            display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+            padding: 12px; margin-top: 4px; background: none; border: 1px dashed var(--border);
+            border-radius: var(--radius-md); color: var(--text-dim); font-weight: 600; font-size: 14px;
+            cursor: pointer; transition: var(--transition);
         }
+        .see-all-btn:hover { border-color: var(--border-strong); color: var(--gold); }
 
-        .play-btn-small:hover {
-            transform: scale(1.05);
+        /* ===== ФИЛЬТР-ЧИПЫ ===== */
+        .filter-chips { display: flex; gap: 8px; margin-bottom: 14px; }
+        .filter-chip {
+            background: var(--glass); border: 1px solid var(--border); border-radius: 30px;
+            padding: 8px 16px; color: var(--text-dim); font-size: 13.5px; font-weight: 600;
+            cursor: pointer; transition: var(--transition);
         }
+        .filter-chip.active { background: var(--gold); color: var(--bg-1); border-color: var(--gold); }
 
         /* ===== СТРАНИЦА РАДИО ===== */
         .back-btn {
-            background: none;
-            border: none;
-            color: var(--accent);
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 0;
-            margin-bottom: 8px;
+            background: none; border: none; color: var(--gold); font-size: 15px; font-weight: 600;
+            cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 8px 2px; margin-bottom: 6px;
         }
+        .back-btn:hover { color: var(--gold-dim); }
 
-        .back-btn:hover {
-            color: var(--accent-hover);
-        }
+        .radio-detail-logo.station-avatar { width: 116px; height: 116px; font-size: 34px; margin: 0 auto 14px; border: 3px solid var(--gold); }
+        .radio-detail-name { font-family: var(--font-display); font-size: 25px; font-weight: 700; text-align: center; }
+        .radio-detail-freq { font-size: 14px; color: var(--text-dim); text-align: center; font-family: var(--font-mono); margin-top: 2px; }
+        .radio-detail-listeners { font-size: 13px; color: var(--teal); text-align: center; margin: 6px 0 4px; font-family: var(--font-mono); }
 
-        .radio-detail-logo {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 0 auto 12px;
-            display: block;
-            border: 3px solid var(--accent);
-        }
+        .radio-detail-desc { font-size: 14.5px; color: var(--text-dim); line-height: 1.65; margin: 14px 0; }
 
-        .radio-detail-name {
-            font-size: 26px;
-            font-weight: 700;
-            text-align: center;
-        }
-
-        .radio-detail-freq {
-            font-size: 16px;
-            color: var(--text-secondary);
-            text-align: center;
-        }
-
-        .radio-detail-listeners {
-            font-size: 14px;
-            color: var(--listener-color);
-            text-align: center;
-            margin: 4px 0 8px;
-        }
-
-        .radio-detail-desc {
-            font-size: 15px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin: 16px 0;
-        }
-
-        .radio-detail-contacts {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            font-size: 14px;
-            margin: 12px 0;
-        }
-
+        .radio-detail-contacts { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; }
         .radio-detail-contacts a {
-            color: var(--text-secondary);
-            text-decoration: none;
+            color: var(--text-dim); text-decoration: none; font-size: 13px; display: flex; align-items: center; gap: 6px;
+            background: var(--glass); border: 1px solid var(--border); padding: 8px 13px; border-radius: 30px;
+            transition: var(--transition);
         }
-
-        .radio-detail-contacts a:hover {
-            color: var(--accent);
-        }
+        .radio-detail-contacts a:hover { color: var(--gold); border-color: var(--border-strong); }
 
         /* ===== РЕКЛАМА ===== */
-        .ad-placeholder {
-            text-align: center;
-            padding: 20px;
-            color: var(--text-secondary);
-            border: 1px dashed var(--border-glass);
-            border-radius: 16px;
-            margin: 16px 0;
-        }
-
-        .ad-placeholder i {
-            font-size: 32px;
-            color: var(--accent);
-            margin-bottom: 8px;
-        }
+        .ad-placeholder { text-align: center; padding: 20px; color: var(--text-faint); border: 1px dashed var(--border); border-radius: var(--radius-md); }
+        .ad-placeholder i { font-size: 26px; color: var(--gold); margin-bottom: 8px; display: block; opacity: 0.7; }
 
         /* ===== ПОИСК ===== */
         .search-input {
-            width: 100%;
-            padding: 12px 16px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-glass);
-            border-radius: 40px;
-            color: var(--text-primary);
-            font-size: 16px;
-            outline: none;
-            transition: var(--transition);
-            margin-bottom: 16px;
+            width: 100%; padding: 13px 18px; background: var(--glass); border: 1px solid var(--border);
+            border-radius: 40px; color: var(--text); font-size: 15px; outline: none; transition: var(--transition);
+            margin-bottom: 14px; font-family: var(--font-body);
         }
+        .search-input::placeholder { color: var(--text-faint); }
+        .search-input:focus { border-color: var(--border-strong); }
 
-        .search-input::placeholder {
-            color: var(--text-secondary);
-        }
+        .empty-state { text-align: center; padding: 36px 20px; }
+        .empty-state .icon { font-size: 34px; color: var(--gold); opacity: 0.6; margin-bottom: 12px; }
+        .empty-state .title { font-family: var(--font-display); font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+        .empty-state .desc { color: var(--text-dim); font-size: 13.5px; }
 
-        .search-input:focus {
-            border-color: var(--accent);
-        }
-
-        /* ===== ФАКТЫ (СО СТРЕЛКАМИ) ===== */
-        .fact-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-        }
-
+        /* ===== ФАКТЫ ===== */
+        .fact-container { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
         .fact-nav {
-            background: none;
-            border: none;
-            color: var(--accent);
-            font-size: 20px;
-            cursor: pointer;
-            padding: 8px 12px;
-            transition: var(--transition);
+            background: var(--glass); border: 1px solid var(--border); color: var(--gold); font-size: 15px;
+            cursor: pointer; padding: 9px 12px; border-radius: 50%; transition: var(--transition); flex-shrink: 0;
         }
-
-        .fact-nav:hover {
-            color: var(--text-primary);
-            transform: scale(1.2);
-        }
+        .fact-nav:hover { border-color: var(--border-strong); background: var(--glass-hover); }
 
         /* ===== ПРОФИЛЬ ===== */
         .profile-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 0;
-            border-bottom: 1px solid var(--border-glass);
-            cursor: pointer;
-            transition: var(--transition);
+            display: flex; align-items: center; gap: 14px; padding: 14px 2px;
+            border-bottom: 1px solid var(--border); cursor: pointer; transition: var(--transition);
         }
+        .profile-item:last-child { border-bottom: none; }
+        .profile-item:hover { color: var(--gold); }
+        .profile-item i { width: 22px; text-align: center; color: var(--gold); font-size: 16px; }
+        .profile-item .chev { margin-left: auto; font-size: 12px; color: var(--text-faint); }
 
-        .profile-item:last-child {
-            border-bottom: none;
-        }
-
-        .profile-item:hover {
-            color: var(--accent);
-        }
-
-        .profile-item i {
-            width: 24px;
-            color: var(--accent);
-        }
-
-        .lang-buttons {
-            display: flex;
-            gap: 12px;
-            margin-top: 8px;
-        }
-
+        .lang-buttons { display: flex; gap: 10px; margin-top: 10px; }
         .lang-btn {
-            background: var(--bg-card);
-            border: 1px solid var(--border-glass);
-            border-radius: 30px;
-            padding: 8px 18px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: var(--transition);
+            background: var(--glass); border: 1px solid var(--border); border-radius: 30px; padding: 8px 18px;
+            color: var(--text-dim); cursor: pointer; transition: var(--transition); font-size: 13.5px; font-weight: 600;
         }
-
-        .lang-btn.active {
-            background: var(--accent);
-            color: #0A1128;
-            border-color: var(--accent);
-        }
+        .lang-btn.active { background: var(--gold); color: var(--bg-1); border-color: var(--gold); }
 
         .profile-subsection {
-            margin-top: 12px;
-            padding: 16px;
-            background: var(--bg-card);
-            border-radius: 16px;
-            border-left: 3px solid var(--accent);
-            display: none;
+            margin-top: 10px; padding: 16px; background: var(--glass); border-radius: var(--radius-md);
+            border-left: 3px solid var(--gold); display: none;
         }
+        .profile-subsection.open { display: block; animation: fadeIn 0.3s ease; }
+        .profile-subsection p { color: var(--text-dim); font-size: 13.5px; line-height: 1.65; margin-bottom: 12px; }
+        .profile-subsection .btn-primary { width: 100%; text-align: center; padding: 11px; }
 
-        .profile-subsection.open {
-            display: block;
+        .timer-options { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+        .timer-opt {
+            background: var(--glass); border: 1px solid var(--border); border-radius: 30px; padding: 8px 15px;
+            color: var(--text-dim); cursor: pointer; font-size: 13px; font-weight: 600; transition: var(--transition);
         }
-
-        .profile-subsection p {
-            color: var(--text-secondary);
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 12px;
-        }
-
-        .profile-subsection .btn-primary {
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-        }
+        .timer-opt.active { background: var(--terracotta); color: white; border-color: var(--terracotta); }
 
         /* ===== FAQ ===== */
-        .faq-item {
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-glass);
-        }
-
-        .faq-item:last-child {
-            border-bottom: none;
-        }
-
-        .faq-question {
-            font-weight: 600;
-            color: var(--accent);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .faq-answer {
-            margin-top: 6px;
-            font-size: 14px;
-            color: var(--text-secondary);
-            display: none;
-        }
-
-        .faq-answer.open {
-            display: block;
-        }
+        .faq-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .faq-item:last-child { border-bottom: none; }
+        .faq-question { font-weight: 600; color: var(--gold); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 14px; }
+        .faq-answer { margin-top: 8px; font-size: 13.5px; color: var(--text-dim); display: none; line-height: 1.6; }
+        .faq-answer.open { display: block; }
 
         /* ===== ФУТЕР ===== */
-        footer {
-            text-align: center;
-            padding: 16px;
-            font-size: 12px;
-            color: var(--text-secondary);
-            border-top: 1px solid var(--border-glass);
-            margin-top: auto;
-        }
-
-        .footer-link {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .footer-link:hover {
-            text-decoration: underline;
-        }
+        footer { text-align: center; padding: 18px; font-size: 11.5px; color: var(--text-faint); border-top: 1px solid var(--border); margin-top: auto; position: relative; z-index: 1; }
+        .footer-link { color: var(--gold); text-decoration: none; }
+        .footer-link:hover { text-decoration: underline; }
 
         .toast-message {
-            position: fixed;
-            bottom: 130px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(10, 17, 40, 0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--accent);
-            border-radius: 40px;
-            padding: 12px 24px;
-            font-size: 14px;
-            z-index: 300;
-            animation: toastUp 0.3s ease;
+            position: fixed; bottom: 130px; left: 50%; transform: translateX(-50%);
+            background: rgba(10, 13, 36, 0.96); backdrop-filter: blur(16px);
+            border: 1px solid var(--border-strong); border-radius: 40px; padding: 12px 22px;
+            font-size: 13.5px; z-index: 300; animation: toastUp 0.3s ease; max-width: 88%; text-align: center;
+            display: flex; align-items: center; gap: 8px;
         }
+        @keyframes toastUp { from { opacity: 0; transform: translate(-50%, 16px); } to { opacity: 1; transform: translate(-50%, 0); } }
 
-        @keyframes toastUp {
-            from { opacity: 0; transform: translate(-50%, 20px); }
-            to { opacity: 1; transform: translate(-50%, 0); }
-        }
+        .fa-spinner { animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .fa-spinner {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
         }
     </style>
 </head>
@@ -802,6 +535,7 @@
             <img src="https://i.ibb.co/5g1NGVRD/file-000000001bd071fbb0d2fc8bbcb0138a.png" alt="Logo" class="logo" id="mainLogo">
             <span class="app-title">Радиоҳои <span>Тоҷикистон</span></span>
         </div>
+        <div class="live-pill" id="headerLivePill" style="display:none;"><span class="live-dot"></span> <span id="headerLiveText">LIVE</span></div>
     </header>
 
     <div class="container">
@@ -809,51 +543,62 @@
         <!-- ===== ГЛАВНАЯ ===== -->
         <div class="page active" id="page-main">
 
-            <!-- Приветствие -->
-            <div class="glass-card" style="text-align: center; padding: 16px;">
-                <div style="font-size: 24px; font-weight: 700;" id="greeting">Салом! 👋</div>
-                <div style="font-size: 14px; color: var(--text-secondary);" id="timeDisplay"></div>
+            <div class="glass-card" style="text-align: center; padding: 18px;">
+                <div style="font-family: var(--font-display); font-size: 22px; font-weight: 700;" id="greeting">Салом! 👋</div>
+                <div style="font-size: 13.5px; color: var(--text-dim); font-family: var(--font-mono); margin-top: 2px;" id="timeDisplay"></div>
             </div>
 
             <!-- НЕДАВНО СЛУШАЛИ -->
-            <div class="glass-card" style="padding-bottom: 8px;">
-                <div style="font-weight: 600; margin-bottom: 8px;">🎧 Ба наздикӣ гӯш кардаед</div>
+            <div class="glass-card" style="padding-bottom: 10px;">
+                <div class="card-label"><i class="fas fa-clock-rotate-left"></i> Ба наздикӣ гӯш кардаед</div>
                 <div class="recent-scroll" id="recentList">
-                    <div style="color: var(--text-secondary); font-size: 14px; padding: 8px 0;">Ҳанӯз ҳеҷ радио гӯш нашудааст</div>
+                    <div class="empty-recent">Ҳанӯз ҳеҷ радио гӯш нашудааст</div>
                 </div>
             </div>
 
             <!-- ПЛЕЕР -->
-            <div class="glass-card" style="text-align: center; padding: 24px 16px;">
-                <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 6px;">🎵 Пахши зинда</div>
+            <div class="glass-card player-hero">
+                <div class="now-playing-label">Пахши зинда</div>
                 <div class="current-station-name" id="mainNowPlaying">Радио интихоб нашудааст</div>
 
                 <div class="player-circle" id="playerCircle">
-                    <img src="https://i.ibb.co/5g1NGVRD/file-000000001bd071fbb0d2fc8bbcb0138a.png" class="logo-img" id="vinylMain">
+                    <div class="station-avatar" id="vinylMain">РТ</div>
                     <div class="ring" id="pulseRing"></div>
                     <div class="wave-ring" id="waveRing1"></div>
                     <div class="wave-ring" id="waveRing2"></div>
-                    <div class="particle" id="particle1"></div>
-                    <div class="particle" id="particle2"></div>
-                    <div class="particle" id="particle3"></div>
-                    <div class="particle" id="particle4"></div>
-                    <div class="particle" id="particle5"></div>
-                    <div class="particle" id="particle6"></div>
                 </div>
 
-                <div class="listener-count" id="mainListenerCount">● 0 шунаванда</div>
+                <div class="listener-count" id="mainListenerCount"><span class="dot"></span> 0 шунаванда</div>
 
-                <button class="btn-primary" id="playBtnMain" style="width: 100%; max-width: 300px; margin: 8px auto; padding: 14px; font-size: 18px; border-radius: 40px;">
+                <div class="equalizer" id="equalizerMain">
+                    <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                </div>
+
+                <div class="tuning-dial" id="tuningDial">
+                    <div class="tuning-freq-display" id="tuningFreqDisplay">— MHz</div>
+                    <div class="tuning-track">
+                        <div class="tuning-ticks"></div>
+                        <div class="tuning-needle" id="tuningNeedle"></div>
+                    </div>
+                    <div class="tuning-scale-labels"><span>87.5</span><span>98</span><span>108</span></div>
+                </div>
+
+                <button class="btn-primary" id="playBtnMain" style="width: 100%; max-width: 300px; margin: 4px auto; padding: 15px; font-size: 17px; border-radius: 40px;">
                     <i class="fas fa-play"></i> <span>Гӯш кардан</span>
                 </button>
+
+                <div class="player-actions">
+                    <button class="btn-secondary" id="shareBtnMain"><i class="fas fa-share-nodes"></i> Мубодила</button>
+                    <button class="btn-secondary" id="sleepBtnMain"><i class="fas fa-moon"></i> <span id="sleepBtnLabel">Таймери хоб</span></button>
+                </div>
             </div>
 
             <!-- ФАКТЫ -->
-            <div class="glass-card" style="text-align: center;">
-                <div style="font-weight: 600; margin-bottom: 4px;">💡 Факти имрӯз</div>
+            <div class="glass-card">
+                <div class="card-label"><i class="fas fa-lightbulb"></i> Факти имрӯз</div>
                 <div class="fact-container">
                     <button class="fact-nav" id="factPrev"><i class="fas fa-chevron-left"></i></button>
-                    <div id="factOfDay" style="font-size: 15px; color: var(--text-secondary); line-height: 1.6; flex: 1; padding: 0 8px;"></div>
+                    <div id="factOfDay" style="font-size: 14.5px; color: var(--text-dim); line-height: 1.6; flex: 1; padding: 0 4px; text-align: center;"></div>
                     <button class="fact-nav" id="factNext"><i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
@@ -862,73 +607,71 @@
             <div class="glass-card">
                 <div class="ad-placeholder">
                     <i class="fas fa-ad"></i>
-                    <p style="margin-top: 4px;">Здесь будет реклама</p>
-                    <p style="font-size: 12px; opacity: 0.5;">(Яндекс.Реклама / Google AdMob)</p>
+                    <p>Здесь будет реклама</p>
+                    <p style="font-size: 11.5px; opacity: 0.6; margin-top: 3px;">(Яндекс.Реклама / Google AdMob)</p>
                 </div>
             </div>
 
-            <!-- ВСЕ РАДИО -->
+            <!-- ПОПУЛЯРНЫЕ РАДИО -->
             <div class="glass-card">
-                <div style="font-weight: 600; margin-bottom: 12px;">📻 Ҳамаи радиоҳо</div>
+                <div class="card-label"><i class="fas fa-fire"></i> Маъмултарин радиоҳо</div>
                 <div id="radioList"></div>
+                <button class="see-all-btn" onclick="showPage('radio')">Ҳамаи радиоҳоро дидан <i class="fas fa-arrow-right"></i></button>
             </div>
 
         </div>
 
         <!-- ===== СТРАНИЦА РАДИО ===== -->
         <div class="page" id="page-radio-detail">
-            <button class="back-btn" onclick="showPage('main')">
-                <i class="fas fa-arrow-left"></i> Бозгашт
-            </button>
+            <button class="back-btn" onclick="showPage('main')"><i class="fas fa-arrow-left"></i> Бозгашт</button>
 
             <div class="glass-card" style="text-align: center;">
-                <img src="" alt="Логотип" class="radio-detail-logo" id="detailLogo">
+                <div class="radio-detail-logo station-avatar" id="detailLogo">--</div>
                 <div class="radio-detail-name" id="detailName">Радио</div>
                 <div class="radio-detail-freq" id="detailFreq">00.0 FM</div>
                 <div class="radio-detail-listeners" id="detailListeners">● 0 шунаванда</div>
 
-                <button class="btn-primary" id="detailPlayBtn" style="width: 100%; max-width: 300px; margin: 12px auto; padding: 14px; font-size: 18px; border-radius: 40px;">
-                    <i class="fas fa-play"></i> <span>Гуш кардан</span>
+                <div class="equalizer" id="equalizerDetail" style="margin-top: 10px;">
+                    <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                </div>
+
+                <button class="btn-primary" id="detailPlayBtn" style="width: 100%; max-width: 300px; margin: 12px auto 6px; padding: 15px; font-size: 17px; border-radius: 40px;">
+                    <i class="fas fa-play"></i> <span>Гӯш кардан</span>
                 </button>
+
+                <div class="player-actions">
+                    <button class="btn-secondary" id="shareBtnDetail"><i class="fas fa-share-nodes"></i> Мубодила</button>
+                    <button class="btn-secondary" id="favBtnDetail"><i class="fa-regular fa-heart"></i> <span>Дӯстдошта</span></button>
+                </div>
             </div>
 
             <div class="glass-card">
                 <div class="radio-detail-desc" id="detailDesc">Описание радио...</div>
-
                 <div class="radio-detail-contacts" id="detailContacts">
                     <a href="#" id="detailPhone"><i class="fas fa-phone"></i> Телефон</a>
-                    <a href="#" id="detailWebsite"><i class="fas fa-globe"></i> Сайт</a>
-                    <a href="#" id="detailInstagram"><i class="fab fa-instagram"></i> Instagram</a>
-                    <a href="#" id="detailTelegram"><i class="fab fa-telegram-plane"></i> Telegram</a>
+                    <a href="#" id="detailWebsite" target="_blank"><i class="fas fa-globe"></i> Сайт</a>
+                    <a href="#" id="detailInstagram" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+                    <a href="#" id="detailTelegram" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
                 </div>
             </div>
 
-            <!-- Реклама -->
-            <div class="glass-card">
-                <div class="ad-placeholder">
-                    <i class="fas fa-ad"></i>
-                    <p style="margin-top: 4px;">Реклама</p>
-                </div>
-            </div>
-            <div class="glass-card">
-                <div class="ad-placeholder">
-                    <i class="fas fa-ad"></i>
-                    <p style="margin-top: 4px;">Реклама</p>
-                </div>
-            </div>
-            <div class="glass-card">
-                <div class="ad-placeholder">
-                    <i class="fas fa-ad"></i>
-                    <p style="margin-top: 4px;">Реклама</p>
-                </div>
-            </div>
-
+            <div class="glass-card"><div class="ad-placeholder"><i class="fas fa-ad"></i><p>Реклама</p></div></div>
+            <div class="glass-card"><div class="ad-placeholder"><i class="fas fa-ad"></i><p>Реклама</p></div></div>
         </div>
 
         <!-- ===== РАДИО (список) ===== -->
         <div class="page" id="page-radio">
             <input type="text" class="search-input" id="searchInput" placeholder="🔍 Ҷустуҷӯи радио...">
+            <div class="filter-chips">
+                <button class="filter-chip active" data-filter="all" onclick="setListFilter('all')">Ҳама</button>
+                <button class="filter-chip" data-filter="fav" onclick="setListFilter('fav')">❤️ Дӯстдошта</button>
+            </div>
             <div id="radioListFull"></div>
+            <div class="empty-state" id="radioListEmpty" style="display:none;">
+                <div class="icon"><i class="fas fa-satellite-dish"></i></div>
+                <div class="title">Ҳеҷ чиз ёфт нашуд</div>
+                <div class="desc">Калимаи дигареро санҷед ё филтрро иваз кунед.</div>
+            </div>
         </div>
 
         <!-- ===== ИЗБРАННОЕ ===== -->
@@ -939,7 +682,7 @@
         <!-- ===== ПРОФИЛЬ ===== -->
         <div class="page" id="page-profile">
             <div class="glass-card">
-                <div style="font-weight: 600; font-size: 18px; margin-bottom: 16px;">👤 Профиль</div>
+                <div style="font-family: var(--font-display); font-weight: 700; font-size: 18px; margin-bottom: 16px;">👤 Профиль</div>
 
                 <div class="profile-item" style="flex-direction: column; align-items: flex-start;">
                     <div><i class="fas fa-globe"></i> <span data-tg="Забон" data-ru="Язык">Забон</span></div>
@@ -949,8 +692,24 @@
                     </div>
                 </div>
 
+                <div class="profile-item" onclick="toggleProfileSection('sleep')">
+                    <i class="fas fa-moon"></i> <span data-tg="Таймери хоб" data-ru="Таймер сна">Таймер сна</span>
+                    <i class="fas fa-chevron-down chev"></i>
+                </div>
+                <div class="profile-subsection" id="sleepSection">
+                    <p data-tg="Пахшро баъд аз вақти муайяншуда бас кунед." data-ru="Автоматически остановить радио через выбранное время.">Автоматически остановить радио через выбранное время.</p>
+                    <div class="timer-options" id="timerOptions">
+                        <button class="timer-opt" data-min="0">Хомӯш</button>
+                        <button class="timer-opt" data-min="15">15 дақ</button>
+                        <button class="timer-opt" data-min="30">30 дақ</button>
+                        <button class="timer-opt" data-min="45">45 дақ</button>
+                        <button class="timer-opt" data-min="60">60 дақ</button>
+                    </div>
+                </div>
+
                 <div class="profile-item" onclick="toggleProfileSection('suggest')">
                     <i class="fas fa-plus-circle"></i> <span data-tg="Пешниҳоди радио" data-ru="Предложить радио">Предложить радио</span>
+                    <i class="fas fa-chevron-down chev"></i>
                 </div>
                 <div class="profile-subsection" id="suggestSection">
                     <p>Шумо радиои дигареро мешиносед, ки дар рӯйхат нест? Ба мо нависед, мо онро илова мекунем. Ҳар як пешниҳоди Шумо барои мо муҳим аст!</p>
@@ -959,6 +718,7 @@
 
                 <div class="profile-item" onclick="toggleProfileSection('contact')">
                     <i class="fas fa-envelope"></i> <span data-tg="Бо мо тамос гиред" data-ru="Связаться с нами">Связаться с нами</span>
+                    <i class="fas fa-chevron-down chev"></i>
                 </div>
                 <div class="profile-subsection" id="contactSection">
                     <p>Савол, пешниҳод ё мушкилот доред? Мо ҳамеша барои кумак омодаем! Ба мо нависед ва мо дар наздиктарин вақт ҷавоб медиҳем. Фикру андешаи Шумо барои мо арзиш дорад!</p>
@@ -967,6 +727,7 @@
 
                 <div class="profile-item" onclick="toggleProfileSection('copyright')">
                     <i class="fas fa-balance-scale"></i> <span data-tg="Ба соҳибони ҳуқуқ" data-ru="Правообладателям">Правообладателям</span>
+                    <i class="fas fa-chevron-down chev"></i>
                 </div>
                 <div class="profile-subsection" id="copyrightSection">
                     <p>Ин барнома як агрегатори одӣ барои гӯш кардани радиоҳои Тоҷикистон мебошад. Мо аз ин ҳеҷ даромаде намегирем ва танҳо барои роҳати Шумо кор мекунем.</p>
@@ -975,28 +736,25 @@
                 </div>
 
                 <div class="profile-item" onclick="toggleProfileSection('donate')">
-                    <i class="fas fa-heart" style="color: #ff4444;"></i>
+                    <i class="fas fa-heart" style="color: var(--terracotta);"></i>
                     <span data-tg="Дастгирии таҳиягар" data-ru="Поддержать разработчика">Поддержать разработчика</span>
+                    <i class="fas fa-chevron-down chev"></i>
                 </div>
                 <div class="profile-subsection" id="donateSection">
-                    <p>Салом, дӯсти азиз!<br>
-                    Ин барномаро барои Шумо ройгон сохтем. Агар ба Шумо маъқул бошад метавонед моро дастгирӣ кунед.</p>
-                    <div style="background: var(--bg-card); padding: 16px; border-radius: 16px; margin: 12px 0;">
-                        <div style="color: var(--accent); font-weight: 600;">💳 Номер карта:</div>
-                        <div style="font-size: 18px; letter-spacing: 2px; font-weight: 700;">5413 5252 0028 0531</div>
-                        <div style="font-size: 13px; color: var(--text-secondary);">(Алиф Бонк)</div>
+                    <p>Салом, дӯсти азиз!<br>Ин барномаро барои Шумо ройгон сохтем. Агар ба Шумо маъқул бошад метавонед моро дастгирӣ кунед.</p>
+                    <div style="background: var(--glass); padding: 16px; border-radius: var(--radius-md); margin: 12px 0; border: 1px solid var(--border);">
+                        <div style="color: var(--gold); font-weight: 600; font-size: 13px;">💳 Номер карта:</div>
+                        <div style="font-size: 18px; letter-spacing: 2px; font-weight: 700; font-family: var(--font-mono); margin-top: 4px;">5413 5252 0028 0531</div>
+                        <div style="font-size: 12.5px; color: var(--text-dim); margin-top: 2px;">(Алиф Бонк)</div>
                     </div>
-                    <button class="btn-primary" onclick="window.open('https://t.me/kurush_digital', '_blank')" style="width: 100%;">
-                        📨 Навиштан дар Telegram
-                    </button>
+                    <button class="btn-primary" onclick="window.open('https://t.me/kurush_digital', '_blank')" style="width: 100%;">📨 Навиштан дар Telegram</button>
                 </div>
 
                 <div class="profile-item" onclick="toggleProfileSection('faq')">
                     <i class="fas fa-question-circle"></i> <span data-tg="Саволҳои зиёд пурсидашуда" data-ru="FAQ">FAQ</span>
+                    <i class="fas fa-chevron-down chev"></i>
                 </div>
-                <div class="profile-subsection" id="faqSection">
-                    <div id="faqList"></div>
-                </div>
+                <div class="profile-subsection" id="faqSection"><div id="faqList"></div></div>
 
                 <div class="profile-item" onclick="rateApp()">
                     <i class="fas fa-star"></i> <span data-tg="Баҳо диҳед" data-ru="Оценить приложение">Оценить приложение</span>
@@ -1004,16 +762,17 @@
 
                 <div class="profile-item" onclick="toggleProfileSection('about')">
                     <i class="fas fa-info-circle"></i> <span data-tg="Дар бораи барнома" data-ru="О приложении">О приложении</span>
+                    <i class="fas fa-chevron-down chev"></i>
                 </div>
                 <div class="profile-subsection" id="aboutSection">
                     <p><strong>Радиоҳои Тоҷикистон</strong> — агрегатори радиостанцияҳои Тоҷикистон.</p>
-                    <p style="margin-top: 8px;">Версия: <strong>2.0</strong></p>
+                    <p style="margin-top: 8px;">Версия: <strong>3.0</strong></p>
                     <p style="margin-top: 4px;">Таҳиягар: <a href="https://kurushdigital.one" target="_blank" class="footer-link">Kurush Digital</a></p>
-                    <p style="margin-top: 12px; font-size: 13px; color: var(--text-secondary);">© 2026 Ҳама ҳуқуқҳо ҳифз шудаанд.</p>
+                    <p style="margin-top: 12px; font-size: 12px; color: var(--text-faint);">© 2026 Ҳама ҳуқуқҳо ҳифз шудаанд.</p>
                 </div>
 
-                <div class="profile-item" onclick="exitApp()" style="color: #ff4444;">
-                    <i class="fas fa-sign-out-alt"></i> <span data-tg="Баромадан" data-ru="Выход">Выход</span>
+                <div class="profile-item" onclick="exitApp()" style="color: var(--terracotta);">
+                    <i class="fas fa-sign-out-alt" style="color: var(--terracotta);"></i> <span data-tg="Баромадан" data-ru="Выход">Выход</span>
                 </div>
             </div>
         </div>
@@ -1023,9 +782,10 @@
     <!-- ===== МИНИ-ПЛЕЕР ===== -->
     <div class="mini-player" id="miniPlayer">
         <div class="mini-player-content">
-            <div class="mini-player-info">
+            <div class="mini-avatar" id="miniAvatar">--</div>
+            <div class="mini-player-info" id="miniPlayerInfo">
                 <div class="mini-player-name" id="miniPlayerName">Радио не выбрано</div>
-                <div class="mini-player-status" id="miniPlayerStatus">⏸ Таваққуф</div>
+                <div class="mini-player-status" id="miniPlayerStatus">⏸ Тавaққуф</div>
             </div>
             <div class="mini-player-controls">
                 <button class="mini-btn play-btn" id="miniPlayBtn"><i class="fas fa-play"></i></button>
@@ -1036,10 +796,10 @@
 
     <!-- ===== НИЖНЯЯ НАВИГАЦИЯ ===== -->
     <nav class="bottom-nav">
-        <button class="nav-item active" data-page="main"><i class="fas fa-home"></i></button>
-        <button class="nav-item" data-page="radio"><i class="fas fa-list-ul"></i></button>
-        <button class="nav-item" data-page="favorites"><i class="fas fa-heart"></i></button>
-        <button class="nav-item" data-page="profile"><i class="fas fa-user"></i></button>
+        <button class="nav-item active" data-page="main"><i class="fas fa-house"></i><span class="nav-label">Асосӣ</span></button>
+        <button class="nav-item" data-page="radio"><i class="fas fa-list-ul"></i><span class="nav-label">Радио</span></button>
+        <button class="nav-item" data-page="favorites"><i class="fas fa-heart"></i><span class="nav-label">Дӯстдошта</span></button>
+        <button class="nav-item" data-page="profile"><i class="fas fa-user"></i><span class="nav-label">Профил</span></button>
     </nav>
 
     <footer>
@@ -1066,7 +826,7 @@
             { name: 'Радио Тироз', freq: '103.7 FM', stream: 'https://eu1.fastcast4u.com/proxy/khusrav/stream?n=b742a6676ac1f8543fc2', desc_tg: 'Радиои Ти роз.', desc_ru: 'Радио Ти роз.', phone: '+992 99 123 45 67', website: 'https://tiroz.tj', instagram: 'https://instagram.com/tiroz', telegram: 'https://t.me/tiroz' },
             { name: 'Радио Нав', freq: '95.5 FM', stream: 'https://c38.radioboss.fm:8172/stream', desc_tg: 'Радиои Нав.', desc_ru: 'Новое радио.', phone: '+992 91 123 45 67', website: 'https://nav.tj', instagram: 'https://instagram.com/nav', telegram: 'https://t.me/nav' },
             { name: 'Шаҳри ман', freq: '97.7 FM', stream: 'https://c16.radioboss.fm:8438/stream', desc_tg: 'Радиои Шахри ман.', desc_ru: 'Радио Мой город.', phone: '+992 92 234 56 78', website: 'https://shahriman.tj', instagram: 'https://instagram.com/shahriman', telegram: 'https://t.me/shahriman' },
-            { name: 'Радио Исфара', freq: '93.9 FM', stream: 'https://c34.radioboss.fm:8880/stream', desc_tg: 'Радиои Исфара — овози шаҳри қадим.', desc_ru: 'Радио Исфара — голос древнего города.', phone: '+992 92 345 67 89', website: 'https://isfarafm.tj', instagram: 'https://instagram.com/isfarafm', telegram: 'https://t.me/isfarafm' }
+            { name: 'Радио Ховар', freq: '93.9 FM', stream: 'https://55ca6d57744.vps.myjino.ru/khovar', desc_tg: 'Радиои Ховар — овози шаҳри қадим.', desc_ru: 'Радио Ховар — голос древнего города.', phone: '+992 92 345 67 89', website: 'https://isfarafm.tj', instagram: 'https://instagram.com/isfarafm', telegram: 'https://t.me/isfarafm' }
         ];
 
         const FACTS = [
@@ -1106,15 +866,49 @@
             { q: '❓ Чаро радио намепазад?', a: 'Пайвасти интернети худро санҷед. Агар мушкилот боқӣ монад — саҳифаро аз нав фаъол кунед ё радиои дигарро интихоб кунед.' },
             { q: '⭐ Чӣ тавр радиоро ба "Дӯстдошта" илова кардан мумкин?', a: 'Дар назди номи радио тугмаи ❤️ (дил)-ро пахш кунед. Радио дар бахши "Дӯстдошта" нигоҳ дошта мешавад.' },
             { q: '📢 Чӣ тавр радиои худро пешниҳод кардан мумкин?', a: 'Ба мо дар Telegram тавассути бахши "Пешниҳоди радио" ё "Бо мо тамос гиред" нависед. Мо онро дар наздиктарин вақт илова мекунем.' },
-            { q: '📱 Чӣ тавр барномаро бо дигарон мубодила кардан мумкин?', a: 'Тугмаи "Мубодила"-ро дар меню ё профил пахш кунед. Истинодро нусхабардорӣ кунед ё тавассути Telegram, WhatsApp ба дӯстонатон фиристед.' },
+            { q: '📱 Чӣ тавр барномаро бо дигарон мубодила кардан мумкин?', a: 'Тугмаи "Мубодила"-ро дар плеер ё саҳифаи радио пахш кунед. Истинодро нусхабардорӣ кунед ё тавассути Telegram, WhatsApp ба дӯстонатон фиристед.' },
             { q: '👨‍💻 Кӣ таҳиягар аст?', a: 'Барнома аз ҷониби студияи Kurush Digital сохта шудааст. Агар ба шумо монанди он лозим бошад — дар Telegram нависед: @kurush_digital' },
             { q: '⚖️ Ман соҳиби ҳуқуқ ҳастам. Чӣ тавр радиои худро нест кардан мумкин?', a: 'Ба мо дар Telegram тавассути бахши "Ба соҳибони ҳуқуқ" нависед. Мо дарҳол радиоро нест мекунем.' },
             { q: '🔄 Чӣ тавр рӯйхати радиоро нав кардан мумкин?', a: 'Рӯйхати радио худидоракунанда аст. Вақте ки мо радиои нав илова мекунем, он барои ҳама корбарон пайдо мешавад.' },
             { q: '💸 Барнома пулки аст?', a: 'Не! Комелан ройгон. Мо барои гӯш кардани радио пул намегирем.' },
             { q: '📊 Оё дар замина гӯш кардан мумкин аст?', a: 'Ҳа. Радио ҳатто вақте ки шумо саҳифаро мепӯшед ё телефони худро қулф мекунед, боз ҳам мепазад (дар дастгоҳҳои мобилӣ).' },
             { q: '🔊 Чаро садо қатъ мешавад?', a: 'Эҳтимол мушкилот бо интернет ё сервери радио аст. Кӯшиш кунед, ки радиоро дубора фаъол кунед.' },
+            { q: '⏰ Таймери хоб чӣ гуна кор мекунад?', a: 'Дар профил "Таймери хоб"-ро кушоед ва вақти дилхоҳро интихоб кунед. Пас аз он вақт радио худкор бас мешавад.' },
             { q: '📅 Оё радиои нав илова карда мешаванд?', a: 'Бале! Мо пайваста радиои нави Тоҷикистонро ҷустуҷӯ ва илова мекунем.' }
         ];
+
+        // ============================================================
+        // АВАТАРЫ СТАНЦИЙ (генерируются из названия — цвет + инициалы)
+        // ============================================================
+
+        function hashString(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            return Math.abs(hash);
+        }
+
+        function getStationGradient(name) {
+            const h = hashString(name);
+            const hue1 = h % 360;
+            const hue2 = (hue1 + 46) % 360;
+            return `linear-gradient(135deg, hsl(${hue1}, 68%, 48%), hsl(${hue2}, 72%, 34%))`;
+        }
+
+        function getStationInitials(name) {
+            const clean = name.replace(/Радио|FM/gi, '').trim();
+            const words = clean.split(' ').filter(Boolean);
+            if (words.length === 0) return name.slice(0, 2).toUpperCase();
+            if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+            return (words[0][0] + words[1][0]).toUpperCase();
+        }
+
+        function applyAvatar(el, radio) {
+            if (!el || !radio) return;
+            el.style.background = getStationGradient(radio.name);
+            el.textContent = getStationInitials(radio.name);
+        }
 
         // ============================================================
         // СОСТОЯНИЕ
@@ -1126,6 +920,10 @@
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         let currentStationIndex = -1;
         let recentRadios = JSON.parse(localStorage.getItem('recentRadios')) || [];
+        let listFilter = 'all';
+        let sleepTimerMinutes = 0;
+        let sleepTimerEnd = null;
+        let sleepTimerInterval = null;
         const audio = document.getElementById('audioPlayer');
 
         let listeners = {};
@@ -1145,8 +943,8 @@
                     listeners[i] = generateListenerCount();
                     updateRadioListenersUI();
                     if (currentStationIndex === i) {
-                        document.getElementById('mainListenerCount').textContent =
-                            `● ${listeners[i]} нафари шунаванда`;
+                        document.getElementById('mainListenerCount').innerHTML =
+                            `<span class="dot"></span> ${listeners[i]} нафари шунаванда`;
                         document.getElementById('detailListeners').textContent =
                             `● ${listeners[i]} нафари шунаванда`;
                     }
@@ -1177,7 +975,7 @@
         }
 
         // ============================================================
-        // ФУНКЦИИ ЯЗЫКА
+        // ЯЗЫК
         // ============================================================
 
         function setLanguage(lang) {
@@ -1189,6 +987,7 @@
                 el.textContent = lang === 'tg' ? el.getAttribute('data-tg') : el.getAttribute('data-ru');
             });
             renderRadios();
+            renderRadiosFull();
             renderFavorites();
             renderRecent();
             syncAnimation();
@@ -1198,20 +997,17 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.querySelector(`.nav-item[data-page="${pageId}"]`).classList.add('active');
+            const navBtn = document.querySelector(`.nav-item[data-page="${pageId}"]`);
+            if (navBtn) navBtn.classList.add('active');
             if (pageId === 'favorites') renderFavorites();
-            if (pageId === 'radio') { renderRadiosFull();
-                updateRadioListenersUI(); }
-            if (pageId === 'main') { renderRecent();
-                syncAnimation(); }
-            if (pageId === 'radio-detail') {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+            if (pageId === 'radio') { renderRadiosFull(); updateRadioListenersUI(); }
+            if (pageId === 'main') { renderRecent(); renderRadios(); syncAnimation(); }
+            if (pageId === 'radio-detail') window.scrollTo({ top: 0, behavior: 'smooth' });
             updateMiniPlayer();
         }
 
         // ============================================================
-        // ФАКТЫ (СО СТРЕЛКАМИ)
+        // ФАКТЫ
         // ============================================================
 
         function showFact(index) {
@@ -1232,7 +1028,7 @@
             if (index === undefined || index === null) return;
             recentRadios = recentRadios.filter(i => i !== index);
             recentRadios.unshift(index);
-            if (recentRadios.length > 5) recentRadios.pop();
+            if (recentRadios.length > 6) recentRadios.pop();
             localStorage.setItem('recentRadios', JSON.stringify(recentRadios));
             renderRecent();
         }
@@ -1241,8 +1037,7 @@
             const container = document.getElementById('recentList');
             container.innerHTML = '';
             if (recentRadios.length === 0) {
-                container.innerHTML =
-                    '<div style="color: var(--text-secondary); font-size: 14px; padding: 8px 0;">Ҳанӯз ҳеҷ радио гӯш нашудааст</div>';
+                container.innerHTML = '<div class="empty-recent">Ҳанӯз ҳеҷ радио гӯш нашудааст</div>';
                 return;
             }
             recentRadios.forEach(idx => {
@@ -1250,13 +1045,32 @@
                 if (!radio) return;
                 const div = document.createElement('button');
                 div.className = 'recent-item';
-                div.innerHTML = `
-                    <img src="${APP_LOGO}" class="circle" alt="${radio.name}">
-                    <span class="name">${radio.name}</span>
-                `;
+                div.innerHTML = `<div class="station-avatar"></div><span class="name">${radio.name}</span>`;
+                applyAvatar(div.querySelector('.station-avatar'), radio);
                 div.addEventListener('click', () => openRadioDetail(idx));
                 container.appendChild(div);
             });
+        }
+
+        // ============================================================
+        // FM-ШКАЛА НАСТРОЙКИ
+        // ============================================================
+
+        function updateTuningDial(radio) {
+            const needle = document.getElementById('tuningNeedle');
+            const display = document.getElementById('tuningFreqDisplay');
+            if (!radio) {
+                display.textContent = '— MHz';
+                needle.style.left = '50%';
+                return;
+            }
+            const freqNum = parseFloat(radio.freq);
+            if (isNaN(freqNum)) { display.textContent = radio.freq; needle.style.left = '50%'; return; }
+            const min = 87.5, max = 108;
+            let pct = ((freqNum - min) / (max - min)) * 100;
+            pct = Math.max(2, Math.min(98, pct));
+            needle.style.left = pct + '%';
+            display.textContent = freqNum.toFixed(1) + ' MHz';
         }
 
         // ============================================================
@@ -1264,61 +1078,72 @@
         // ============================================================
 
         function syncAnimation() {
-            const vinyl = document.getElementById('vinylMain');
             const pulseRing = document.getElementById('pulseRing');
             const waveRing1 = document.getElementById('waveRing1');
             const waveRing2 = document.getElementById('waveRing2');
-            const particles = document.querySelectorAll('.particle');
             const playBtn = document.getElementById('playBtnMain');
             const detailPlayBtn = document.getElementById('detailPlayBtn');
+            const eqMain = document.getElementById('equalizerMain');
+            const eqDetail = document.getElementById('equalizerDetail');
+            const headerPill = document.getElementById('headerLivePill');
+            const headerLiveText = document.getElementById('headerLiveText');
 
             if (isPlaying) {
-                vinyl.classList.add('playing');
                 pulseRing.classList.add('pulse');
                 waveRing1.classList.add('active');
                 waveRing2.classList.add('active');
-                particles.forEach(p => p.classList.remove('stopped'));
-                if (playBtn) {
-                    playBtn.innerHTML = '<i class="fas fa-pause"></i> <span>Пауза</span>';
-                    playBtn.disabled = false;
-                }
-                if (detailPlayBtn) {
-                    detailPlayBtn.innerHTML = '<i class="fas fa-pause"></i> <span>Пауза</span>';
-                    detailPlayBtn.disabled = false;
+                eqMain.classList.add('playing');
+                eqDetail.classList.add('playing');
+                if (playBtn) { playBtn.innerHTML = '<i class="fas fa-pause"></i> <span>Таваққуф</span>'; playBtn.disabled = false; }
+                if (detailPlayBtn) { detailPlayBtn.innerHTML = '<i class="fas fa-pause"></i> <span>Таваққуф</span>'; detailPlayBtn.disabled = false; }
+                if (currentRadio) {
+                    headerPill.style.display = 'flex';
+                    headerLiveText.textContent = currentRadio.name;
                 }
             } else {
-                vinyl.classList.remove('playing');
                 pulseRing.classList.remove('pulse');
                 waveRing1.classList.remove('active');
                 waveRing2.classList.remove('active');
-                particles.forEach(p => p.classList.add('stopped'));
-                if (playBtn) {
-                    playBtn.innerHTML = '<i class="fas fa-play"></i> <span>Слушать</span>';
-                    playBtn.disabled = false;
-                }
-                if (detailPlayBtn) {
-                    detailPlayBtn.innerHTML = '<i class="fas fa-play"></i> <span>Слушать</span>';
-                    detailPlayBtn.disabled = false;
-                }
+                eqMain.classList.remove('playing');
+                eqDetail.classList.remove('playing');
+                if (playBtn) { playBtn.innerHTML = '<i class="fas fa-play"></i> <span>Гӯш кардан</span>'; playBtn.disabled = false; }
+                if (detailPlayBtn) { detailPlayBtn.innerHTML = '<i class="fas fa-play"></i> <span>Гӯш кардан</span>'; detailPlayBtn.disabled = false; }
+                headerPill.style.display = 'none';
             }
 
             const nowPlaying = document.getElementById('mainNowPlaying');
+            const vinylMain = document.getElementById('vinylMain');
             if (currentRadio) {
                 nowPlaying.textContent = currentRadio.name;
+                applyAvatar(vinylMain, currentRadio);
                 document.getElementById('detailName').textContent = currentRadio.name;
                 document.getElementById('detailFreq').textContent = currentRadio.freq;
+                updateTuningDial(currentRadio);
                 if (listeners[currentStationIndex] !== undefined) {
-                    document.getElementById('mainListenerCount').textContent =
-                        `● ${listeners[currentStationIndex]} нафари шунаванда`;
+                    document.getElementById('mainListenerCount').innerHTML =
+                        `<span class="dot"></span> ${listeners[currentStationIndex]} нафари шунаванда`;
                     document.getElementById('detailListeners').textContent =
                         `● ${listeners[currentStationIndex]} нафари шунаванда`;
                 }
             } else {
                 nowPlaying.textContent = currentLang === 'tg' ? 'Радио интихоб нашудааст' : 'Радио не выбрано';
-                document.getElementById('mainListenerCount').textContent = '● 0 нафари шунаванда';
+                vinylMain.style.background = 'linear-gradient(135deg, hsl(43,85%,55%), hsl(20,70%,45%))';
+                vinylMain.textContent = 'РТ';
+                document.getElementById('mainListenerCount').innerHTML = '<span class="dot"></span> 0 нафари шунаванда';
+                updateTuningDial(null);
             }
 
+            updateFavBtnDetail();
             updateMiniPlayer();
+        }
+
+        function updateFavBtnDetail() {
+            const btn = document.getElementById('favBtnDetail');
+            if (!btn || currentStationIndex === -1) return;
+            const isFav = favorites.includes(currentStationIndex);
+            btn.innerHTML = isFav
+                ? '<i class="fas fa-heart" style="color: var(--terracotta);"></i> <span>Дар дӯстдошта</span>'
+                : '<i class="fa-regular fa-heart"></i> <span>Дӯстдошта</span>';
         }
 
         // ============================================================
@@ -1332,7 +1157,7 @@
             currentStationIndex = index;
             currentRadio = radio;
 
-            document.getElementById('detailLogo').src = APP_LOGO;
+            applyAvatar(document.getElementById('detailLogo'), radio);
             document.getElementById('detailName').textContent = radio.name;
             document.getElementById('detailFreq').textContent = radio.freq;
             document.getElementById('detailDesc').textContent = currentLang === 'tg' ? radio.desc_tg : radio.desc_ru;
@@ -1353,12 +1178,11 @@
             telegram.href = radio.telegram;
             telegram.innerHTML = `<i class="fab fa-telegram-plane"></i> Telegram`;
 
-            // Обновляем кнопку в зависимости от того, играет ли это радио
             const detailPlayBtn = document.getElementById('detailPlayBtn');
             if (currentStationIndex === index && isPlaying) {
-                detailPlayBtn.innerHTML = '<i class="fas fa-pause"></i> <span>Пауза</span>';
+                detailPlayBtn.innerHTML = '<i class="fas fa-pause"></i> <span>Таваққуф</span>';
             } else {
-                detailPlayBtn.innerHTML = '<i class="fas fa-play"></i> <span>Слушать</span>';
+                detailPlayBtn.innerHTML = '<i class="fas fa-play"></i> <span>Гӯш кардан</span>';
             }
 
             showPage('radio-detail');
@@ -1368,7 +1192,7 @@
         }
 
         // ============================================================
-        // ВКЛЮЧИТЬ/ВЫКЛЮЧИТЬ РАДИО (С ИНДИКАТОРОМ ЗАГРУЗКИ)
+        // ВКЛЮЧИТЬ/ВЫКЛЮЧИТЬ РАДИО
         // ============================================================
 
         function togglePlay(index) {
@@ -1392,15 +1216,8 @@
             const playBtn = document.getElementById('playBtnMain');
             const detailPlayBtn = document.getElementById('detailPlayBtn');
 
-            // === ПОКАЗЫВАЕМ ЗАГРУЗКУ ===
-            if (playBtn) {
-                playBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Загрузка...</span>';
-                playBtn.disabled = true;
-            }
-            if (detailPlayBtn) {
-                detailPlayBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Загрузка...</span>';
-                detailPlayBtn.disabled = true;
-            }
+            if (playBtn) { playBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Бор мешавад...</span>'; playBtn.disabled = true; }
+            if (detailPlayBtn) { detailPlayBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Бор мешавад...</span>'; detailPlayBtn.disabled = true; }
 
             audio.src = radio.stream;
             audio.load();
@@ -1412,7 +1229,6 @@
                     currentRadio = radio;
                     isPlaying = true;
                     addRecentRadio(index);
-                    // === УБИРАЕМ ЗАГРУЗКУ ===
                     syncAnimation();
                     renderRecent();
                     updateRadiosListUI();
@@ -1425,15 +1241,9 @@
                     updateMiniPlayer();
                 }).catch(() => {
                     isPlaying = false;
-                    // === ОШИБКА ===
-                    if (playBtn) {
-                        playBtn.innerHTML = '<i class="fas fa-play"></i> <span>Слушать</span>';
-                        playBtn.disabled = false;
-                    }
-                    if (detailPlayBtn) {
-                        detailPlayBtn.innerHTML = '<i class="fas fa-play"></i> <span>Слушать</span>';
-                        detailPlayBtn.disabled = false;
-                    }
+                    showToast(currentLang === 'tg' ? '⚠️ Пайваст нашуд. Дубора кӯшиш кунед.' : '⚠️ Не удалось подключиться. Попробуйте ещё раз.');
+                    if (playBtn) { playBtn.innerHTML = '<i class="fas fa-play"></i> <span>Гӯш кардан</span>'; playBtn.disabled = false; }
+                    if (detailPlayBtn) { detailPlayBtn.innerHTML = '<i class="fas fa-play"></i> <span>Гӯш кардан</span>'; detailPlayBtn.disabled = false; }
                     syncAnimation();
                     updateMiniPlayer();
                 });
@@ -1449,12 +1259,20 @@
         const miniPlayerStatus = document.getElementById('miniPlayerStatus');
         const miniPlayBtn = document.getElementById('miniPlayBtn');
         const miniCloseBtn = document.getElementById('miniCloseBtn');
+        const miniAvatar = document.getElementById('miniAvatar');
+        const miniPlayerInfo = document.getElementById('miniPlayerInfo');
 
         function updateMiniPlayer() {
             if (currentRadio) {
                 miniPlayerName.textContent = currentRadio.name;
-                miniPlayerStatus.textContent = isPlaying ? '🎵 Слушаем...' : '⏸ Пауза';
+                let statusText = isPlaying ? '🎵 Гӯш карда истодаед' : '⏸ Таваққуф';
+                if (isPlaying && sleepTimerEnd) {
+                    const remain = Math.max(0, Math.round((sleepTimerEnd - Date.now()) / 60000));
+                    statusText += ` · ⏰ ${remain} дақ`;
+                }
+                miniPlayerStatus.textContent = statusText;
                 miniPlayBtn.innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
+                applyAvatar(miniAvatar, currentRadio);
                 miniPlayer.classList.add('show');
             } else {
                 miniPlayer.classList.remove('show');
@@ -1470,27 +1288,123 @@
                 updateRadiosListUI();
                 updateFavoritesUI();
             } else {
-                if (currentStationIndex === -1) {
-                    playRadio(0);
-                } else {
-                    playRadio(currentStationIndex);
-                }
-                syncAnimation();
-                updateMiniPlayer();
+                playRadio(currentStationIndex === -1 ? 0 : currentStationIndex);
             }
         });
 
         miniCloseBtn.addEventListener('click', function() {
             audio.pause();
             isPlaying = false;
+            clearSleepTimer();
             syncAnimation();
             updateMiniPlayer();
             updateRadiosListUI();
             updateFavoritesUI();
         });
 
+        miniPlayerInfo.addEventListener('click', function() {
+            if (currentStationIndex !== -1) openRadioDetail(currentStationIndex);
+        });
+
         // ============================================================
-        // КНОПКИ УПРАВЛЕНИЯ
+        // ТАЙМЕР СНА
+        // ============================================================
+
+        function setSleepTimer(minutes) {
+            clearSleepTimer();
+            sleepTimerMinutes = minutes;
+            const label = document.getElementById('sleepBtnLabel');
+            if (minutes === 0) {
+                label.textContent = 'Таймери хоб';
+                showToast(currentLang === 'tg' ? '⏰ Таймери хоб хомӯш карда шуд' : '⏰ Таймер сна выключен');
+                return;
+            }
+            sleepTimerEnd = Date.now() + minutes * 60000;
+            label.textContent = minutes + ' дақ';
+            showToast((currentLang === 'tg' ? '⏰ Таймери хоб фаъол: ' : '⏰ Таймер сна включён: ') + minutes + (currentLang === 'tg' ? ' дақиқа' : ' минут'));
+            sleepTimerInterval = setInterval(() => {
+                if (Date.now() >= sleepTimerEnd) {
+                    audio.pause();
+                    isPlaying = false;
+                    clearSleepTimer();
+                    syncAnimation();
+                    updateMiniPlayer();
+                    updateRadiosListUI();
+                    updateFavoritesUI();
+                    showToast(currentLang === 'tg' ? '🌙 Вақт расид — радио бас шуд' : '🌙 Время вышло — радио остановлено');
+                } else {
+                    updateMiniPlayer();
+                }
+            }, 1000);
+        }
+
+        function clearSleepTimer() {
+            if (sleepTimerInterval) clearInterval(sleepTimerInterval);
+            sleepTimerInterval = null;
+            sleepTimerEnd = null;
+            sleepTimerMinutes = 0;
+            const label = document.getElementById('sleepBtnLabel');
+            if (label) label.textContent = 'Таймери хоб';
+            document.querySelectorAll('.timer-opt').forEach(b => b.classList.remove('active'));
+            const offBtn = document.querySelector('.timer-opt[data-min="0"]');
+            if (offBtn) offBtn.classList.add('active');
+        }
+
+        document.getElementById('timerOptions').addEventListener('click', (e) => {
+            const btn = e.target.closest('.timer-opt');
+            if (!btn) return;
+            document.querySelectorAll('.timer-opt').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            setSleepTimer(parseInt(btn.dataset.min));
+        });
+
+        document.getElementById('sleepBtnMain').addEventListener('click', () => {
+            showPage('profile');
+            setTimeout(() => toggleProfileSection('sleep'), 50);
+        });
+
+        // ============================================================
+        // МУБОДИЛА (SHARE)
+        // ============================================================
+
+        function shareStation() {
+            const radio = currentRadio || RADIOS[0];
+            const title = currentLang === 'tg' ? `Гӯш кунед ${radio.name} дар Радиоҳои Тоҷикистон` : `Слушайте ${radio.name} в Радиоҳои Тоҷикистон`;
+            const url = radio.website || 'https://kurushdigital.one';
+            if (navigator.share) {
+                navigator.share({ title, url }).catch(() => {});
+            } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(`${title} — ${url}`).then(() => {
+                    showToast(currentLang === 'tg' ? '🔗 Истинод нусхабардорӣ шуд' : '🔗 Ссылка скопирована');
+                });
+            } else {
+                showToast(currentLang === 'tg' ? '🔗 ' + url : '🔗 ' + url);
+            }
+        }
+
+        document.getElementById('shareBtnMain').addEventListener('click', shareStation);
+        document.getElementById('shareBtnDetail').addEventListener('click', shareStation);
+        document.getElementById('favBtnDetail').addEventListener('click', () => {
+            if (currentStationIndex !== -1) toggleFavorite(currentStationIndex);
+            updateFavBtnDetail();
+        });
+
+        // ============================================================
+        // ТОСТ
+        // ============================================================
+
+        function showToast(msg) {
+            const existing = document.querySelector('.toast-message');
+            if (existing) existing.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast-message';
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2600);
+        }
+
+        // ============================================================
+        // КНОПКИ УПРАВЛЕНИЯ ПЛЕЕРОМ
         // ============================================================
 
         document.getElementById('playBtnMain').addEventListener('click', function() {
@@ -1503,11 +1417,7 @@
                 updateFavoritesUI();
                 updateMiniPlayer();
             } else {
-                if (currentStationIndex === -1) {
-                    playRadio(0);
-                } else {
-                    playRadio(currentStationIndex);
-                }
+                playRadio(currentStationIndex === -1 ? 0 : currentStationIndex);
             }
         });
 
@@ -1521,93 +1431,91 @@
                 updateFavoritesUI();
                 updateMiniPlayer();
             } else {
-                if (currentStationIndex === -1) {
-                    playRadio(0);
-                } else {
-                    playRadio(currentStationIndex);
-                }
+                playRadio(currentStationIndex === -1 ? 0 : currentStationIndex);
             }
         });
 
         // ============================================================
-        // РАДИО (СПИСОК)
+        // СПИСКИ РАДИО
         // ============================================================
 
         function updateRadiosListUI() {
             document.querySelectorAll('.play-btn-small').forEach(btn => {
                 const idx = parseInt(btn.dataset.index);
                 if (idx === currentStationIndex && isPlaying) {
-                    btn.innerHTML = '⏸';
+                    btn.innerHTML = '<i class="fas fa-pause"></i>';
                     btn.classList.add('playing');
                 } else {
-                    btn.innerHTML = '▶';
+                    btn.innerHTML = '<i class="fas fa-play"></i>';
                     btn.classList.remove('playing');
                 }
             });
+            document.querySelectorAll('.radio-item').forEach(el => {
+                const idx = parseInt(el.dataset.index);
+                el.classList.toggle('is-live', idx === currentStationIndex && isPlaying);
+            });
             document.querySelectorAll('.favorite-btn').forEach(btn => {
                 const idx = parseInt(btn.dataset.index);
-                btn.textContent = favorites.includes(idx) ? '❤️' : '🤍';
+                btn.innerHTML = favorites.includes(idx) ? '<i class="fas fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>';
                 btn.classList.toggle('active', favorites.includes(idx));
             });
             updateRadioListenersUI();
         }
 
-        function updateFavoritesUI() {
-            renderFavorites();
+        function updateFavoritesUI() { renderFavorites(); }
+
+        function buildRadioItem(radio, i) {
+            const isFav = favorites.includes(i);
+            const isCurrent = (i === currentStationIndex && isPlaying);
+            const div = document.createElement('div');
+            div.className = 'radio-item' + (isCurrent ? ' is-live' : '');
+            div.dataset.index = i;
+            div.dataset.name = radio.name;
+            div.innerHTML = `
+                <div class="station-avatar"></div>
+                <div class="radio-info">
+                    <div class="radio-name">${radio.name}</div>
+                    <div class="radio-freq">${radio.freq}</div>
+                    <div class="radio-listeners">● ${listeners[i] || 0} нафари шунаванда</div>
+                </div>
+                <div class="radio-actions">
+                    <button class="favorite-btn ${isFav ? 'active' : ''}" data-index="${i}" onclick="event.stopPropagation(); toggleFavorite(${i})">${isFav ? '<i class="fas fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>'}</button>
+                    <button class="play-btn-small ${isCurrent ? 'playing' : ''}" data-index="${i}" onclick="event.stopPropagation(); togglePlay(${i})">${isCurrent ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>'}</button>
+                </div>
+            `;
+            applyAvatar(div.querySelector('.station-avatar'), radio);
+            div.addEventListener('click', () => openRadioDetail(i));
+            return div;
         }
 
         function renderRadios() {
             const container = document.getElementById('radioList');
             container.innerHTML = '';
-            RADIOS.forEach((radio, i) => {
-                const isFav = favorites.includes(i);
-                const isCurrent = (i === currentStationIndex && isPlaying);
-                const div = document.createElement('div');
-                div.className = 'radio-item';
-                div.dataset.index = i;
-                div.dataset.name = radio.name;
-                div.innerHTML = `
-                    <img src="${APP_LOGO}" class="radio-logo-small" alt="${radio.name}">
-                    <div class="radio-info">
-                        <div class="radio-name">${radio.name}</div>
-                        <div class="radio-freq">${radio.freq}</div>
-                        <div class="radio-listeners">● ${listeners[i] || 0} нафари шунаванда</div>
-                    </div>
-                    <div class="radio-actions">
-                        <button class="favorite-btn ${isFav ? 'active' : ''}" data-index="${i}" onclick="event.stopPropagation(); toggleFavorite(${i})">${isFav ? '❤️' : '🤍'}</button>
-                        <button class="play-btn-small ${isCurrent ? 'playing' : ''}" data-index="${i}" onclick="event.stopPropagation(); togglePlay(${i})">${isCurrent ? '⏸' : '▶'}</button>
-                    </div>
-                `;
-                div.addEventListener('click', () => openRadioDetail(i));
-                container.appendChild(div);
-            });
+            const top = RADIOS.map((r, i) => ({ r, i })).sort((a, b) => (listeners[b.i] || 0) - (listeners[a.i] || 0)).slice(0, 5);
+            top.forEach(({ r, i }) => container.appendChild(buildRadioItem(r, i)));
         }
 
         function renderRadiosFull() {
             const container = document.getElementById('radioListFull');
+            const emptyState = document.getElementById('radioListEmpty');
             container.innerHTML = '';
-            RADIOS.forEach((radio, i) => {
-                const isFav = favorites.includes(i);
-                const isCurrent = (i === currentStationIndex && isPlaying);
-                const div = document.createElement('div');
-                div.className = 'radio-item';
-                div.dataset.index = i;
-                div.dataset.name = radio.name;
-                div.innerHTML = `
-                    <img src="${APP_LOGO}" class="radio-logo-small" alt="${radio.name}">
-                    <div class="radio-info">
-                        <div class="radio-name">${radio.name}</div>
-                        <div class="radio-freq">${radio.freq}</div>
-                        <div class="radio-listeners">● ${listeners[i] || 0} нафари шунаванда</div>
-                    </div>
-                    <div class="radio-actions">
-                        <button class="favorite-btn ${isFav ? 'active' : ''}" data-index="${i}" onclick="event.stopPropagation(); toggleFavorite(${i})">${isFav ? '❤️' : '🤍'}</button>
-                        <button class="play-btn-small ${isCurrent ? 'playing' : ''}" data-index="${i}" onclick="event.stopPropagation(); togglePlay(${i})">${isCurrent ? '⏸' : '▶'}</button>
-                    </div>
-                `;
-                div.addEventListener('click', () => openRadioDetail(i));
-                container.appendChild(div);
-            });
+            let list = RADIOS.map((r, i) => ({ r, i }));
+            if (listFilter === 'fav') list = list.filter(({ i }) => favorites.includes(i));
+            const query = (document.getElementById('searchInput').value || '').toLowerCase();
+            if (query) list = list.filter(({ r }) => r.name.toLowerCase().includes(query));
+
+            if (list.length === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                list.forEach(({ r, i }) => container.appendChild(buildRadioItem(r, i)));
+            }
+        }
+
+        function setListFilter(filter) {
+            listFilter = filter;
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === filter));
+            renderRadiosFull();
         }
 
         function renderFavorites() {
@@ -1615,10 +1523,10 @@
             container.innerHTML = '';
             if (favorites.length === 0) {
                 container.innerHTML = `
-                    <div class="glass-card" style="text-align: center; padding: 30px;">
-                        <div style="font-size: 40px; margin-bottom: 12px;">💔</div>
-                        <div style="font-weight: 600;">Радио ба дӯстдошта илова нашудааст</div>
-                        <div style="color: var(--text-secondary); font-size: 14px; margin-top: 8px;">Барои илова кардан, дар бахши "Радио" ❤️-ро пахш кунед.</div>
+                    <div class="glass-card empty-state">
+                        <div class="icon"><i class="fas fa-heart-crack"></i></div>
+                        <div class="title">Радио ба дӯстдошта илова нашудааст</div>
+                        <div class="desc">Барои илова кардан, дар бахши "Радио" ❤️-ро пахш кунед.</div>
                     </div>
                 `;
                 return;
@@ -1626,46 +1534,25 @@
             favorites.forEach(idx => {
                 const radio = RADIOS[idx];
                 if (!radio) return;
-                const isCurrent = (idx === currentStationIndex && isPlaying);
-                const div = document.createElement('div');
-                div.className = 'radio-item';
-                div.dataset.index = idx;
-                div.innerHTML = `
-                    <img src="${APP_LOGO}" class="radio-logo-small" alt="${radio.name}">
-                    <div class="radio-info">
-                        <div class="radio-name">${radio.name}</div>
-                        <div class="radio-freq">${radio.freq}</div>
-                        <div class="radio-listeners">● ${listeners[idx] || 0} шунаванда</div>
-                    </div>
-                    <div class="radio-actions">
-                        <button class="favorite-btn active" data-index="${idx}" onclick="event.stopPropagation(); toggleFavorite(${idx})">❤️</button>
-                        <button class="play-btn-small ${isCurrent ? 'playing' : ''}" data-index="${idx}" onclick="event.stopPropagation(); togglePlay(${idx})">${isCurrent ? '⏸' : '▶'}</button>
-                    </div>
-                `;
-                div.addEventListener('click', () => openRadioDetail(idx));
-                container.appendChild(div);
+                container.appendChild(buildRadioItem(radio, idx));
             });
         }
 
         function toggleFavorite(index) {
             const idx = favorites.indexOf(index);
-            if (idx > -1) favorites.splice(idx, 1);
-            else favorites.push(index);
+            if (idx > -1) { favorites.splice(idx, 1); }
+            else {
+                favorites.push(index);
+                showToast(currentLang === 'tg' ? '❤️ Ба дӯстдошта илова шуд' : '❤️ Добавлено в избранное');
+            }
             localStorage.setItem('favorites', JSON.stringify(favorites));
             renderRadios();
             renderRadiosFull();
             renderFavorites();
+            updateFavBtnDetail();
         }
 
-        function filterRadios() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('#radioListFull .radio-item').forEach(item => {
-                const name = item.dataset.name.toLowerCase();
-                item.style.display = name.includes(query) ? 'flex' : 'none';
-            });
-        }
-
-        document.getElementById('searchInput').addEventListener('input', filterRadios);
+        document.getElementById('searchInput').addEventListener('input', renderRadiosFull);
 
         // ============================================================
         // ПРОФИЛЬ
@@ -1693,27 +1580,26 @@
                     list.appendChild(div);
                 });
             }
+            if (sectionId === 'sleep' && section.classList.contains('open')) {
+                document.querySelectorAll('.timer-opt').forEach(b => {
+                    b.classList.toggle('active', parseInt(b.dataset.min) === sleepTimerMinutes);
+                });
+            }
         }
 
         function openTelegram() { window.open('https://t.me/kurush_digital', '_blank'); }
 
         function rateApp() {
-            alert(currentLang === 'tg' ? 'Баҳодиҳӣ дар Play Market ба наздикӣ!' : 'Оценка в Play Market скоро будет доступна!');
+            showToast(currentLang === 'tg' ? 'Баҳодиҳӣ дар Play Market ба наздикӣ!' : 'Оценка в Play Market скоро будет доступна!');
         }
 
         function exitApp() {
             if (confirm(currentLang === 'tg' ? 'Оё шумо баромадед мехоҳед?' : 'Вы уверены, что хотите выйти?')) {
-                try {
-                    window.close();
-                } catch (e) {
+                try { window.close(); } catch (e) {
                     window.location.href = 'about:blank';
                     window.history.go(-999);
                 }
-                try {
-                    if (window.android && window.android.closeApp) {
-                        window.android.closeApp();
-                    }
-                } catch (e) {}
+                try { if (window.android && window.android.closeApp) window.android.closeApp(); } catch (e) {}
             }
         }
 
@@ -1726,10 +1612,7 @@
             setLanguage(savedLang);
 
             document.querySelectorAll('.nav-item').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const page = btn.dataset.page;
-                    showPage(page);
-                });
+                btn.addEventListener('click', () => showPage(btn.dataset.page));
             });
 
             initListeners();
@@ -1741,13 +1624,11 @@
             syncAnimation();
             showPage('main');
 
-            document.getElementById('greeting').textContent = getGreeting() + ' 👋';
-            document.getElementById('timeDisplay').textContent = new Date().toLocaleTimeString('tg-TJ', { hour: '2-digit',
-                minute: '2-digit' });
+            document.getElementById('greeting').textContent = getGreeting();
+            document.getElementById('timeDisplay').textContent = new Date().toLocaleTimeString('tg-TJ', { hour: '2-digit', minute: '2-digit' });
 
             setInterval(() => {
-                document.getElementById('timeDisplay').textContent = new Date().toLocaleTimeString('tg-TJ', { hour: '2-digit',
-                    minute: '2-digit' });
+                document.getElementById('timeDisplay').textContent = new Date().toLocaleTimeString('tg-TJ', { hour: '2-digit', minute: '2-digit' });
             }, 30000);
         }
 
