@@ -67,7 +67,6 @@
 
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 13, 36, 0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; padding: 8px 10px; padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)); z-index: 200; }
-        .nav-pill { position: absolute; top: 8px; bottom: 8px; border-radius: 18px; background: rgba(240, 180, 41, 0.15); transition: transform 0.32s cubic-bezier(0.4,0,0.2,1), width 0.32s; z-index: 0; }
         .nav-item { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; background: none; border: none; color: var(--text-faint);
             font-size: 22px; cursor: pointer; transition: color 0.2s ease; padding: 12px 22px; border-radius: 18px; }
         .nav-item.active { color: var(--gold); }
@@ -302,7 +301,6 @@
                 <div class="player-actions">
                     <button class="btn-secondary" id="rouletteBtn"><i class="fas fa-shuffle"></i> <span data-i18n="rouletteBtnLabel"></span></button>
                     <button class="btn-secondary" id="shareBtnMain"><i class="fas fa-share-nodes"></i> <span data-i18n="shareBtnLabel"></span></button>
-                    <button class="btn-secondary" id="cardBtnMain"><i class="fas fa-image"></i> <span data-i18n="cardBtnLabel"></span></button>
                     <button class="btn-secondary" id="sleepBtnMain"><i class="fas fa-moon"></i> <span id="sleepBtnLabel"></span></button>
                 </div>
             </div>
@@ -351,7 +349,6 @@
                 <div class="player-actions">
                     <button class="btn-secondary" id="favBtnDetail"><i class="fa-regular fa-heart"></i> <span data-i18n="favBtnLabel"></span></button>
                     <button class="btn-secondary" id="shareBtnDetail"><i class="fas fa-share-nodes"></i> <span data-i18n="shareBtnLabel"></span></button>
-                    <button class="btn-secondary" id="cardBtnDetail"><i class="fas fa-image"></i> <span data-i18n="cardBtnLabel"></span></button>
                 </div>
             </div>
 
@@ -476,7 +473,6 @@
     </div>
 
     <nav class="bottom-nav" id="bottomNav">
-        <div class="nav-pill" id="navPill"></div>
         <button class="nav-item active" data-page="main"><i class="fas fa-house"></i></button>
         <button class="nav-item" data-page="radio"><i class="fas fa-list-ul"></i></button>
         <button class="nav-item" data-page="favorites"><i class="fa-regular fa-heart"></i></button>
@@ -493,18 +489,20 @@
         const PLAY_MARKET_URL = 'https://play.google.com/store/apps/details?id=com.kurushdigital.isfsrafm';
 
         const RADIOS = [
-            { name: 'ZET FM', freq: '103.0 FM', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-zetfm', desc_tg: 'Радиои муосири тоҷикӣ.', desc_ru: 'Современное таджикское радио.', phone: '+992 92 123 45 67', website: 'https://zetfm.tj', instagram: 'https://instagram.com/zetfm', telegram: 'https://t.me/zetfm' },
-            { name: 'Радио Диёр', freq: '105.5 FM', stream: 'https://c16.radioboss.fm/stream/234', desc_tg: 'Радиои фарҳангии Тоҷикистон.', desc_ru: 'Культурное радио Таджикистана.', phone: '+992 93 123 45 67', website: 'https://diyor.tj', instagram: 'https://instagram.com/diyor', telegram: 'https://t.me/diyor' },
-            { name: 'Радио Наво', freq: '96.5 FM', stream: 'https://radio.navo.tj:8443/live', desc_tg: 'Радиои мусиқии тоҷикӣ.', desc_ru: 'Таджикское музыкальное радио.', phone: '+992 94 123 45 67', website: 'https://navo.tj', instagram: 'https://instagram.com/navo', telegram: 'https://t.me/navo' },
-            { name: 'Радио Пайванд', freq: '100.6 FM', stream: 'https://c6.radioboss.fm/stream/234', desc_tg: 'Радиои пайвандкунанда.', desc_ru: 'Радио, объединяющее людей.', phone: '+992 95 123 45 67', website: 'https://payvand.tj', instagram: 'https://instagram.com/payvand', telegram: 'https://t.me/payvand' },
-            { name: 'Ҳамсадо FM', freq: '94.5 FM', stream: 'https://c23.radioboss.fm/stream/102', desc_tg: 'Радиои ҳамсадо.', desc_ru: 'Радио единства.', phone: '+992 96 123 45 67', website: 'https://hamsado.tj', instagram: 'https://instagram.com/hamsado', telegram: 'https://t.me/hamsado' },
-            { name: 'Радио Қанд', freq: '87.7 FM', stream: 'https://listen7.myradio24.com/tamish', desc_tg: 'Радиои Канди Тоҷикистон.', desc_ru: 'Радио Канда Таджикистана.', phone: '+992 97 123 45 67', website: 'https://kand.tj', instagram: 'https://instagram.com/kand', telegram: 'https://t.me/kand' },
-            { name: 'Радио Азия+', freq: '107.0 FM', stream: 'https://eu.asiaplusradio.tj:8443/ap', desc_tg: 'Радиои Азия+.', desc_ru: 'Радио Азия+.', phone: '+992 987 65 43 21', website: 'https://asiaplus.news', instagram: 'https://www.instagram.com/asiaplustj/', telegram: 'https://t.me/asiaplus' },
-            { name: 'Радио Тироз', freq: '103.7 FM', stream: 'https://eu1.fastcast4u.com/proxy/khusrav/stream?n=b742a6676ac1f8543fc2', desc_tg: 'Радиои Ти роз.', desc_ru: 'Радио Ти роз.', phone: '+992 99 123 45 67', website: 'https://tiroz.tj', instagram: 'https://instagram.com/tiroz', telegram: 'https://t.me/tiroz' },
-            { name: 'Радио Нав', freq: '95.5 FM', stream: 'https://c38.radioboss.fm:8172/stream', desc_tg: 'Радиои Нав.', desc_ru: 'Новое радио.', phone: '+992 91 123 45 67', website: 'https://nav.tj', instagram: 'https://instagram.com/nav', telegram: 'https://t.me/nav' },
-            { name: 'Шаҳри ман', freq: '97.7 FM', stream: 'https://c16.radioboss.fm:8438/stream', desc_tg: 'Радиои Шахри ман.', desc_ru: 'Радио Мой город.', phone: '+992 92 234 56 78', website: 'https://shahriman.tj', instagram: 'https://instagram.com/shahriman', telegram: 'https://t.me/shahriman' },
-            { name: 'Радио Ховар', freq: '93.9 FM', stream: 'https://55ca6d57744.vps.myjino.ru/khovar', desc_tg: 'Радиои Ховар — овози шаҳри қадим.', desc_ru: 'Радио Ховар — голос древнего города.', phone: '+992 92 345 67 89', website: 'https://isfarafm.tj', instagram: 'https://instagram.com/isfarafm', telegram: 'https://t.me/isfarafm' }
+            { name: 'ZET FM', freq: '103.0 FM', logo: '', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-zetfm', desc_tg: 'Радиои муосири тоҷикӣ.', desc_ru: 'Современное таджикское радио.', phone: '+992 92 123 45 67', website: 'https://zetfm.tj', instagram: 'https://instagram.com/zetfm', telegram: 'https://t.me/zetfm' },
+            { name: 'Радио Диёр', freq: '105.5 FM', logo: '', stream: 'https://c16.radioboss.fm/stream/234', desc_tg: 'Радиои фарҳангии Тоҷикистон.', desc_ru: 'Культурное радио Таджикистана.', phone: '+992 93 123 45 67', website: 'https://diyor.tj', instagram: 'https://instagram.com/diyor', telegram: 'https://t.me/diyor' },
+            { name: 'Радио Наво', freq: '96.5 FM', logo: '', stream: 'https://radio.navo.tj:8443/live', desc_tg: 'Радиои мусиқии тоҷикӣ.', desc_ru: 'Таджикское музыкальное радио.', phone: '+992 94 123 45 67', website: 'https://navo.tj', instagram: 'https://instagram.com/navo', telegram: 'https://t.me/navo' },
+            { name: 'Радио Пайванд', freq: '100.6 FM', logo: '', stream: 'https://c6.radioboss.fm/stream/234', desc_tg: 'Радиои пайвандкунанда.', desc_ru: 'Радио, объединяющее людей.', phone: '+992 95 123 45 67', website: 'https://payvand.tj', instagram: 'https://instagram.com/payvand', telegram: 'https://t.me/payvand' },
+            { name: 'Ҳамсадо FM', freq: '94.5 FM', logo: '', stream: 'https://c23.radioboss.fm/stream/102', desc_tg: 'Радиои ҳамсадо.', desc_ru: 'Радио единства.', phone: '+992 96 123 45 67', website: 'https://hamsado.tj', instagram: 'https://instagram.com/hamsado', telegram: 'https://t.me/hamsado' },
+            { name: 'Радио Қанд', freq: '87.7 FM', logo: '', stream: 'https://listen7.myradio24.com/tamish', desc_tg: 'Радиои Канди Тоҷикистон.', desc_ru: 'Радио Канда Таджикистана.', phone: '+992 97 123 45 67', website: 'https://kand.tj', instagram: 'https://instagram.com/kand', telegram: 'https://t.me/kand' },
+            { name: 'Радио Азия+', freq: '107.0 FM', logo: '', stream: 'https://eu.asiaplusradio.tj:8443/ap', desc_tg: 'Радиои Азия+.', desc_ru: 'Радио Азия+.', phone: '+992 987 65 43 21', website: 'https://asiaplus.news', instagram: 'https://www.instagram.com/asiaplustj/', telegram: 'https://t.me/asiaplus' },
+            { name: 'Радио Тироз', freq: '103.7 FM', logo: '', stream: 'https://eu1.fastcast4u.com/proxy/khusrav/stream?n=b742a6676ac1f8543fc2', desc_tg: 'Радиои Ти роз.', desc_ru: 'Радио Ти роз.', phone: '+992 99 123 45 67', website: 'https://tiroz.tj', instagram: 'https://instagram.com/tiroz', telegram: 'https://t.me/tiroz' },
+            { name: 'Радио Нав', freq: '95.5 FM', logo: '', stream: 'https://c38.radioboss.fm:8172/stream', desc_tg: 'Радиои Нав.', desc_ru: 'Новое радио.', phone: '+992 91 123 45 67', website: 'https://nav.tj', instagram: 'https://instagram.com/nav', telegram: 'https://t.me/nav' },
+            { name: 'Шаҳри ман', freq: '97.7 FM', logo: '', stream: 'https://c16.radioboss.fm:8438/stream', desc_tg: 'Радиои Шахри ман.', desc_ru: 'Радио Мой город.', phone: '+992 92 234 56 78', website: 'https://shahriman.tj', instagram: 'https://instagram.com/shahriman', telegram: 'https://t.me/shahriman' },
+            { name: 'Радио Ховар', freq: '93.9 FM', logo: '', stream: 'https://55ca6d57744.vps.myjino.ru/khovar', desc_tg: 'Радиои Ховар — овози шаҳри қадим.', desc_ru: 'Радио Ховар — голос древнего города.', phone: '+992 92 345 67 89', website: 'https://isfarafm.tj', instagram: 'https://instagram.com/isfarafm', telegram: 'https://t.me/isfarafm' }
         ];
+        // 👆 Чтобы поставить реальный логотип станции, впишите ссылку на картинку в поле "logo" (например: logo: 'https://i.ibb.co/xxxx/payvand-logo.png').
+        // Пока поле пустое — вместо логотипа показывается цветной кружок с инициалами названия.
 
         const FACTS = [
             "Исфара яке аз қадимтарин шаҳрҳои Тоҷикистон буда, таърихи он ба асри X мерасад.",
@@ -576,7 +574,7 @@
                 recentTitle: 'Ба наздикӣ гӯш кардаед', recentEmpty: 'Ҳанӯз ҳеҷ радио гӯш нашудааст',
                 nowPlayingLabel: 'Пахши зинда', noStation: 'Радио интихоб нашудааст',
                 listenBtn: 'Гӯш кардан', pauseBtn: 'Таваққуф', loadingBtn: 'Бор мешавад...',
-                rouletteBtnLabel: 'Тасодуфӣ', shareBtnLabel: 'Мубодила', cardBtnLabel: 'Корт', sleepBtnDefault: 'Таймер',
+                rouletteBtnLabel: 'Тасодуфӣ', shareBtnLabel: 'Мубодила', sleepBtnDefault: 'Таймер',
                 gamesTitle: 'Бозиҳо', gamesDesc: 'Дар вақти гӯш кардани радио бозӣ кунед', gamesOpenBtn: 'Бозиҳоро кушоед',
                 factTitle: 'Факти имрӯз', popularTitle: 'Маъмултарин радиоҳо', seeAllBtn: 'Ҳамаи радиоҳоро дидан',
                 backBtn: 'Бозгашт', favBtnLabel: 'Дӯстдошта', favBtnActive: 'Дар дӯстдошта',
@@ -600,20 +598,19 @@
                 tuningHint: '👆 Барои танзими дастӣ бо ангушт кашед',
                 greetNight: 'Шаби хуш! 🌙', greetMorning: 'Субҳ ба хайр! ☀️', greetDay: 'Рӯз ба хайр! 🌤️', greetEvening: 'Шом ба хайр! 🌅',
                 connectFail: '⚠️ Пайваст нашуд. Дубора кӯшиш кунед.', favAdded: '❤️ Ба дӯстдошта илова шуд',
-                linkCopied: '🔗 Истинод нусхабардорӣ шуд', cardSaved: '🖼 Корт захира шуд',
+                linkCopied: '🔗 Истинод нусхабардорӣ шуд',
                 timerOffToast: '⏰ Таймери хоб хомӯш карда шуд', timerOnToast: '⏰ Таймери хоб фаъол: ',
                 timerMin: ' дақиқа', timerUpToast: '🌙 Вақт расид — радио бас шуд', rateComingSoon: 'Баҳодиҳӣ дар Play Market ба наздикӣ!',
                 statsNoData: 'Ҳанӯз маълумот нест. Радиоеро гӯш кунед, то оморҳои шумо пайдо шаванд.',
                 statsSessions: 'бор гӯш кардаед', statsStreak: 'рӯз пайдарпай', statsFav: 'радиои дӯстдоштатарин', statsBucket: 'бештар гӯш мекунед',
                 bucketNight: 'шабона', bucketMorning: 'субҳона', bucketDay: 'рӯзона', bucketEvening: 'шомона',
                 shareMessage: 'Гӯш кунед радиоҳои Тоҷикистонро дар барномаи мо!',
-                cardCta1: '📲 Насб кун барномаро', cardCta2: 'ва гӯш кун ҳар куҷо'
             },
             ru: {
                 recentTitle: 'Недавно слушали', recentEmpty: 'Пока нет прослушанных радиостанций',
                 nowPlayingLabel: 'Прямой эфир', noStation: 'Радио не выбрано',
                 listenBtn: 'Слушать', pauseBtn: 'Пауза', loadingBtn: 'Загрузка...',
-                rouletteBtnLabel: 'Наугад', shareBtnLabel: 'Поделиться', cardBtnLabel: 'Открытка', sleepBtnDefault: 'Таймер',
+                rouletteBtnLabel: 'Наугад', shareBtnLabel: 'Поделиться', sleepBtnDefault: 'Таймер',
                 gamesTitle: 'Игры', gamesDesc: 'Играйте, пока слушаете радио', gamesOpenBtn: 'Открыть игры',
                 factTitle: 'Факт дня', popularTitle: 'Популярные радио', seeAllBtn: 'Смотреть все радио',
                 backBtn: 'Назад', favBtnLabel: 'Избранное', favBtnActive: 'В избранном',
@@ -637,14 +634,13 @@
                 tuningHint: '👆 Потяните пальцем для ручной настройки',
                 greetNight: 'Спокойной ночи! 🌙', greetMorning: 'Доброе утро! ☀️', greetDay: 'Добрый день! 🌤️', greetEvening: 'Добрый вечер! 🌅',
                 connectFail: '⚠️ Не удалось подключиться. Попробуйте ещё раз.', favAdded: '❤️ Добавлено в избранное',
-                linkCopied: '🔗 Ссылка скопирована', cardSaved: '🖼 Открытка сохранена',
+                linkCopied: '🔗 Ссылка скопирована',
                 timerOffToast: '⏰ Таймер сна выключен', timerOnToast: '⏰ Таймер сна включён: ',
                 timerMin: ' минут', timerUpToast: '🌙 Время вышло — радио остановлено', rateComingSoon: 'Оценка в Play Market скоро будет доступна!',
                 statsNoData: 'Пока нет данных. Послушайте радио — и здесь появится ваша статистика.',
                 statsSessions: 'сеансов прослушивания', statsStreak: 'дней подряд', statsFav: 'любимая станция', statsBucket: 'чаще всего слушаете',
                 bucketNight: 'ночью', bucketMorning: 'утром', bucketDay: 'днём', bucketEvening: 'вечером',
-                shareMessage: 'Слушайте радио Таджикистана в нашем приложении!',
-                cardCta1: '📲 Скачай приложение', cardCta2: 'и слушай где угодно'
+                shareMessage: 'Слушайте радио Таджикистана в нашем приложении!'
             }
         };
         function t(key) { return STRINGS[currentLang][key] !== undefined ? STRINGS[currentLang][key] : key; }
@@ -670,7 +666,23 @@
             if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
             return (words[0][0] + words[1][0]).toUpperCase();
         }
-        function applyAvatar(el, radio) { if (!el || !radio) return; el.style.background = getStationGradient(radio.name); el.textContent = getStationInitials(radio.name); }
+        function applyAvatar(el, radio) {
+            if (!el || !radio) return;
+            el.style.background = getStationGradient(radio.name);
+            el.textContent = getStationInitials(radio.name);
+            const existingImg = el.querySelector('img.logo-img');
+            if (existingImg) existingImg.remove();
+            if (radio.logo) {
+                const img = document.createElement('img');
+                img.className = 'logo-img';
+                img.src = radio.logo;
+                img.alt = radio.name;
+                img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;';
+                img.onerror = () => img.remove();
+                el.style.position = el.style.position || 'relative';
+                el.appendChild(img);
+            }
+        }
 
         let currentLang = 'tg';
         let currentRadio = null;
@@ -740,21 +752,7 @@
             if (pageId === 'main') { renderRecent(); renderRadios(); renderStreak(); syncAnimation(); }
             if (pageId === 'radio-detail') window.scrollTo({ top: 0, behavior: 'smooth' });
             updateMiniPlayer();
-            requestAnimationFrame(updateNavPill);
         }
-
-        function updateNavPill() {
-            const active = document.querySelector('.nav-item.active');
-            const pill = document.getElementById('navPill');
-            const nav = document.getElementById('bottomNav');
-            if (!active || !pill || !nav) return;
-            const navRect = nav.getBoundingClientRect();
-            const rect = active.getBoundingClientRect();
-            pill.style.width = rect.width + 'px';
-            pill.style.height = rect.height + 'px';
-            pill.style.transform = `translateX(${rect.left - navRect.left}px)`;
-        }
-        window.addEventListener('resize', updateNavPill);
 
         function showFact(index) {
             if (index < 0) index = FACTS.length - 1;
@@ -1031,76 +1029,6 @@
         document.getElementById('shareBtnDetail').addEventListener('click', shareStation);
         document.getElementById('favBtnDetail').addEventListener('click', () => { if (currentStationIndex !== -1) toggleFavorite(currentStationIndex); updateFavBtnDetail(); });
 
-        function roundRectPath(ctx, x, y, w, h, r) {
-            ctx.beginPath();
-            ctx.moveTo(x + r, y);
-            ctx.arcTo(x + w, y, x + w, y + h, r);
-            ctx.arcTo(x + w, y + h, x, y + h, r);
-            ctx.arcTo(x, y + h, x, y, r);
-            ctx.arcTo(x, y, x + w, y, r);
-            ctx.closePath();
-        }
-
-        function generateShareCard() {
-            const radio = currentRadio || RADIOS[0];
-            const canvas = document.createElement('canvas');
-            canvas.width = 1080; canvas.height = 1500;
-            const ctx = canvas.getContext('2d');
-            const h1 = hashString(radio.name) % 360, h2 = (h1 + 46) % 360;
-
-            const bgGrad = ctx.createLinearGradient(0, 0, 1080, 1500);
-            bgGrad.addColorStop(0, `hsl(${h1}, 45%, 13%)`); bgGrad.addColorStop(1, `hsl(${h2}, 42%, 7%)`);
-            ctx.fillStyle = bgGrad; ctx.fillRect(0, 0, 1080, 1500);
-
-            ctx.globalAlpha = 0.07; ctx.strokeStyle = '#F0B429'; ctx.lineWidth = 2;
-            for (let x = -1500; x < 1080; x += 46) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x + 1500, 1500); ctx.stroke(); }
-            for (let x = 1080 + 1500; x > 0; x -= 46) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x - 1500, 1500); ctx.stroke(); }
-            ctx.globalAlpha = 1;
-
-            ctx.fillStyle = '#F0B429'; ctx.font = '700 34px "JetBrains Mono", monospace'; ctx.textAlign = 'center';
-            ctx.fillText('📻 РАДИОҲОИ ТОҶИКИСТОН', 540, 130);
-
-            ctx.save(); ctx.beginPath(); ctx.arc(540, 420, 160, 0, Math.PI * 2); ctx.closePath(); ctx.clip();
-            const avGrad = ctx.createLinearGradient(380, 260, 700, 580);
-            avGrad.addColorStop(0, `hsl(${h1}, 68%, 48%)`); avGrad.addColorStop(1, `hsl(${h2}, 72%, 34%)`);
-            ctx.fillStyle = avGrad; ctx.fillRect(380, 260, 320, 320); ctx.restore();
-            ctx.strokeStyle = '#F0B429'; ctx.lineWidth = 6; ctx.beginPath(); ctx.arc(540, 420, 160, 0, Math.PI * 2); ctx.stroke();
-
-            ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.font = '700 100px Sora, sans-serif'; ctx.textBaseline = 'middle';
-            ctx.fillText(getStationInitials(radio.name), 540, 428);
-
-            ctx.textBaseline = 'alphabetic';
-            ctx.fillStyle = '#F7F4EC'; ctx.font = '700 62px Sora, sans-serif'; ctx.fillText(radio.name, 540, 680);
-            ctx.fillStyle = '#F0B429'; ctx.font = '600 38px "JetBrains Mono", monospace'; ctx.fillText(radio.freq, 540, 740);
-
-            const barHeights = [40, 70, 100, 65, 45, 85, 55];
-            const barW = 14, gap = 12; const totalW = barHeights.length * barW + (barHeights.length - 1) * gap;
-            let bx = 540 - totalW / 2;
-            barHeights.forEach(h => { ctx.fillStyle = '#F0B429'; roundRectPath(ctx, bx, 800 - h, barW, h, 6); ctx.fill(); bx += barW + gap; });
-
-            ctx.fillStyle = 'rgba(247,244,236,0.5)'; ctx.font = '500 28px Inter, sans-serif';
-            ctx.fillText(new Date().toLocaleString('tg-TJ', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }), 540, 870);
-
-            roundRectPath(ctx, 140, 1160, 800, 220, 28);
-            ctx.fillStyle = 'rgba(240,180,41,0.13)'; ctx.fill();
-            ctx.strokeStyle = 'rgba(240,180,41,0.5)'; ctx.lineWidth = 2; ctx.stroke();
-            ctx.fillStyle = '#F0B429'; ctx.font = '700 42px Sora, sans-serif'; ctx.fillText(t('cardCta1'), 540, 1250);
-            ctx.fillStyle = '#F7F4EC'; ctx.font = '500 30px Inter, sans-serif'; ctx.fillText(t('cardCta2'), 540, 1305);
-            ctx.fillStyle = 'rgba(247,244,236,0.55)'; ctx.font = '500 24px "JetBrains Mono", monospace'; ctx.fillText('Play Market', 540, 1350);
-
-            canvas.toBlob((blob) => {
-                const file = new File([blob], 'radio-card.png', { type: 'image/png' });
-                if (navigator.canShare && navigator.canShare({ files: [file] })) { navigator.share({ files: [file], title: radio.name, text: t('shareMessage') + ' ' + PLAY_MARKET_URL }).catch(() => {}); }
-                else {
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a'); a.href = url; a.download = 'radio-card.png'; a.click();
-                    showToast(t('cardSaved'));
-                }
-            });
-        }
-        document.getElementById('cardBtnMain').addEventListener('click', generateShareCard);
-        document.getElementById('cardBtnDetail').addEventListener('click', generateShareCard);
-
         function computeStats() {
             let history = [];
             try { history = JSON.parse(localStorage.getItem('listenHistory')) || []; } catch (e) {}
@@ -1277,7 +1205,6 @@
                 document.getElementById('timeDisplay').textContent = new Date().toLocaleTimeString('tg-TJ', { hour: '2-digit', minute: '2-digit' });
                 refreshGreeting();
             }, 30000);
-            setTimeout(updateNavPill, 60);
         }
         document.addEventListener('DOMContentLoaded', init);
     </script>
