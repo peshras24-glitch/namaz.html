@@ -232,37 +232,6 @@
         .fa-spinner { animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
-
-        /* ===== СТИЛИ ДЛЯ ИГРЫ COLONY RUNNER ===== */
-        #colonyRunnerContainer {
-            width: 100%;
-            height: 400px;
-            background: #0a0a1a;
-            border-radius: 16px;
-            overflow: hidden;
-            position: relative;
-            margin: 12px 0;
-        }
-        #colonyRunnerContainer canvas {
-            width: 100%;
-            height: 100%;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-        }
-        #colonyRunnerContainer .game-ui {
-            position: absolute;
-            top: 8px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-around;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            color: rgba(255,255,255,0.7);
-            pointer-events: none;
-            z-index: 5;
-        }
-        #colonyRunnerContainer .game-ui span { color: #7fdbca; }
     </style>
 </head>
 <body>
@@ -285,445 +254,975 @@
 
         <!-- ===== ГЛАВНАЯ ===== -->
         <div class="page active" id="page-main">
-            <!-- ... (весь код главной страницы как у тебя) ... -->
+
+            <div class="glass-card" style="text-align: center; padding: 18px;">
+                <div style="font-family: var(--font-display); font-size: 21px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;">
+                    <span id="greetingText">Салом!</span><span style="color: var(--text-faint); font-weight:400;">·</span><span id="timeDisplay" style="font-family: var(--font-mono); font-size: 18px; color: var(--gold);"></span>
+                </div>
+                <div id="streakPillWrap"></div>
+            </div>
+
+            <div class="glass-card" style="padding-bottom: 10px;">
+                <div class="card-label"><i class="fas fa-clock-rotate-left"></i> <span data-i18n="recentTitle"></span></div>
+                <div class="recent-scroll" id="recentList"><div class="empty-recent" data-i18n="recentEmpty"></div></div>
+            </div>
+
+            <div class="glass-card player-hero">
+                <div class="now-playing-label" data-i18n="nowPlayingLabel"></div>
+                <div class="current-station-name" id="mainNowPlaying"></div>
+
+                <div class="player-circle" id="playerCircle">
+                    <div class="station-avatar" id="vinylMain">РТ</div>
+                    <div class="ring" id="pulseRing"></div>
+                    <div class="wave-ring" id="waveRing1"></div>
+                    <div class="wave-ring" id="waveRing2"></div>
+                </div>
+
+                <div class="listener-count" id="mainListenerCount"><span class="dot"></span> 0</div>
+
+                <div class="equalizer" id="equalizerMain">
+                    <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                </div>
+
+                <div class="tuning-dial" id="tuningDial">
+                    <div class="tuning-freq-display" id="tuningFreqDisplay">— MHz</div>
+                    <div class="tuning-track" id="tuningTrack">
+                        <div class="tuning-ticks"></div>
+                        <div class="tuning-needle" id="tuningNeedle"></div>
+                    </div>
+                    <div class="tuning-scale-labels"><span>87.5</span><span>98</span><span>108</span></div>
+                    <div class="tuning-hint" id="tuningHint" data-i18n="tuningHint"></div>
+                </div>
+
+                <button class="btn-primary" id="playBtnMain" style="width: 100%; max-width: 300px; margin: 4px auto; padding: 15px; font-size: 17px; border-radius: 40px;">
+                    <i class="fas fa-play"></i> <span id="playBtnMainLabel"></span>
+                </button>
+
+                <div class="player-actions">
+                    <button class="btn-secondary" id="rouletteBtn"><i class="fas fa-shuffle"></i> <span data-i18n="rouletteBtnLabel"></span></button>
+                    <button class="btn-secondary" id="shareBtnMain"><i class="fas fa-share-nodes"></i> <span data-i18n="shareBtnLabel"></span></button>
+                    <button class="btn-secondary" id="sleepBtnMain"><i class="fas fa-moon"></i> <span id="sleepBtnLabel"></span></button>
+                </div>
+            </div>
+
             <div class="glass-card">
                 <div class="card-label"><i class="fas fa-gamepad"></i> <span data-i18n="gamesTitle"></span></div>
                 <div style="font-size: 13.5px; color: var(--text-dim); margin-bottom: 12px;" data-i18n="gamesDesc"></div>
-                <button class="btn-secondary" style="width: 100%; justify-content: center; padding: 12px;" onclick="openGamesHub()"><i class="fas fa-gamepad"></i> <span>🎮 Бозиҳо</span></button>
-            </div>
-            <!-- ... -->
-        </div>
-
-        <!-- ===== ОСТАЛЬНЫЕ СТРАНИЦЫ ===== -->
-        <!-- ... (радио, избранное, профиль) ... -->
-
-    </div>
-
-    <!-- ===== МОДАЛЬНОЕ ОКНО ДЛЯ ИГР ===== -->
-    <div class="rg-overlay" id="rgOverlay" style="display: none;">
-        <div class="rg-sheet" id="rgSheet">
-            <div class="rg-header">
-                <div class="rg-title">🎮 Бозиҳо</div>
-                <button class="rg-close" onclick="closeGamesHub()"><i class="fas fa-times"></i></button>
+                <button class="btn-secondary" style="width: 100%; justify-content: center; padding: 12px;" onclick="RadioGames.openHub(currentLang)"><i class="fas fa-gamepad"></i> <span data-i18n="gamesOpenBtn"></span></button>
             </div>
 
-            <!-- Карточки игр -->
-            <div class="rg-card" onclick="startSortGame()">
-                <div class="rg-icon">🧪</div>
-                <div><div class="rg-name">Сортировкаи рангҳо</div><div class="rg-desc">Ҳама рангҳоро ҷудо кунед</div></div>
-            </div>
-            <div class="rg-card" onclick="startMatchGame()">
-                <div class="rg-icon">🍭</div>
-                <div><div class="rg-name">3 дар як қатор</div><div class="rg-desc">Рангҳоро ҷой иваз кунед</div></div>
-            </div>
-            <div class="rg-card" onclick="startRunnerGame()">
-                <div class="rg-icon">🏃</div>
-                <div><div class="rg-name">Colony Runner</div><div class="rg-desc">Платформер бо сатҳҳо</div></div>
-            </div>
-
-            <!-- Контейнер для игры Colony Runner -->
-            <div id="colonyRunnerContainer" style="display: none;">
-                <div class="game-ui">
-                    <div>SCORE: <span id="runnerScore">0</span></div>
-                    <div>LIVES: <span id="runnerLives">3</span></div>
-                    <div>LEVEL: <span id="runnerLevel">1</span></div>
+            <div class="glass-card">
+                <div class="card-label"><i class="fas fa-lightbulb"></i> <span data-i18n="factTitle"></span></div>
+                <div class="fact-container">
+                    <button class="fact-nav" id="factPrev"><i class="fas fa-chevron-left"></i></button>
+                    <div id="factOfDay" style="font-size: 14.5px; color: var(--text-dim); line-height: 1.6; flex: 1; padding: 0 4px; text-align: center;"></div>
+                    <button class="fact-nav" id="factNext"><i class="fas fa-chevron-right"></i></button>
                 </div>
-                <canvas id="runnerCanvas"></canvas>
             </div>
 
-            <!-- Контейнер для других игр -->
-            <div id="gameContent"></div>
+            <div class="glass-card">
+                <div class="card-label"><i class="fas fa-fire"></i> <span data-i18n="popularTitle"></span></div>
+                <div id="radioList"></div>
+                <button class="see-all-btn" onclick="showPage('radio')"><span data-i18n="seeAllBtn"></span> <i class="fas fa-arrow-right"></i></button>
+            </div>
+
+        </div>
+
+        <!-- ===== СТРАНИЦА РАДИО ===== -->
+        <div class="page" id="page-radio-detail">
+            <button class="back-btn" onclick="showPage('main')"><i class="fas fa-arrow-left"></i> <span data-i18n="backBtn"></span></button>
+
+            <div class="glass-card" style="text-align: center;">
+                <div class="radio-detail-logo station-avatar" id="detailLogo">--</div>
+                <div class="radio-detail-name" id="detailName">Радио</div>
+                <div class="radio-detail-freq" id="detailFreq">00.0 FM</div>
+                <div class="radio-detail-listeners" id="detailListeners">● 0</div>
+
+                <div class="equalizer" id="equalizerDetail" style="margin-top: 10px;">
+                    <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                </div>
+
+                <button class="btn-primary" id="detailPlayBtn" style="width: 100%; max-width: 300px; margin: 12px auto 6px; padding: 15px; font-size: 17px; border-radius: 40px;">
+                    <i class="fas fa-play"></i> <span id="detailPlayBtnLabel"></span>
+                </button>
+
+                <div class="player-actions">
+                    <button class="btn-secondary" id="favBtnDetail"><i class="fa-regular fa-heart"></i> <span data-i18n="favBtnLabel"></span></button>
+                    <button class="btn-secondary" id="shareBtnDetail"><i class="fas fa-share-nodes"></i> <span data-i18n="shareBtnLabel"></span></button>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="radio-detail-desc" id="detailDesc"></div>
+                <div class="radio-detail-contacts" id="detailContacts">
+                    <a href="#" id="detailPhone"><i class="fas fa-phone"></i> Телефон</a>
+                    <a href="#" id="detailWebsite" target="_blank"><i class="fas fa-globe"></i> Сайт</a>
+                    <a href="#" id="detailInstagram" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+                    <a href="#" id="detailTelegram" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== РАДИО (список) ===== -->
+        <div class="page" id="page-radio">
+            <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="searchPlaceholder">
+            <div class="filter-chips">
+                <button class="filter-chip active" data-filter="all" onclick="setListFilter('all')" data-i18n="filterAll"></button>
+                <button class="filter-chip" data-filter="fav" onclick="setListFilter('fav')" data-i18n="filterFav"></button>
+            </div>
+            <div id="radioListFull"></div>
+            <div class="empty-state" id="radioListEmpty" style="display:none;">
+                <div class="icon"><i class="fas fa-satellite-dish"></i></div>
+                <div class="title" data-i18n="emptySearchTitle"></div>
+                <div class="desc" data-i18n="emptySearchDesc"></div>
+            </div>
+        </div>
+
+        <!-- ===== ИЗБРАННОЕ ===== -->
+        <div class="page" id="page-favorites"><div id="favoritesList"></div></div>
+
+        <!-- ===== ПРОФИЛЬ ===== -->
+        <div class="page" id="page-profile">
+            <div class="glass-card">
+                <div style="font-family: var(--font-display); font-weight: 700; font-size: 18px; margin-bottom: 16px;" data-i18n="profileTitle"></div>
+
+                <div class="profile-item" style="flex-direction: column; align-items: flex-start;">
+                    <div><i class="fas fa-globe"></i> <span data-i18n="langLabel"></span></div>
+                    <div class="lang-buttons">
+                        <button class="lang-btn active" data-lang="tg" onclick="setLanguage('tg')">🇹🇯 Тоҷикӣ</button>
+                        <button class="lang-btn" data-lang="ru" onclick="setLanguage('ru')">🇷🇺 Русский</button>
+                    </div>
+                </div>
+
+                <div class="profile-item" onclick="toggleProfileSection('stats')"><i class="fas fa-chart-simple"></i> <span data-i18n="statsLabel"></span><i class="fas fa-chevron-down chev"></i></div>
+                <div class="profile-subsection" id="statsSection"></div>
+
+                <div class="profile-item" onclick="toggleProfileSection('sleep')"><i class="fas fa-moon"></i> <span data-i18n="sleepLabel"></span><i class="fas fa-chevron-down chev"></i></div>
+                <div class="profile-subsection" id="sleepSection">
+                    <p data-i18n="sleepDesc"></p>
+                    <div class="timer-options" id="timerOptions">
+                        <button class="timer-opt" data-min="0"></button>
+                        <button class="timer-opt" data-min="15"></button>
+                        <button class="timer-opt" data-min="30"></button>
+                        <button class="timer-opt" data-min="45"></button>
+                        <button class="timer-opt" data-min="60"></button>
+                    </div>
+                </div>
+
+                <div class="profile-item" onclick="toggleProfileSection('suggest')"><i class="fas fa-plus-circle"></i> <span data-i18n="suggestLabel"></span><i class="fas fa-chevron-down chev"></i></div>
+                <div class="profile-subsection" id="suggestSection">
+                    <p data-i18n="suggestDesc"></p>
+                    <button class="btn-primary" onclick="openTelegram()"><span data-i18n="writeUsBtn"></span></button>
+                </div>
+
+                <div class="profile-item" onclick="toggleProfileSection('contact')"><i class="fas fa-envelope"></i> <span data-i18n="contactLabel"></span><i class="fas fa-chevron-down chev"></i></div>
+                <div class="profile-subsection" id="contactSection">
+                    <p data-i18n="contactDesc"></p>
+                    <button class="btn-primary" onclick="openTelegram()"><span data-i18n="writeUsBtn"></span></button>
+                </div>
+
+                <div class="profile-item" onclick="toggleProfileSection('copyright')"><i class="fas fa-balance-scale"></i> <span data-i18n="copyrightLabel"></span><i class="fas fa-chevron-down chev"></i></div>
+                <div class="profile-subsection" id="copyrightSection">
+                    <p data-i18n="copyrightDesc1"></p>
+                    <p data-i18n="copyrightDesc2"></p>
+                    <button class="btn-primary" onclick="openTelegram()"><span data-i18n="writeUsBtn"></span></button>
+                </div>
+
+                <div class="profile-item" onclick="toggleProfileSection('donate')"><i class="fas fa-heart" style="color: var(--terracotta);"></i> <span data-i18n="donateLabel"></span><i class="fas fa-chevron-down chev"></i></div>
+                <div class="profile-subsection" id="donateSection">
+                    <p data-i18n="donateDesc" style="white-space: pre-line;"></p>
+                    <div style="background: var(--glass); padding: 16px; border-radius: var(--radius-md); margin: 12px 0; border: 1px solid var(--border);">
+                        <div style="color: var(--gold); font-weight: 600; font-size: 13px;" data-i18n="cardNumberLabel"></div>
+                        <div style="font-size: 18px; letter-spacing: 2px; font-weight: 700; font-family: var(--font-mono); margin-top: 4px;">5413 5252 0028 0531</div>
+                        <div style="font-size: 12.5px; color: var(--text-dim); margin-top: 2px;" data-i18n="bankLabel"></div>
+                    </div>
+                    <button class="btn-primary" onclick="window.open('https://t.me/kurush_digital', '_blank')" style="width: 100%;"><span data-i18n="writeTelegramBtn"></span></button>
+                </div>
+
+                <div class="profile-item" onclick="toggleProfileSection('faq')"><i class="fas fa-question-circle"></i> <span>FAQ</span><i class="fas fa-chevron-down chev"></i></div>
+                <div class="profile-subsection" id="faqSection"><div id="faqList"></div></div>
+
+                <div class="profile-item" onclick="rateApp()"><i class="fas fa-star"></i> <span data-i18n="rateLabel"></span></div>
+
+                <div class="profile-item" onclick="toggleProfileSection('about')"><i class="fas fa-info-circle"></i> <span data-i18n="aboutLabel"></span><i class="fas fa-chevron-down chev"></i></div>
+                <div class="profile-subsection" id="aboutSection">
+                    <p data-i18n="aboutText1"></p>
+                    <p style="margin-top: 8px;"><span data-i18n="versionLabel"></span>: <strong>3.2</strong></p>
+                    <p style="margin-top: 4px;"><span data-i18n="devLabel"></span>: <a href="https://kurushdigital.one" target="_blank" class="footer-link">Kurush Digital</a></p>
+                    <p style="margin-top: 12px; font-size: 12px; color: var(--text-faint);" data-i18n="copyrightFooter"></p>
+                </div>
+
+                <div class="profile-item" onclick="exitApp()" style="color: var(--terracotta);"><i class="fas fa-sign-out-alt" style="color: var(--terracotta);"></i> <span data-i18n="logoutLabel"></span></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mini-player" id="miniPlayer">
+        <div class="mini-player-content">
+            <div class="mini-avatar" id="miniAvatar">--</div>
+            <div class="mini-player-info" id="miniPlayerInfo">
+                <div class="mini-player-name" id="miniPlayerName"></div>
+                <div class="mini-player-status" id="miniPlayerStatus"></div>
+            </div>
+            <div class="mini-player-controls">
+                <button class="mini-btn play-btn" id="miniPlayBtn"><i class="fas fa-play"></i></button>
+                <button class="mini-btn" id="miniCloseBtn"><i class="fas fa-times"></i></button>
+            </div>
         </div>
     </div>
 
-    <!-- ===== ОСТАЛЬНОЙ КОД (мини-плеер, навигация, футер) ===== -->
-    <!-- ... -->
+    <nav class="bottom-nav" id="bottomNav">
+        <button class="nav-item active" data-page="main"><i class="fas fa-house"></i></button>
+        <button class="nav-item" data-page="radio"><i class="fas fa-list-ul"></i></button>
+        <button class="nav-item" data-page="favorites"><i class="fa-regular fa-heart"></i></button>
+        <button class="nav-item" data-page="profile"><i class="fa-regular fa-user"></i></button>
+    </nav>
+
+    <footer><div>© 2026 | <a href="https://kurushdigital.one" target="_blank" class="footer-link">Kurush Digital</a></div></footer>
 
     <audio id="audioPlayer"></audio>
 
+    <script src="games.js"></script>
     <script>
-        // ============================================================
-        // КОД ИГР (games.js встроен прямо сюда)
-        // ============================================================
+        const APP_LOGO = 'https://i.ibb.co/5g1NGVRD/file-000000001bd071fbb0d2fc8bbcb0138a.png';
+        const PLAY_MARKET_URL = 'https://play.google.com/store/apps/details?id=com.kurushdigital.isfsrafm';
 
-        // ---------- ДАННЫЕ ДЛЯ ИГР ----------
-        const COLORS = ['#E8623D', '#F0B429', '#34C759', '#5AC8FA', '#AF52DE', '#FF6B6B', '#FFD93D', '#6BCB77', '#4D96FF', '#9B59B6'];
-        const MATCH_COLORS = ['#E8623D', '#F0B429', '#34C759', '#5AC8FA', '#AF52DE', '#FF6B6B'];
+        const RADIOS = [
+            { name: 'ZET FM', freq: '103.0 FM', logo: '', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-zetfm', desc_tg: 'Радиои муосири тоҷикӣ.', desc_ru: 'Современное таджикское радио.', phone: '+992 92 123 45 67', website: 'https://zetfm.tj', instagram: 'https://instagram.com/zetfm', telegram: 'https://t.me/zetfm' },
+            { name: 'Радио Диёр', freq: '105.5 FM', logo: '', stream: 'https://c16.radioboss.fm/stream/234', desc_tg: 'Радиои фарҳангии Тоҷикистон.', desc_ru: 'Культурное радио Таджикистана.', phone: '+992 93 123 45 67', website: 'https://diyor.tj', instagram: 'https://instagram.com/diyor', telegram: 'https://t.me/diyor' },
+            { name: 'Радио Наво', freq: '96.5 FM', logo: '', stream: 'https://radio.navo.tj:8443/live', desc_tg: 'Радиои мусиқии тоҷикӣ.', desc_ru: 'Таджикское музыкальное радио.', phone: '+992 94 123 45 67', website: 'https://navo.tj', instagram: 'https://instagram.com/navo', telegram: 'https://t.me/navo' },
+            { name: 'Радио Пайванд', freq: '100.6 FM', logo: '', stream: 'https://c6.radioboss.fm/stream/234', desc_tg: 'Радиои пайвандкунанда.', desc_ru: 'Радио, объединяющее людей.', phone: '+992 95 123 45 67', website: 'https://payvand.tj', instagram: 'https://instagram.com/payvand', telegram: 'https://t.me/payvand' },
+            { name: 'Ҳамсадо FM', freq: '94.5 FM', logo: '', stream: 'https://c23.radioboss.fm/stream/102', desc_tg: 'Радиои ҳамсадо.', desc_ru: 'Радио единства.', phone: '+992 96 123 45 67', website: 'https://hamsado.tj', instagram: 'https://instagram.com/hamsado', telegram: 'https://t.me/hamsado' },
+            { name: 'Радио Қанд', freq: '87.7 FM', logo: '', stream: 'https://listen7.myradio24.com/tamish', desc_tg: 'Радиои Канди Тоҷикистон.', desc_ru: 'Радио Канда Таджикистана.', phone: '+992 97 123 45 67', website: 'https://kand.tj', instagram: 'https://instagram.com/kand', telegram: 'https://t.me/kand' },
+            { name: 'Радио Азия+', freq: '107.0 FM', logo: '', stream: 'https://eu.asiaplusradio.tj:8443/ap', desc_tg: 'Радиои Азия+.', desc_ru: 'Радио Азия+.', phone: '+992 987 65 43 21', website: 'https://asiaplus.news', instagram: 'https://www.instagram.com/asiaplustj/', telegram: 'https://t.me/asiaplus' },
+            { name: 'Радио Тироз', freq: '103.7 FM', logo: '', stream: 'https://eu1.fastcast4u.com/proxy/khusrav/stream?n=b742a6676ac1f8543fc2', desc_tg: 'Радиои Ти роз.', desc_ru: 'Радио Ти роз.', phone: '+992 99 123 45 67', website: 'https://tiroz.tj', instagram: 'https://instagram.com/tiroz', telegram: 'https://t.me/tiroz' },
+            { name: 'Радио Нав', freq: '95.5 FM', logo: '', stream: 'https://c38.radioboss.fm:8172/stream', desc_tg: 'Радиои Нав.', desc_ru: 'Новое радио.', phone: '+992 91 123 45 67', website: 'https://nav.tj', instagram: 'https://instagram.com/nav', telegram: 'https://t.me/nav' },
+            { name: 'Шаҳри ман', freq: '97.7 FM', logo: '', stream: 'https://c16.radioboss.fm:8438/stream', desc_tg: 'Радиои Шахри ман.', desc_ru: 'Радио Мой город.', phone: '+992 92 234 56 78', website: 'https://shahriman.tj', instagram: 'https://instagram.com/shahriman', telegram: 'https://t.me/shahriman' },
+            { name: 'Радио Ховар', freq: '93.9 FM', logo: '', stream: 'https://55ca6d57744.vps.myjino.ru/khovar', desc_tg: 'Радиои Ховар — овози шаҳри қадим.', desc_ru: 'Радио Ховар — голос древнего города.', phone: '+992 92 345 67 89', website: 'https://isfarafm.tj', instagram: 'https://instagram.com/isfarafm', telegram: 'https://t.me/isfarafm' },
+            { name: 'Садои Душанбе', freq: '101.2 FM', logo: '', stream: 'http://online.radiotoj.tj:8000/sdushanbe?n=d2bc9791ed243bc3c6fb', desc_tg: 'Садои пойтахти Тоҷикистон.', desc_ru: 'Голос столицы Таджикистана.', phone: '', website: '', instagram: '', telegram: '' },
+            { name: 'Радиои Тоҷикистон', freq: '88.5 FM', logo: '', stream: 'http://online.radiotoj.tj:8000/tojikiston?n=1d60de4709e10ea6c7dd', desc_tg: 'Радиои расмии давлатии Тоҷикистон.', desc_ru: 'Государственное радио Таджикистана.', phone: '', website: '', instagram: '', telegram: '' },
+            { name: 'Овози Тоҷик', freq: '92.0 FM', logo: '', stream: 'http://online.radiotoj.tj:8000/otojik?n=b338ddb82fa911c27afc', desc_tg: 'Овози миллии тоҷикон.', desc_ru: 'Голос таджикского народа.', phone: '', website: '', instagram: '', telegram: '' },
+            { name: 'Радио Помир', freq: '90.5 FM', logo: '', stream: 'http://stream.pamirradio.com:8000/live?n=1fe99927b14a08d7902e', desc_tg: 'Радиои минтақаи Помир.', desc_ru: 'Радио региона Памир.', phone: '', website: '', instagram: '', telegram: '' },
+            { name: 'Radio Navahang', freq: '99.0 FM', logo: '', stream: 'https://navairan.com/;stream.nsv', desc_tg: 'Радиои навохти мусиқии тоҷикӣ.', desc_ru: 'Радио с таджикской музыкой.', phone: '', website: '', instagram: '', telegram: '' }
+        ];
+        // 👆 Чтобы поставить реальный логотип станции, впишите ссылку на картинку в поле "logo" (например: logo: 'https://i.ibb.co/xxxx/payvand-logo.png').
+        // Пока поле пустое — вместо логотипа показывается цветной кружок с инициалами названия.
 
-        let sortState = { tubes: [], selected: -1, moves: 0, best: 0 };
-        let matchState = { grid: [], score: 0, best: 0, selected: null, moves: 0 };
-        let runnerInitialized = false;
-        let runnerGame = null;
+        const FACTS = [
+            "Исфара яке аз қадимтарин шаҳрҳои Тоҷикистон буда, таърихи он ба асри X мерасад.",
+            "Кӯҳи Исмоили Сомонӣ (7495 м) баландтарин қуллаи Тоҷикистон ва Осиёи Марказӣ мебошад.",
+            "Дар Тоҷикистон зиёда аз 900 дарё мавҷуд аст, ки дарозии умумии онҳо 60 000 км-ро ташкил медиҳад.",
+            "Кӯли Искандаркӯл дар баландии 2195 м аз сатҳи баҳр ҷойгир буда, бо оби тинҷ ва ривоятҳои афсонавӣ машҳур аст.",
+            "Бозори Панҷшанбе дар Хуҷанд яке аз қадимтарин бозорҳои Осиёи Марказӣ маҳсуб мешавад.",
+            "Рӯди Вахш дарозиаш 524 км буда, яке аз дарёҳои калони Тоҷикистон мебошад.",
+            "Некӣ (Нусай) яке аз шаҳрҳои қадимии Тоҷикистон аст, ки дар асри V пеш аз милод таъсис ёфтааст.",
+            "Кӯли Сарез дар Помир дар натиҷаи заминларзаи соли 1911 ба вуҷуд омадааст ва чуқурии он то 500 м мерасад.",
+            "Тоҷикистон дорои 4 макони мероси ҷаҳонии ЮНЕСКО мебошад: Панҷакент, Саразм, Ҳисор ва Шаҳрисабз.",
+            "Дар Тоҷикистон зиёда аз 70 фоизи ҳудудро кӯҳҳо фаро гирифтаанд, ки онро кишвари кӯҳӣ месозанд.",
+            "Кӯҳи Хазрати Султон (5302 м) дар ноҳияи Айнӣ ҷойгир буда, бо нуқрагиҳои худ машҳур аст.",
+            "Дарёи Панҷ марзи табиии Тоҷикистон ва Афғонистон буда, дарозиаш 921 км-ро ташкил медиҳад.",
+            "Шаҳри Хуҷанд (Хуҷанд) яке аз шаҳрҳои қадимии Осиёи Марказӣ буда, дар асрҳои VI–V пеш аз милод таъсис шудааст.",
+            "Тоҷикистон дорои захираҳои бузурги алюминий, тилло, нуқра ва дигар маъданҳо мебошад.",
+            "Кӯли Сарез нисбат ба кӯли Байкал сардтар аст, аммо оби он то 0 дараҷа гарм мешавад.",
+            "Дар Тоҷикистон зиёда аз 50 кӯл мавҷуд аст, ки маъруфтарини онҳо Сарез, Искандаркӯл ва Зоркӯл мебошанд.",
+            "Шаҳри Истаравшан (Ура-Тюбе) бо таърихи 2500-солааш яке аз кӯҳантарин шаҳрҳои Тоҷикистон аст.",
+            "Кӯҳи Помир «Боми ҷаҳон» номида мешавад, зеро он дар баландтарин нуқтаҳои ҷаҳон ҷойгир аст.",
+            "Дар Тоҷикистон зиёда аз 90 фоизи аҳолии он тоҷикон буда, тоҷикӣ забони давлатӣ мебошад.",
+            "Шабнами Сурайё яке аз сарояндагони шинохтаи тоҷик буда, сурудҳои ӯ дар тамоми Тоҷикистон машҳуранд.",
+            "Дарёи Кофарниҳон дар наздикии Душанбе ҷойгир буда, аз кӯҳҳои Ҳисор сарчашма мегирад.",
+            "Тоҷикистон дорои 13 ноҳияи кӯҳӣ буда, кӯҳҳои он аз 4000 то 7000 м баландӣ доранд.",
+            "Кӯли Шорбулоқ дар наздикии Панҷакент ҷойгир буда, бо оби шифобахши худ машҳур аст.",
+            "Дар Тоҷикистон зиёда аз 100 намуди паррандагон ва 50 намуди ширхӯрҳо мавҷуд аст, аз ҷумла паланг ва хирси кӯҳӣ.",
+            "Шаҳри Душанбе дар асри 17 таъсис ёфтааст ва ҳоло пойтахти Тоҷикистон мебошад.",
+            "Кӯҳи Чимтарга дар ноҳияи Шахристон ҷойгир буда, бо пиёдагардӣ ва лижаронӣ машҳур аст.",
+            "Тоҷикистон дорои 4 мавзеи табиии махсус: Парки табиии Помир, Мамнӯъгоҳи табиии Зоркӯл, Мамнӯъгоҳи табиии Чилдухтарон ва Мамнӯъгоҳи табиии Сари Хосор.",
+            "Дар Тоҷикистон зиёда аз 10 намуди гулҳои нодир мавҷуд аст, ки танҳо дар ин кишвар мерӯянд.",
+            "Кӯҳи Зардолу дар наздикии Хуҷанд ҷойгир буда, бо боғҳои сермеваи худ машҳур аст."
+        ];
 
-        // ---------- ОБЩИЕ ФУНКЦИИ ДЛЯ МОДАЛКИ ----------
-        function openGamesHub() {
-            document.getElementById('rgOverlay').style.display = 'flex';
-            document.getElementById('colonyRunnerContainer').style.display = 'none';
-            document.getElementById('gameContent').innerHTML = '';
-        }
+        const FAQ_DATA = {
+            tg: [
+                { q: '🎧 Чӣ тавр радиоро гӯш кардан мумкин?', a: 'Тугмаи "Гӯш кардан"-ро дар назди ҳар як радио пахш кунед. Ё ба радиои дилхоҳ клик кунед, то плеер кушода шавад.' },
+                { q: '❓ Чаро радио намепазад?', a: 'Пайвасти интернети худро санҷед. Агар мушкилот боқӣ монад — саҳифаро аз нав фаъол кунед ё радиои дигарро интихоб кунед.' },
+                { q: '⭐ Чӣ тавр радиоро ба "Дӯстдошта" илова кардан мумкин?', a: 'Дар назди номи радио тугмаи ❤️ (дил)-ро пахш кунед. Радио дар бахши "Дӯстдошта" нигоҳ дошта мешавад.' },
+                { q: '📢 Чӣ тавр радиои худро пешниҳод кардан мумкин?', a: 'Ба мо дар Telegram тавассути бахши "Пешниҳоди радио" ё "Бо мо тамос гиред" нависед. Мо онро дар наздиктарин вақт илова мекунем.' },
+                { q: '📱 Чӣ тавр барномаро бо дигарон мубодила кардан мумкин?', a: 'Тугмаи "Мубодила"-ро дар плеер ё саҳифаи радио пахш кунед — истинод ба барнома дар Play Market нусхабардорӣ мешавад.' },
+                { q: '🎯 Чӣ тавр шкалаи танзими радиоро истифода баред?', a: 'Дар саҳифаи асосӣ шкалаи FM-ро бо ангушт кашед — радиои наздиктарин ба частота худкор фаъол мешавад.' },
+                { q: '🎲 Тугмаи "Тасодуфӣ" чист?', a: 'Ин тугма радиои тасодуфиро интихоб ва фаъол мекунад — усули хуб барои кашфи радиоҳои нав.' },
+                { q: '👨‍💻 Кӣ таҳиягар аст?', a: 'Барнома аз ҷониби студияи Kurush Digital сохта шудааст. Агар ба шумо монанди он лозим бошад — дар Telegram нависед: @kurush_digital' },
+                { q: '⚖️ Ман соҳиби ҳуқуқ ҳастам. Чӣ тавр радиои худро нест кардан мумкин?', a: 'Ба мо дар Telegram тавассути бахши "Ба соҳибони ҳуқуқ" нависед. Мо дарҳол радиоро нест мекунем.' },
+                { q: '💸 Барнома пулки аст?', a: 'Не! Комелан ройгон. Мо барои гӯш кардани радио пул намегирем.' },
+                { q: '📊 Оё дар замина гӯш кардан мумкин аст?', a: 'Ҳа. Радио ҳатто вақте ки шумо саҳифаро мепӯшед ё телефони худро қулф мекунед, боз ҳам мепазад (дар дастгоҳҳои мобилӣ).' },
+                { q: '⏰ Таймери хоб чӣ гуна кор мекунад?', a: 'Дар профил "Таймери хоб"-ро кушоед ва вақти дилхоҳро интихоб кунед. Пас аз он вақт радио худкор бас мешавад.' },
+                { q: '📅 Оё радиои нав илова карда мешаванд?', a: 'Бале! Мо пайваста радиои нави Тоҷикистонро ҷустуҷӯ ва илова мекунем.' }
+            ],
+            ru: [
+                { q: '🎧 Как слушать радио?', a: 'Нажмите кнопку «Слушать» рядом с любой радиостанцией. Либо кликните на нужную станцию, чтобы открылся плеер.' },
+                { q: '❓ Почему радио не воспроизводится?', a: 'Проверьте подключение к интернету. Если проблема сохраняется — обновите страницу или выберите другую станцию.' },
+                { q: '⭐ Как добавить радио в «Избранное»?', a: 'Нажмите значок ❤️ рядом с названием станции. Она сохранится в разделе «Избранное».' },
+                { q: '📢 Как предложить свою радиостанцию?', a: 'Напишите нам в Telegram через раздел «Предложить радио» или «Связаться с нами». Мы добавим её в ближайшее время.' },
+                { q: '📱 Как поделиться приложением с друзьями?', a: 'Нажмите кнопку «Поделиться» в плеере или на странице радио — скопируется ссылка на приложение в Play Market.' },
+                { q: '🎯 Как пользоваться шкалой настройки радио?', a: 'На главном экране потяните FM-шкалу пальцем — ближайшая по частоте станция включится автоматически.' },
+                { q: '🎲 Что делает кнопка «Наугад»?', a: 'Эта кнопка выбирает и включает случайную радиостанцию — хороший способ открыть для себя что-то новое.' },
+                { q: '👨‍💻 Кто разработчик?', a: 'Приложение создано студией Kurush Digital. Если вам нужно что-то подобное — пишите в Telegram: @kurush_digital' },
+                { q: '⚖️ Я правообладатель. Как удалить свою радиостанцию?', a: 'Напишите нам в Telegram через раздел «Правообладателям». Мы немедленно удалим станцию.' },
+                { q: '💸 Приложение платное?', a: 'Нет! Полностью бесплатно. Мы не берём плату за прослушивание радио.' },
+                { q: '📊 Можно ли слушать в фоновом режиме?', a: 'Да. Радио продолжает играть, даже когда вы закрываете страницу или блокируете телефон (на мобильных устройствах).' },
+                { q: '⏰ Как работает таймер сна?', a: 'В профиле откройте «Таймер сна» и выберите нужное время. По истечении этого времени радио автоматически остановится.' },
+                { q: '📅 Добавляются ли новые радиостанции?', a: 'Да! Мы постоянно ищем и добавляем новые радиостанции Таджикистана.' }
+            ]
+        };
 
-        function closeGamesHub() {
-            document.getElementById('rgOverlay').style.display = 'none';
-            if (runnerGame && runnerGame.stop) runnerGame.stop();
-        }
-
-        // ---------- СОРТИРОВКА ----------
-        function generateSortPuzzle(numTubes = 5, numColors = 4) {
-            const totalLayers = numColors * 4;
-            let colors = [];
-            for (let i = 0; i < numColors; i++) {
-                for (let j = 0; j < 4; j++) colors.push(i);
+        const STRINGS = {
+            tg: {
+                recentTitle: 'Ба наздикӣ гӯш кардаед', recentEmpty: 'Ҳанӯз ҳеҷ радио гӯш нашудааст',
+                nowPlayingLabel: 'Пахши зинда', noStation: 'Радио интихоб нашудааст',
+                listenBtn: 'Гӯш кардан', pauseBtn: 'Таваққуф', loadingBtn: 'Бор мешавад...',
+                rouletteBtnLabel: 'Тасодуфӣ', shareBtnLabel: 'Мубодила', sleepBtnDefault: 'Таймер',
+                gamesTitle: 'Бозиҳо', gamesDesc: 'Дар вақти гӯш кардани радио бозӣ кунед', gamesOpenBtn: 'Бозиҳоро кушоед',
+                factTitle: 'Факти имрӯз', popularTitle: 'Маъмултарин радиоҳо', seeAllBtn: 'Ҳамаи радиоҳоро дидан',
+                backBtn: 'Бозгашт', favBtnLabel: 'Дӯстдошта', favBtnActive: 'Дар дӯстдошта',
+                searchPlaceholder: '🔍 Ҷустуҷӯи радио...', filterAll: 'Ҳама', filterFav: '❤️ Дӯстдошта',
+                emptySearchTitle: 'Ҳеҷ чиз ёфт нашуд', emptySearchDesc: 'Калимаи дигареро санҷед ё филтрро иваз кунед.',
+                emptyFavTitle: 'Радио ба дӯстдошта илова нашудааст', emptyFavDesc: 'Барои илова кардан, дар бахши "Радио" ❤️-ро пахш кунед.',
+                profileTitle: '👤 Профил', langLabel: 'Забон', statsLabel: 'Оморҳои шумо',
+                sleepLabel: 'Таймери хоб', sleepDesc: 'Пахшро баъд аз вақти муайяншуда бас кунед.',
+                suggestLabel: 'Пешниҳоди радио', suggestDesc: 'Шумо радиои дигареро мешиносед, ки дар рӯйхат нест? Ба мо нависед, мо онро илова мекунем. Ҳар як пешниҳоди Шумо барои мо муҳим аст!',
+                contactLabel: 'Бо мо тамос гиред', contactDesc: 'Савол, пешниҳод ё мушкилот доред? Мо ҳамеша барои кумак омодаем! Ба мо нависед ва мо дар наздиктарин вақт ҷавоб медиҳем. Фикру андешаи Шумо барои мо арзиш дорад!',
+                copyrightLabel: 'Ба соҳибони ҳуқуқ',
+                copyrightDesc1: 'Ин барнома як агрегатори одӣ барои гӯш кардани радиоҳои Тоҷикистон мебошад. Мо аз ин ҳеҷ даромаде намегирем ва танҳо барои роҳати Шумо кор мекунем.',
+                copyrightDesc2: 'Агар Шумо соҳиби радио ҳастед ва намехоҳед, ки радиои Шумо дар ин ҷо бошад, ба мо нависед — мо онро фавран нест мекунем. Мо ба ҳуқуқи Шумо эҳтиром мегузорем.',
+                donateLabel: 'Дастгирии таҳиягар', donateDesc: 'Салом, дӯсти азиз!\nИн барномаро барои Шумо ройгон сохтем. Агар ба Шумо маъқул бошад метавонед моро дастгирӣ кунед.',
+                cardNumberLabel: '💳 Номер карта:', bankLabel: '(Алиф Бонк)',
+                writeUsBtn: '📨 Навиштан ба мо', writeTelegramBtn: '📨 Навиштан дар Telegram',
+                rateLabel: 'Баҳо диҳед', aboutLabel: 'Дар бораи барнома',
+                aboutText1: '«Радиоҳои Тоҷикистон» — агрегатори радиостанцияҳои Тоҷикистон.',
+                versionLabel: 'Версия', devLabel: 'Таҳиягар', copyrightFooter: '© 2026 Ҳама ҳуқуқҳо ҳифз шудаанд.',
+                logoutLabel: 'Баромадан', logoutConfirm: 'Оё шумо баромадед мехоҳед?',
+                tuningHint: '👆 Барои танзими дастӣ бо ангушт кашед',
+                greetNight: 'Шаби хуш! 🌙', greetMorning: 'Субҳ ба хайр! ☀️', greetDay: 'Рӯз ба хайр! 🌤️', greetEvening: 'Шом ба хайр! 🌅',
+                connectFail: '⚠️ Пайваст нашуд. Дубора кӯшиш кунед.', favAdded: '❤️ Ба дӯстдошта илова шуд',
+                linkCopied: '🔗 Истинод нусхабардорӣ шуд',
+                timerOffToast: '⏰ Таймери хоб хомӯш карда шуд', timerOnToast: '⏰ Таймери хоб фаъол: ',
+                timerMin: ' дақиқа', timerUpToast: '🌙 Вақт расид — радио бас шуд', rateComingSoon: 'Баҳодиҳӣ дар Play Market ба наздикӣ!',
+                statsNoData: 'Ҳанӯз маълумот нест. Радиоеро гӯш кунед, то оморҳои шумо пайдо шаванд.',
+                statsSessions: 'бор гӯш кардаед', statsStreak: 'рӯз пайдарпай', statsFav: 'радиои дӯстдоштатарин', statsBucket: 'бештар гӯш мекунед',
+                bucketNight: 'шабона', bucketMorning: 'субҳона', bucketDay: 'рӯзона', bucketEvening: 'шомона',
+                shareMessage: 'Гӯш кунед радиоҳои Тоҷикистонро дар барномаи мо!',
+            },
+            ru: {
+                recentTitle: 'Недавно слушали', recentEmpty: 'Пока нет прослушанных радиостанций',
+                nowPlayingLabel: 'Прямой эфир', noStation: 'Радио не выбрано',
+                listenBtn: 'Слушать', pauseBtn: 'Пауза', loadingBtn: 'Загрузка...',
+                rouletteBtnLabel: 'Наугад', shareBtnLabel: 'Поделиться', sleepBtnDefault: 'Таймер',
+                gamesTitle: 'Игры', gamesDesc: 'Играйте, пока слушаете радио', gamesOpenBtn: 'Открыть игры',
+                factTitle: 'Факт дня', popularTitle: 'Популярные радио', seeAllBtn: 'Смотреть все радио',
+                backBtn: 'Назад', favBtnLabel: 'Избранное', favBtnActive: 'В избранном',
+                searchPlaceholder: '🔍 Поиск радио...', filterAll: 'Все', filterFav: '❤️ Избранное',
+                emptySearchTitle: 'Ничего не найдено', emptySearchDesc: 'Попробуйте другое слово или смените фильтр.',
+                emptyFavTitle: 'Пока нет избранных радиостанций', emptyFavDesc: 'Чтобы добавить, нажмите ❤️ в разделе «Радио».',
+                profileTitle: '👤 Профиль', langLabel: 'Язык', statsLabel: 'Ваша статистика',
+                sleepLabel: 'Таймер сна', sleepDesc: 'Автоматически остановить радио через выбранное время.',
+                suggestLabel: 'Предложить радио', suggestDesc: 'Знаете другую радиостанцию, которой нет в списке? Напишите нам, и мы её добавим. Каждое ваше предложение важно для нас!',
+                contactLabel: 'Связаться с нами', contactDesc: 'Есть вопрос, предложение или проблема? Мы всегда готовы помочь! Напишите нам — мы ответим в ближайшее время. Ваше мнение важно для нас!',
+                copyrightLabel: 'Правообладателям',
+                copyrightDesc1: 'Это приложение — простой агрегатор для прослушивания радиостанций Таджикистана. Мы не получаем от этого дохода и работаем только для вашего удобства.',
+                copyrightDesc2: 'Если вы владелец радиостанции и не хотите, чтобы она была здесь, напишите нам — мы немедленно её удалим. Мы уважаем ваши права.',
+                donateLabel: 'Поддержать разработчика', donateDesc: 'Привет, дорогой друг!\nМы сделали это приложение для вас бесплатно. Если оно вам нравится — вы можете нас поддержать.',
+                cardNumberLabel: '💳 Номер карты:', bankLabel: '(Алиф Банк)',
+                writeUsBtn: '📨 Написать нам', writeTelegramBtn: '📨 Написать в Telegram',
+                rateLabel: 'Оценить приложение', aboutLabel: 'О приложении',
+                aboutText1: '«Радиоҳои Тоҷикистон» — агрегатор радиостанций Таджикистана.',
+                versionLabel: 'Версия', devLabel: 'Разработчик', copyrightFooter: '© 2026 Все права защищены.',
+                logoutLabel: 'Выход', logoutConfirm: 'Вы уверены, что хотите выйти?',
+                tuningHint: '👆 Потяните пальцем для ручной настройки',
+                greetNight: 'Спокойной ночи! 🌙', greetMorning: 'Доброе утро! ☀️', greetDay: 'Добрый день! 🌤️', greetEvening: 'Добрый вечер! 🌅',
+                connectFail: '⚠️ Не удалось подключиться. Попробуйте ещё раз.', favAdded: '❤️ Добавлено в избранное',
+                linkCopied: '🔗 Ссылка скопирована',
+                timerOffToast: '⏰ Таймер сна выключен', timerOnToast: '⏰ Таймер сна включён: ',
+                timerMin: ' минут', timerUpToast: '🌙 Время вышло — радио остановлено', rateComingSoon: 'Оценка в Play Market скоро будет доступна!',
+                statsNoData: 'Пока нет данных. Послушайте радио — и здесь появится ваша статистика.',
+                statsSessions: 'сеансов прослушивания', statsStreak: 'дней подряд', statsFav: 'любимая станция', statsBucket: 'чаще всего слушаете',
+                bucketNight: 'ночью', bucketMorning: 'утром', bucketDay: 'днём', bucketEvening: 'вечером',
+                shareMessage: 'Слушайте радио Таджикистана в нашем приложении!'
             }
-            for (let i = colors.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [colors[i], colors[j]] = [colors[j], colors[i]];
-            }
-            let tubes = [];
-            let idx = 0;
-            for (let i = 0; i < numTubes; i++) {
-                let tube = [];
-                for (let j = 0; j < 4; j++) {
-                    if (idx < colors.length) tube.push(colors[idx++]);
-                }
-                tubes.push(tube);
-            }
-            tubes.push([]);
-            if (numTubes > 4) tubes.push([]);
-            return tubes;
+        };
+        function t(key) { return STRINGS[currentLang][key] !== undefined ? STRINGS[currentLang][key] : key; }
+        function applyStrings() {
+            document.querySelectorAll('[data-i18n]').forEach(el => { const k = el.getAttribute('data-i18n'); if (STRINGS.tg[k] !== undefined) el.textContent = t(k); });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { const k = el.getAttribute('data-i18n-placeholder'); if (STRINGS.tg[k] !== undefined) el.placeholder = t(k); });
+            document.querySelectorAll('.flag-btn, .lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === currentLang));
+            refreshTimerLabels();
         }
-
-        function isTubeSorted(tube) {
-            if (tube.length === 0) return true;
-            const first = tube[0];
-            return tube.every(c => c === first);
-        }
-
-        function isPuzzleSolved(tubes) {
-            return tubes.every(t => t.length === 0 || isTubeSorted(t));
-        }
-
-        function startSortGame() {
-            const container = document.getElementById('gameContent');
-            document.getElementById('colonyRunnerContainer').style.display = 'none';
-            sortState.tubes = generateSortPuzzle(5 + Math.floor(Math.random() * 3), 3 + Math.floor(Math.random() * 3));
-            sortState.moves = 0;
-            sortState.selected = -1;
-            sortState.best = parseInt(localStorage.getItem('sortBestScore') || '0');
-            renderSortGame(container);
-        }
-
-        function renderSortGame(container) {
-            const tubes = sortState.tubes;
-            const selected = sortState.selected;
-            const moves = sortState.moves;
-            const best = sortState.best;
-
-            let tubesHTML = tubes.map((tube, idx) => {
-                const isSelected = (idx === selected);
-                let cells = tube.map(c => `<div class="rg-cell" style="background:${COLORS[c]};"></div>`).join('');
-                for (let i = tube.length; i < 4; i++) {
-                    cells += `<div class="rg-cell empty"></div>`;
-                }
-                return `<div class="rg-tube" data-idx="${idx}">${cells}</div>`;
-            }).join('');
-
-            container.innerHTML = `
-                <div class="rg-stats">
-                    <div>Ҳаракат: <b>${moves}</b></div>
-                    <div>Беҳтарин: <b>${best}</b></div>
-                </div>
-                <div class="rg-tubes" id="sortTubes">${tubesHTML}</div>
-                <button class="rg-btn rg-btn-secondary" onclick="openGamesHub()">Бозгашт</button>
-            `;
-
-            document.getElementById('sortTubes').querySelectorAll('.rg-tube').forEach(el => {
-                el.addEventListener('click', function () {
-                    const idx = parseInt(this.dataset.idx);
-                    onSortTubeClick(idx);
-                });
-            });
-
-            if (isPuzzleSolved(tubes)) {
-                const newBest = Math.max(best, moves);
-                if (newBest > best) localStorage.setItem('sortBestScore', newBest);
-                setTimeout(() => {
-                    container.innerHTML = `
-                        <div class="rg-center" style="padding: 20px 0;">
-                            <div style="font-size: 48px; margin-bottom: 12px;">🎉</div>
-                            <div style="font-size: 22px; font-weight: 700;">✅ Ба итмом расид!</div>
-                            <div style="color: rgba(247,244,236,0.6); margin: 8px 0;">Ҳаракат: ${moves}</div>
-                            <button class="rg-btn" onclick="startSortGame()">Аз нав</button>
-                            <button class="rg-btn rg-btn-secondary" onclick="openGamesHub()">Бозгашт</button>
-                        </div>
-                    `;
-                }, 300);
-            }
-        }
-
-        function onSortTubeClick(idx) {
-            const tubes = sortState.tubes;
-            const selected = sortState.selected;
-            if (selected === -1) {
-                if (tubes[idx].length === 0) return;
-                if (isTubeSorted(tubes[idx]) && tubes[idx].length === 4) return;
-                sortState.selected = idx;
-                renderSortGame(document.getElementById('gameContent'));
-                return;
-            }
-            if (selected === idx) { sortState.selected = -1; renderSortGame(document.getElementById('gameContent')); return; }
-            const from = tubes[selected];
-            const to = tubes[idx];
-            if (from.length === 0) { sortState.selected = -1; renderSortGame(document.getElementById('gameContent')); return; }
-            const topColor = from[from.length - 1];
-            if (to.length > 0 && to[to.length - 1] !== topColor) { sortState.selected = -1; renderSortGame(document.getElementById('gameContent')); return; }
-            if (to.length >= 4) { sortState.selected = -1; renderSortGame(document.getElementById('gameContent')); return; }
-            from.pop();
-            to.push(topColor);
-            sortState.moves++;
-            sortState.selected = -1;
-            renderSortGame(document.getElementById('gameContent'));
-        }
-
-        // ---------- 3 В РЯД ----------
-        function initMatchGrid(rows = 8, cols = 8) {
-            let grid = [];
-            for (let r = 0; r < rows; r++) {
-                let row = [];
-                for (let c = 0; c < cols; c++) {
-                    let color;
-                    do {
-                        color = Math.floor(Math.random() * MATCH_COLORS.length);
-                    } while (
-                        (r >= 2 && grid[r - 1][c] === color && grid[r - 2][c] === color) ||
-                        (c >= 2 && row[c - 1] === color && row[c - 2] === color)
-                    );
-                    row.push(color);
-                }
-                grid.push(row);
-            }
-            return grid;
-        }
-
-        function findMatches(grid) {
-            const matches = new Set();
-            const rows = grid.length, cols = grid[0].length;
-            for (let r = 0; r < rows; r++) {
-                for (let c = 0; c < cols; c++) {
-                    const color = grid[r][c];
-                    if (color === null) continue;
-                    if (c + 2 < cols && grid[r][c + 1] === color && grid[r][c + 2] === color) {
-                        let len = 3;
-                        while (c + len < cols && grid[r][c + len] === color) len++;
-                        for (let i = 0; i < len; i++) matches.add(`${r},${c + i}`);
-                    }
-                    if (r + 2 < rows && grid[r + 1][c] === color && grid[r + 2][c] === color) {
-                        let len = 3;
-                        while (r + len < rows && grid[r + len][c] === color) len++;
-                        for (let i = 0; i < len; i++) matches.add(`${r + i},${c}`);
-                    }
-                }
-            }
-            return matches;
-        }
-
-        function applyGravity(grid) {
-            const rows = grid.length, cols = grid[0].length;
-            for (let c = 0; c < cols; c++) {
-                let writeRow = rows - 1;
-                for (let r = rows - 1; r >= 0; r--) {
-                    if (grid[r][c] !== null) {
-                        grid[writeRow][c] = grid[r][c];
-                        if (writeRow !== r) grid[r][c] = null;
-                        writeRow--;
-                    }
-                }
-                for (let r = writeRow; r >= 0; r--) {
-                    grid[r][c] = Math.floor(Math.random() * MATCH_COLORS.length);
-                }
-            }
-            return grid;
-        }
-
-        function startMatchGame() {
-            const container = document.getElementById('gameContent');
-            document.getElementById('colonyRunnerContainer').style.display = 'none';
-            matchState.grid = initMatchGrid(8, 8);
-            matchState.score = 0;
-            matchState.moves = 0;
-            matchState.selected = null;
-            matchState.best = parseInt(localStorage.getItem('matchBestScore') || '0');
-            let matches = findMatches(matchState.grid);
-            let iterations = 0;
-            while (matches.size > 0 && iterations < 100) {
-                for (const key of matches) {
-                    const [r, c] = key.split(',').map(Number);
-                    matchState.grid[r][c] = null;
-                }
-                applyGravity(matchState.grid);
-                matches = findMatches(matchState.grid);
-                iterations++;
-            }
-            renderMatchGame(container);
-        }
-
-        function renderMatchGame(container) {
-            const grid = matchState.grid;
-            const score = matchState.score;
-            const best = matchState.best;
-            const rows = grid.length, cols = grid[0].length;
-
-            let gridHTML = '';
-            for (let r = 0; r < rows; r++) {
-                for (let c = 0; c < cols; c++) {
-                    const colorIdx = grid[r][c];
-                    const color = colorIdx !== null ? MATCH_COLORS[colorIdx] : '#2a2a4a';
-                    const selected = (matchState.selected && matchState.selected[0] === r && matchState.selected[1] === c) ? 'selected' : '';
-                    gridHTML += `<div class="rg-cell ${selected}" data-r="${r}" data-c="${c}" style="background:${color};"></div>`;
-                }
-            }
-
-            container.innerHTML = `
-                <div class="rg-stats">
-                    <div>Очки: <b>${score}</b></div>
-                    <div>Лучший: <b>${best}</b></div>
-                    <div>Ходы: <b>${matchState.moves}</b></div>
-                </div>
-                <div class="rg-grid" style="grid-template-columns: repeat(${cols}, 1fr);">${gridHTML}</div>
-                <button class="rg-btn rg-btn-secondary" onclick="openGamesHub()">Бозгашт</button>
-            `;
-
-            document.querySelectorAll('.rg-grid .rg-cell').forEach(el => {
-                el.addEventListener('click', function () {
-                    const r = parseInt(this.dataset.r);
-                    const c = parseInt(this.dataset.c);
-                    onMatchClick(r, c);
-                });
+        function refreshTimerLabels() {
+            document.querySelectorAll('.timer-opt').forEach(b => {
+                const min = parseInt(b.dataset.min);
+                b.textContent = min === 0 ? (currentLang === 'tg' ? 'Хомӯш' : 'Выкл') : (min + (currentLang === 'tg' ? ' дақ' : ' мин'));
             });
         }
 
-        function onMatchClick(r, c) {
-            const grid = matchState.grid;
-            const selected = matchState.selected;
-            if (grid[r][c] === null) return;
-            if (!selected) { matchState.selected = [r, c]; renderMatchGame(document.getElementById('gameContent')); return; }
-            const [sr, sc] = selected;
-            if (sr === r && sc === c) { matchState.selected = null; renderMatchGame(document.getElementById('gameContent')); return; }
-            if (Math.abs(sr - r) + Math.abs(sc - c) !== 1) { matchState.selected = [r, c]; renderMatchGame(document.getElementById('gameContent')); return; }
-            const temp = grid[sr][sc];
-            grid[sr][sc] = grid[r][c];
-            grid[r][c] = temp;
-            matchState.moves++;
-            let matches = findMatches(grid);
-            if (matches.size === 0) {
-                const temp2 = grid[sr][sc];
-                grid[sr][sc] = grid[r][c];
-                grid[r][c] = temp2;
-                matchState.moves--;
-                matchState.selected = null;
-                renderMatchGame(document.getElementById('gameContent'));
-                return;
+        function hashString(str) { let hash = 0; for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash); return Math.abs(hash); }
+        function getStationGradient(name) { const h = hashString(name); const hue1 = h % 360, hue2 = (hue1 + 46) % 360; return `linear-gradient(135deg, hsl(${hue1}, 68%, 48%), hsl(${hue2}, 72%, 34%))`; }
+        function getStationInitials(name) {
+            const clean = name.replace(/Радио|FM/gi, '').trim();
+            const words = clean.split(' ').filter(Boolean);
+            if (words.length === 0) return name.slice(0, 2).toUpperCase();
+            if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+            return (words[0][0] + words[1][0]).toUpperCase();
+        }
+        function applyAvatar(el, radio) {
+            if (!el || !radio) return;
+            el.style.background = getStationGradient(radio.name);
+            el.textContent = getStationInitials(radio.name);
+            const existingImg = el.querySelector('img.logo-img');
+            if (existingImg) existingImg.remove();
+            if (radio.logo) {
+                const img = document.createElement('img');
+                img.className = 'logo-img';
+                img.src = radio.logo;
+                img.alt = radio.name;
+                img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;';
+                img.onerror = () => img.remove();
+                el.style.position = el.style.position || 'relative';
+                el.appendChild(img);
             }
-            let scoreGain = 0;
-            let iterations = 0;
-            while (matches.size > 0 && iterations < 100) {
-                scoreGain += matches.size * 10;
-                for (const key of matches) {
-                    const [rr, cc] = key.split(',').map(Number);
-                    grid[rr][cc] = null;
+        }
+
+        let currentLang = 'tg';
+        let currentRadio = null;
+        let isPlaying = false;
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        let currentStationIndex = -1;
+        let recentRadios = JSON.parse(localStorage.getItem('recentRadios')) || [];
+        let listFilter = 'all';
+        let sleepTimerMinutes = 0, sleepTimerEnd = null, sleepTimerInterval = null;
+        let dialDragging = false;
+        const audio = document.getElementById('audioPlayer');
+        let listeners = {};
+        const listenerIntervals = {};
+        let currentFactIndex = Math.floor(Math.random() * FACTS.length);
+
+        function generateListenerCount() { return Math.floor(Math.random() * (150 - 12 + 1)) + 12; }
+        function listenerText(count) { return currentLang === 'tg' ? `${count} шунаванда` : `${count} слушателей`; }
+
+        function initListeners() {
+            RADIOS.forEach((_, i) => {
+                listeners[i] = generateListenerCount();
+                if (listenerIntervals[i]) clearInterval(listenerIntervals[i]);
+                listenerIntervals[i] = setInterval(() => {
+                    listeners[i] = generateListenerCount();
+                    updateRadioListenersUI();
+                    if (currentStationIndex === i) {
+                        document.getElementById('mainListenerCount').innerHTML = `<span class="dot"></span> ${listenerText(listeners[i])}`;
+                        document.getElementById('detailListeners').textContent = `● ${listenerText(listeners[i])}`;
+                    }
+                }, 30000 + Math.random() * 20000);
+            });
+        }
+        function updateRadioListenersUI() {
+            document.querySelectorAll('.radio-item').forEach(el => {
+                const idx = parseInt(el.dataset.index);
+                const span = el.querySelector('.radio-listeners');
+                if (span && listeners[idx] !== undefined) span.textContent = `● ${listenerText(listeners[idx])}`;
+            });
+        }
+
+        function getGreeting() {
+            const hour = new Date().getHours();
+            if (hour < 5) return t('greetNight');
+            if (hour < 11) return t('greetMorning');
+            if (hour < 17) return t('greetDay');
+            return t('greetEvening');
+        }
+        function refreshGreeting() { document.getElementById('greetingText').textContent = getGreeting(); }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            applyStrings();
+            refreshGreeting();
+            renderRadios(); renderRadiosFull(); renderFavorites(); renderRecent(); renderStreak();
+            syncAnimation();
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            const navBtn = document.querySelector(`.nav-item[data-page="${pageId}"]`);
+            if (navBtn) navBtn.classList.add('active');
+            if (pageId === 'favorites') renderFavorites();
+            if (pageId === 'radio') { renderRadiosFull(); updateRadioListenersUI(); }
+            if (pageId === 'main') { renderRecent(); renderRadios(); renderStreak(); syncAnimation(); }
+            if (pageId === 'radio-detail') window.scrollTo({ top: 0, behavior: 'smooth' });
+            updateMiniPlayer();
+        }
+
+        function showFact(index) {
+            if (index < 0) index = FACTS.length - 1;
+            if (index >= FACTS.length) index = 0;
+            currentFactIndex = index;
+            document.getElementById('factOfDay').textContent = FACTS[currentFactIndex];
+        }
+        document.getElementById('factPrev').addEventListener('click', () => showFact(currentFactIndex - 1));
+        document.getElementById('factNext').addEventListener('click', () => showFact(currentFactIndex + 1));
+
+        function addRecentRadio(index) {
+            if (index === undefined || index === null) return;
+            recentRadios = recentRadios.filter(i => i !== index);
+            recentRadios.unshift(index);
+            if (recentRadios.length > 6) recentRadios.pop();
+            localStorage.setItem('recentRadios', JSON.stringify(recentRadios));
+            renderRecent();
+        }
+        function renderRecent() {
+            const container = document.getElementById('recentList');
+            container.innerHTML = '';
+            if (recentRadios.length === 0) { container.innerHTML = `<div class="empty-recent">${t('recentEmpty')}</div>`; return; }
+            recentRadios.forEach(idx => {
+                const radio = RADIOS[idx]; if (!radio) return;
+                const div = document.createElement('button'); div.className = 'recent-item';
+                div.innerHTML = `<div class="station-avatar"></div><span class="name">${radio.name}</span>`;
+                applyAvatar(div.querySelector('.station-avatar'), radio);
+                div.addEventListener('click', () => openRadioDetail(idx));
+                container.appendChild(div);
+            });
+        }
+
+        function updateTuningDial(radio) {
+            const needle = document.getElementById('tuningNeedle');
+            const display = document.getElementById('tuningFreqDisplay');
+            if (!radio) { display.textContent = '— MHz'; needle.style.left = '50%'; return; }
+            const freqNum = parseFloat(radio.freq);
+            if (isNaN(freqNum)) { display.textContent = radio.freq; needle.style.left = '50%'; return; }
+            const pct = Math.max(2, Math.min(98, ((freqNum - 87.5) / (108 - 87.5)) * 100));
+            needle.style.left = pct + '%'; display.textContent = freqNum.toFixed(1) + ' MHz';
+        }
+        function freqFromClientX(clientX) {
+            const track = document.getElementById('tuningTrack');
+            const rect = track.getBoundingClientRect();
+            let pct = (clientX - rect.left) / rect.width; pct = Math.max(0, Math.min(1, pct));
+            return 87.5 + pct * (108 - 87.5);
+        }
+        function nearestStationByFreq(freq) {
+            let best = -1, bestDiff = Infinity;
+            RADIOS.forEach((r, i) => { const f = parseFloat(r.freq); if (!isNaN(f)) { const d = Math.abs(f - freq); if (d < bestDiff) { bestDiff = d; best = i; } } });
+            return best;
+        }
+        function previewNeedle(freq) {
+            const needle = document.getElementById('tuningNeedle');
+            const display = document.getElementById('tuningFreqDisplay');
+            const pct = Math.max(2, Math.min(98, ((freq - 87.5) / (108 - 87.5)) * 100));
+            needle.style.left = pct + '%'; display.textContent = freq.toFixed(1) + ' MHz';
+        }
+        (function initTuningDrag() {
+            const track = document.getElementById('tuningTrack');
+            const needle = document.getElementById('tuningNeedle');
+            track.addEventListener('pointerdown', (e) => { dialDragging = true; needle.classList.add('dragging'); track.setPointerCapture(e.pointerId); previewNeedle(freqFromClientX(e.clientX)); });
+            track.addEventListener('pointermove', (e) => { if (!dialDragging) return; previewNeedle(freqFromClientX(e.clientX)); });
+            track.addEventListener('pointerup', (e) => {
+                if (!dialDragging) return; dialDragging = false; needle.classList.remove('dragging');
+                const idx = nearestStationByFreq(freqFromClientX(e.clientX));
+                if (idx >= 0) playRadio(idx);
+            });
+            track.addEventListener('pointercancel', () => { dialDragging = false; needle.classList.remove('dragging'); });
+        })();
+
+        function syncAnimation() {
+            const pulseRing = document.getElementById('pulseRing');
+            const waveRing1 = document.getElementById('waveRing1');
+            const waveRing2 = document.getElementById('waveRing2');
+            const playBtn = document.getElementById('playBtnMain');
+            const detailPlayBtn = document.getElementById('detailPlayBtn');
+            const eqMain = document.getElementById('equalizerMain');
+            const eqDetail = document.getElementById('equalizerDetail');
+            const headerPill = document.getElementById('headerLivePill');
+            const headerLiveText = document.getElementById('headerLiveText');
+            const playLabel = document.getElementById('playBtnMainLabel');
+            const detailLabel = document.getElementById('detailPlayBtnLabel');
+
+            if (isPlaying) {
+                pulseRing.classList.add('pulse'); waveRing1.classList.add('active'); waveRing2.classList.add('active');
+                eqMain.classList.add('playing'); eqDetail.classList.add('playing');
+                if (playBtn) { playBtn.querySelector('i').className = 'fas fa-pause'; if (playLabel) playLabel.textContent = t('pauseBtn'); playBtn.disabled = false; }
+                if (detailPlayBtn) { detailPlayBtn.querySelector('i').className = 'fas fa-pause'; if (detailLabel) detailLabel.textContent = t('pauseBtn'); detailPlayBtn.disabled = false; }
+                if (currentRadio) { headerPill.style.display = 'flex'; headerLiveText.textContent = currentRadio.name; }
+            } else {
+                pulseRing.classList.remove('pulse'); waveRing1.classList.remove('active'); waveRing2.classList.remove('active');
+                eqMain.classList.remove('playing'); eqDetail.classList.remove('playing');
+                if (playBtn) { playBtn.querySelector('i').className = 'fas fa-play'; if (playLabel) playLabel.textContent = t('listenBtn'); playBtn.disabled = false; }
+                if (detailPlayBtn) { detailPlayBtn.querySelector('i').className = 'fas fa-play'; if (detailLabel) detailLabel.textContent = t('listenBtn'); detailPlayBtn.disabled = false; }
+                headerPill.style.display = 'none';
+            }
+
+            const nowPlaying = document.getElementById('mainNowPlaying');
+            const vinylMain = document.getElementById('vinylMain');
+            if (currentRadio) {
+                nowPlaying.textContent = currentRadio.name;
+                applyAvatar(vinylMain, currentRadio);
+                document.getElementById('detailName').textContent = currentRadio.name;
+                document.getElementById('detailFreq').textContent = currentRadio.freq;
+                if (!dialDragging) updateTuningDial(currentRadio);
+                if (listeners[currentStationIndex] !== undefined) {
+                    document.getElementById('mainListenerCount').innerHTML = `<span class="dot"></span> ${listenerText(listeners[currentStationIndex])}`;
+                    document.getElementById('detailListeners').textContent = `● ${listenerText(listeners[currentStationIndex])}`;
                 }
-                applyGravity(grid);
-                matches = findMatches(grid);
-                iterations++;
-            }
-            matchState.score += scoreGain;
-            if (matchState.score > matchState.best) {
-                localStorage.setItem('matchBestScore', matchState.score);
-                matchState.best = matchState.score;
-            }
-            matchState.selected = null;
-            renderMatchGame(document.getElementById('gameContent'));
-        }
-
-        // ---------- COLONY RUNNER ----------
-        function startRunnerGame() {
-            const container = document.getElementById('colonyRunnerContainer');
-            container.style.display = 'block';
-            document.getElementById('gameContent').innerHTML = '';
-
-            if (!runnerInitialized) {
-                loadRunnerScripts(() => {
-                    runnerInitialized = true;
-                    initRunnerGame();
-                });
             } else {
-                initRunnerGame();
+                nowPlaying.textContent = t('noStation');
+                vinylMain.style.background = 'linear-gradient(135deg, hsl(43,85%,55%), hsl(20,70%,45%))';
+                vinylMain.textContent = 'РТ';
+                document.getElementById('mainListenerCount').innerHTML = `<span class="dot"></span> ${listenerText(0)}`;
+                if (!dialDragging) updateTuningDial(null);
             }
+            updateFavBtnDetail();
+            updateMiniPlayer();
         }
 
-        function loadRunnerScripts(callback) {
-            if (typeof Audio !== 'undefined' && typeof ColonyRunner !== 'undefined') {
-                callback();
+        function updateFavBtnDetail() {
+            const btn = document.getElementById('favBtnDetail');
+            if (!btn || currentStationIndex === -1) return;
+            const isFav = favorites.includes(currentStationIndex);
+            btn.innerHTML = isFav ? `<i class="fas fa-heart" style="color: var(--terracotta);"></i> <span>${t('favBtnActive')}</span>` : `<i class="fa-regular fa-heart"></i> <span>${t('favBtnLabel')}</span>`;
+        }
+
+        function openRadioDetail(index) {
+            const radio = RADIOS[index]; if (!radio) return;
+            currentStationIndex = index; currentRadio = radio;
+            applyAvatar(document.getElementById('detailLogo'), radio);
+            document.getElementById('detailName').textContent = radio.name;
+            document.getElementById('detailFreq').textContent = radio.freq;
+            document.getElementById('detailDesc').textContent = currentLang === 'tg' ? radio.desc_tg : radio.desc_ru;
+
+            const phone = document.getElementById('detailPhone');
+            if (radio.phone) { phone.style.display = 'flex'; phone.href = `tel:${radio.phone}`; phone.innerHTML = `<i class="fas fa-phone"></i> ${radio.phone}`; }
+            else { phone.style.display = 'none'; }
+
+            const website = document.getElementById('detailWebsite');
+            if (radio.website) { website.style.display = 'flex'; website.href = radio.website; website.innerHTML = `<i class="fas fa-globe"></i> ${radio.website.replace('https://', '')}`; }
+            else { website.style.display = 'none'; }
+
+            const instagram = document.getElementById('detailInstagram');
+            if (radio.instagram) { instagram.style.display = 'flex'; instagram.href = radio.instagram; instagram.innerHTML = `<i class="fab fa-instagram"></i> Instagram`; }
+            else { instagram.style.display = 'none'; }
+
+            const telegram = document.getElementById('detailTelegram');
+            if (radio.telegram) { telegram.style.display = 'flex'; telegram.href = radio.telegram; telegram.innerHTML = `<i class="fab fa-telegram-plane"></i> Telegram`; }
+            else { telegram.style.display = 'none'; }
+
+            showPage('radio-detail');
+            syncAnimation();
+            renderRecent();
+            updateMiniPlayer();
+        }
+
+        function togglePlay(index) {
+            if (currentStationIndex === index && isPlaying) {
+                audio.pause(); isPlaying = false; syncAnimation(); renderRecent(); updateRadiosListUI(); updateFavoritesUI(); updateMiniPlayer();
                 return;
             }
-
-            // audio.js уже должен быть загружен, но если нет — создаём его динамически
-            if (typeof Audio === 'undefined') {
-                const audioScript = document.createElement('script');
-                audioScript.src = 'audio.js';
-                audioScript.onload = () => {
-                    if (typeof ColonyRunner !== 'undefined') callback();
-                    else {
-                        const gameScript = document.createElement('script');
-                        gameScript.src = 'game.js';
-                        gameScript.onload = callback;
-                        document.head.appendChild(gameScript);
-                    }
-                };
-                document.head.appendChild(audioScript);
-            } else {
-                const gameScript = document.createElement('script');
-                gameScript.src = 'game.js';
-                gameScript.onload = callback;
-                document.head.appendChild(gameScript);
-            }
+            playRadio(index);
         }
 
-        function initRunnerGame() {
-            const canvas = document.getElementById('runnerCanvas');
-            if (!canvas) return;
+        function recordListen(index) {
+            try {
+                const history = JSON.parse(localStorage.getItem('listenHistory')) || [];
+                history.push({ i: index, ts: Date.now() });
+                while (history.length > 500) history.shift();
+                localStorage.setItem('listenHistory', JSON.stringify(history));
+            } catch (e) {}
+            renderStreak();
+        }
 
-            if (typeof ColonyRunner !== 'undefined' && !runnerGame) {
-                runnerGame = ColonyRunner.init(canvas, {
-                    onScoreUpdate: (score) => {
-                        const el = document.getElementById('runnerScore');
-                        if (el) el.textContent = score;
-                    },
-                    onLivesUpdate: (lives) => {
-                        const el = document.getElementById('runnerLives');
-                        if (el) el.textContent = lives;
-                    },
-                    onLevelUpdate: (level) => {
-                        const el = document.getElementById('runnerLevel');
-                        if (el) el.textContent = level;
-                    }
+        function playRadio(index) {
+            const radio = RADIOS[index]; if (!radio) return;
+            const playBtn = document.getElementById('playBtnMain');
+            const detailPlayBtn = document.getElementById('detailPlayBtn');
+            const playLabel = document.getElementById('playBtnMainLabel');
+            const detailLabel = document.getElementById('detailPlayBtnLabel');
+            if (playBtn) { playBtn.querySelector('i').className = 'fas fa-spinner fa-spin'; if (playLabel) playLabel.textContent = t('loadingBtn'); playBtn.disabled = true; }
+            if (detailPlayBtn) { detailPlayBtn.querySelector('i').className = 'fas fa-spinner fa-spin'; if (detailLabel) detailLabel.textContent = t('loadingBtn'); detailPlayBtn.disabled = true; }
+
+            audio.src = radio.stream; audio.load();
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    currentStationIndex = index; currentRadio = radio; isPlaying = true;
+                    addRecentRadio(index); recordListen(index);
+                    syncAnimation(); renderRecent(); updateRadiosListUI(); updateFavoritesUI();
+                    if (document.getElementById('page-radio-detail').classList.contains('active')) openRadioDetail(index);
+                    if (playBtn) playBtn.disabled = false;
+                    if (detailPlayBtn) detailPlayBtn.disabled = false;
+                    updateMiniPlayer();
+                }).catch(() => {
+                    isPlaying = false;
+                    showToast(t('connectFail'));
+                    if (playBtn) { playBtn.querySelector('i').className = 'fas fa-play'; if (playLabel) playLabel.textContent = t('listenBtn'); playBtn.disabled = false; }
+                    if (detailPlayBtn) { detailPlayBtn.querySelector('i').className = 'fas fa-play'; if (detailLabel) detailLabel.textContent = t('listenBtn'); detailPlayBtn.disabled = false; }
+                    syncAnimation(); updateMiniPlayer();
                 });
             }
-
-            // Фокусируемся на canvas для управления
-            canvas.focus();
         }
 
-        // ---------- НАСТРОЙКИ ДЛЯ РАБОТЫ С ОСНОВНЫМ ПРИЛОЖЕНИЕМ ----------
-        // Пустые заглушки для основных функций, чтобы не ломать код
-        function showPage() {}
-        function setLanguage() {}
-        // ... остальные функции из основного кода остаются как есть
+        const miniPlayer = document.getElementById('miniPlayer');
+        const miniPlayerName = document.getElementById('miniPlayerName');
+        const miniPlayerStatus = document.getElementById('miniPlayerStatus');
+        const miniPlayBtn = document.getElementById('miniPlayBtn');
+        const miniCloseBtn = document.getElementById('miniCloseBtn');
+        const miniAvatar = document.getElementById('miniAvatar');
+        const miniPlayerInfo = document.getElementById('miniPlayerInfo');
 
-        console.log('🎮 Игры загружены! Нажмите "Бозиҳо" в главном меню.');
+        function updateMiniPlayer() {
+            if (currentRadio) {
+                miniPlayerName.textContent = currentRadio.name;
+                let statusText = isPlaying ? (currentLang === 'tg' ? '🎵 Гӯш карда истодаед' : '🎵 Слушаете сейчас') : `⏸ ${t('pauseBtn')}`;
+                if (isPlaying && sleepTimerEnd) { const remain = Math.max(0, Math.round((sleepTimerEnd - Date.now()) / 60000)); statusText += ` · ⏰ ${remain} ${currentLang === 'tg' ? 'дақ' : 'мин'}`; }
+                miniPlayerStatus.textContent = statusText;
+                miniPlayBtn.innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
+                applyAvatar(miniAvatar, currentRadio);
+                miniPlayer.classList.add('show');
+            } else { miniPlayer.classList.remove('show'); }
+        }
+        miniPlayBtn.addEventListener('click', function () {
+            if (isPlaying) { audio.pause(); isPlaying = false; syncAnimation(); updateMiniPlayer(); updateRadiosListUI(); updateFavoritesUI(); }
+            else { playRadio(currentStationIndex === -1 ? 0 : currentStationIndex); }
+        });
+        miniCloseBtn.addEventListener('click', function () {
+            audio.pause(); isPlaying = false; clearSleepTimer(); syncAnimation(); updateMiniPlayer(); updateRadiosListUI(); updateFavoritesUI();
+        });
+        miniPlayerInfo.addEventListener('click', function () { if (currentStationIndex !== -1) openRadioDetail(currentStationIndex); });
+
+        function setSleepTimer(minutes) {
+            clearSleepTimer();
+            sleepTimerMinutes = minutes;
+            const label = document.getElementById('sleepBtnLabel');
+            if (minutes === 0) { label.textContent = t('sleepBtnDefault'); showToast(t('timerOffToast')); return; }
+            sleepTimerEnd = Date.now() + minutes * 60000;
+            label.textContent = minutes + (currentLang === 'tg' ? ' дақ' : ' мин');
+            showToast(t('timerOnToast') + minutes + t('timerMin'));
+            sleepTimerInterval = setInterval(() => {
+                if (Date.now() >= sleepTimerEnd) {
+                    audio.pause(); isPlaying = false; clearSleepTimer(); syncAnimation(); updateMiniPlayer(); updateRadiosListUI(); updateFavoritesUI();
+                    showToast(t('timerUpToast'));
+                } else { updateMiniPlayer(); }
+            }, 1000);
+        }
+        function clearSleepTimer() {
+            if (sleepTimerInterval) clearInterval(sleepTimerInterval);
+            sleepTimerInterval = null; sleepTimerEnd = null; sleepTimerMinutes = 0;
+            const label = document.getElementById('sleepBtnLabel'); if (label) label.textContent = t('sleepBtnDefault');
+            document.querySelectorAll('.timer-opt').forEach(b => b.classList.remove('active'));
+            const offBtn = document.querySelector('.timer-opt[data-min="0"]'); if (offBtn) offBtn.classList.add('active');
+        }
+        document.getElementById('timerOptions').addEventListener('click', (e) => {
+            const btn = e.target.closest('.timer-opt'); if (!btn) return;
+            document.querySelectorAll('.timer-opt').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active'); setSleepTimer(parseInt(btn.dataset.min));
+        });
+        document.getElementById('sleepBtnMain').addEventListener('click', () => { showPage('profile'); setTimeout(() => toggleProfileSection('sleep'), 50); });
+
+        function spinRoulette() {
+            const nameEl = document.getElementById('mainNowPlaying');
+            let tick = 0; const totalTicks = 16;
+            function step(delay) {
+                const randIdx = Math.floor(Math.random() * RADIOS.length);
+                nameEl.textContent = RADIOS[randIdx].name;
+                tick++;
+                if (tick < totalTicks) setTimeout(() => step(delay + 10), delay);
+                else playRadio(Math.floor(Math.random() * RADIOS.length));
+            }
+            step(55);
+        }
+        document.getElementById('rouletteBtn').addEventListener('click', spinRoulette);
+
+        function shareStation() {
+            const title = t('shareMessage');
+            if (navigator.share) { navigator.share({ title, url: PLAY_MARKET_URL }).catch(() => {}); }
+            else if (navigator.clipboard) { navigator.clipboard.writeText(`${title} ${PLAY_MARKET_URL}`).then(() => showToast(t('linkCopied'))); }
+            else { showToast('🔗 ' + PLAY_MARKET_URL); }
+        }
+        document.getElementById('shareBtnMain').addEventListener('click', shareStation);
+        document.getElementById('shareBtnDetail').addEventListener('click', shareStation);
+        document.getElementById('favBtnDetail').addEventListener('click', () => { if (currentStationIndex !== -1) toggleFavorite(currentStationIndex); updateFavBtnDetail(); });
+
+        function computeStats() {
+            let history = [];
+            try { history = JSON.parse(localStorage.getItem('listenHistory')) || []; } catch (e) {}
+            if (history.length === 0) return null;
+            const counts = {};
+            history.forEach(h => { counts[h.i] = (counts[h.i] || 0) + 1; });
+            let favIdx = -1, favCount = 0;
+            Object.entries(counts).forEach(([i, c]) => { if (c > favCount) { favCount = c; favIdx = parseInt(i); } });
+
+            const buckets = { night: 0, morning: 0, day: 0, evening: 0 };
+            history.forEach(h => { const hr = new Date(h.ts).getHours(); if (hr < 5) buckets.night++; else if (hr < 11) buckets.morning++; else if (hr < 17) buckets.day++; else buckets.evening++; });
+            const topBucketKey = Object.entries(buckets).sort((a, b) => b[1] - a[1])[0][0];
+            const bucketKeyMap = { night: 'bucketNight', morning: 'bucketMorning', day: 'bucketDay', evening: 'bucketEvening' };
+
+            const days = [...new Set(history.map(h => new Date(h.ts).toDateString()))];
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            let streakCount = 0;
+            for (let d = 0; ; d++) {
+                const check = new Date(today); check.setDate(today.getDate() - d);
+                if (days.includes(check.toDateString())) streakCount++; else break;
+            }
+            return { totalSessions: history.length, favIdx, favCount, topBucketLabel: t(bucketKeyMap[topBucketKey]), streakCount, daysCount: days.length };
+        }
+        function renderStreak() {
+            const wrap = document.getElementById('streakPillWrap');
+            const stats = computeStats();
+            wrap.innerHTML = (stats && stats.streakCount > 1) ? `<div class="streak-pill">🔥 ${stats.streakCount} ${t('statsStreak')}</div>` : '';
+        }
+        function renderStatsSection() {
+            const section = document.getElementById('statsSection');
+            const stats = computeStats();
+            if (!stats) { section.innerHTML = `<p>${t('statsNoData')}</p>`; return; }
+            const favName = stats.favIdx >= 0 && RADIOS[stats.favIdx] ? RADIOS[stats.favIdx].name : '—';
+            section.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-box"><div class="stat-value">${stats.totalSessions}</div><div class="stat-label">${t('statsSessions')}</div></div>
+                    <div class="stat-box"><div class="stat-value">🔥 ${stats.streakCount}</div><div class="stat-label">${t('statsStreak')}</div></div>
+                    <div class="stat-box"><div class="stat-value" style="font-size:15px;">${favName}</div><div class="stat-label">${t('statsFav')}</div></div>
+                    <div class="stat-box"><div class="stat-value" style="font-size:15px;">${stats.topBucketLabel}</div><div class="stat-label">${t('statsBucket')}</div></div>
+                </div>`;
+        }
+
+        function showToast(msg) {
+            const existing = document.querySelector('.toast-message'); if (existing) existing.remove();
+            const toast = document.createElement('div'); toast.className = 'toast-message'; toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2600);
+        }
+
+        document.getElementById('playBtnMain').addEventListener('click', function () {
+            if (isPlaying) { audio.pause(); isPlaying = false; syncAnimation(); renderRecent(); updateRadiosListUI(); updateFavoritesUI(); updateMiniPlayer(); }
+            else { playRadio(currentStationIndex === -1 ? 0 : currentStationIndex); }
+        });
+        document.getElementById('detailPlayBtn').addEventListener('click', function () {
+            if (isPlaying) { audio.pause(); isPlaying = false; syncAnimation(); renderRecent(); updateRadiosListUI(); updateFavoritesUI(); updateMiniPlayer(); }
+            else { playRadio(currentStationIndex === -1 ? 0 : currentStationIndex); }
+        });
+
+        function updateRadiosListUI() {
+            document.querySelectorAll('.play-btn-small').forEach(btn => {
+                const idx = parseInt(btn.dataset.index);
+                if (idx === currentStationIndex && isPlaying) { btn.innerHTML = '<i class="fas fa-pause"></i>'; btn.classList.add('playing'); }
+                else { btn.innerHTML = '<i class="fas fa-play"></i>'; btn.classList.remove('playing'); }
+            });
+            document.querySelectorAll('.radio-item').forEach(el => { const idx = parseInt(el.dataset.index); el.classList.toggle('is-live', idx === currentStationIndex && isPlaying); });
+            document.querySelectorAll('.favorite-btn').forEach(btn => { const idx = parseInt(btn.dataset.index); btn.innerHTML = favorites.includes(idx) ? '<i class="fas fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>'; btn.classList.toggle('active', favorites.includes(idx)); });
+            updateRadioListenersUI();
+        }
+        function updateFavoritesUI() { renderFavorites(); }
+
+        function buildRadioItem(radio, i) {
+            const isFav = favorites.includes(i);
+            const isCurrent = (i === currentStationIndex && isPlaying);
+            const div = document.createElement('div');
+            div.className = 'radio-item' + (isCurrent ? ' is-live' : '');
+            div.dataset.index = i; div.dataset.name = radio.name;
+            div.innerHTML = `
+                <div class="station-avatar"></div>
+                <div class="radio-info">
+                    <div class="radio-name">${radio.name}</div>
+                    <div class="radio-freq">${radio.freq}</div>
+                    <div class="radio-listeners">● ${listenerText(listeners[i] || 0)}</div>
+                </div>
+                <div class="radio-actions">
+                    <button class="favorite-btn ${isFav ? 'active' : ''}" data-index="${i}" onclick="event.stopPropagation(); toggleFavorite(${i})">${isFav ? '<i class="fas fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>'}</button>
+                    <button class="play-btn-small ${isCurrent ? 'playing' : ''}" data-index="${i}" onclick="event.stopPropagation(); togglePlay(${i})">${isCurrent ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>'}</button>
+                </div>`;
+            applyAvatar(div.querySelector('.station-avatar'), radio);
+            div.addEventListener('click', () => openRadioDetail(i));
+            return div;
+        }
+
+        function renderRadios() {
+            const container = document.getElementById('radioList'); container.innerHTML = '';
+            const top = RADIOS.map((r, i) => ({ r, i })).sort((a, b) => (listeners[b.i] || 0) - (listeners[a.i] || 0)).slice(0, 5);
+            top.forEach(({ r, i }) => container.appendChild(buildRadioItem(r, i)));
+        }
+        function renderRadiosFull() {
+            const container = document.getElementById('radioListFull');
+            const emptyState = document.getElementById('radioListEmpty');
+            container.innerHTML = '';
+            let list = RADIOS.map((r, i) => ({ r, i }));
+            if (listFilter === 'fav') list = list.filter(({ i }) => favorites.includes(i));
+            const query = (document.getElementById('searchInput').value || '').toLowerCase();
+            if (query) list = list.filter(({ r }) => r.name.toLowerCase().includes(query));
+            if (list.length === 0) { emptyState.style.display = 'block'; }
+            else { emptyState.style.display = 'none'; list.forEach(({ r, i }) => container.appendChild(buildRadioItem(r, i))); }
+        }
+        function setListFilter(filter) {
+            listFilter = filter;
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === filter));
+            renderRadiosFull();
+        }
+
+        function renderFavorites() {
+            const container = document.getElementById('favoritesList'); container.innerHTML = '';
+            if (favorites.length === 0) {
+                container.innerHTML = `<div class="glass-card empty-state"><div class="icon"><i class="fas fa-heart-crack"></i></div><div class="title">${t('emptyFavTitle')}</div><div class="desc">${t('emptyFavDesc')}</div></div>`;
+                return;
+            }
+            favorites.forEach(idx => { const radio = RADIOS[idx]; if (!radio) return; container.appendChild(buildRadioItem(radio, idx)); });
+        }
+
+        function toggleFavorite(index) {
+            const idx = favorites.indexOf(index);
+            if (idx > -1) { favorites.splice(idx, 1); }
+            else { favorites.push(index); showToast(t('favAdded')); }
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            renderRadios(); renderRadiosFull(); renderFavorites(); updateFavBtnDetail();
+        }
+        document.getElementById('searchInput').addEventListener('input', renderRadiosFull);
+
+        function toggleProfileSection(sectionId) {
+            const section = document.getElementById(sectionId + 'Section'); if (!section) return;
+            document.querySelectorAll('.profile-subsection').forEach(el => { if (el.id !== sectionId + 'Section') el.classList.remove('open'); });
+            section.classList.toggle('open');
+            if (sectionId === 'faq' && section.classList.contains('open')) {
+                const list = document.getElementById('faqList'); list.innerHTML = '';
+                FAQ_DATA[currentLang].forEach(item => {
+                    const div = document.createElement('div'); div.className = 'faq-item';
+                    div.innerHTML = `<div class="faq-question" onclick="this.nextElementSibling.classList.toggle('open')">${item.q} <i class="fas fa-chevron-down"></i></div><div class="faq-answer">${item.a}</div>`;
+                    list.appendChild(div);
+                });
+            }
+            if (sectionId === 'sleep' && section.classList.contains('open')) { document.querySelectorAll('.timer-opt').forEach(b => b.classList.toggle('active', parseInt(b.dataset.min) === sleepTimerMinutes)); }
+            if (sectionId === 'stats' && section.classList.contains('open')) { renderStatsSection(); }
+        }
+
+        function openTelegram() { window.open('https://t.me/kurush_digital', '_blank'); }
+        function rateApp() { showToast(t('rateComingSoon')); }
+        function exitApp() {
+            if (confirm(t('logoutConfirm'))) {
+                try { window.close(); } catch (e) { window.location.href = 'about:blank'; window.history.go(-999); }
+                try { if (window.android && window.android.closeApp) window.android.closeApp(); } catch (e) {}
+            }
+        }
+
+        document.querySelectorAll('.nav-item').forEach(btn => {
+            btn.addEventListener('click', () => { showPage(btn.dataset.page); btn.classList.remove('rg-tap'); void btn.offsetWidth; btn.classList.add('rg-tap'); });
+        });
+
+        function init() {
+            const savedLang = localStorage.getItem('lang') || 'tg';
+            currentLang = savedLang;
+            applyStrings();
+            initListeners();
+            showFact(currentFactIndex);
+            renderRadios(); renderRadiosFull(); renderFavorites(); renderRecent(); renderStreak();
+            syncAnimation();
+            showPage('main');
+            refreshGreeting();
+            document.getElementById('timeDisplay').textContent = new Date().toLocaleTimeString('tg-TJ', { hour: '2-digit', minute: '2-digit' });
+            setInterval(() => {
+                document.getElementById('timeDisplay').textContent = new Date().toLocaleTimeString('tg-TJ', { hour: '2-digit', minute: '2-digit' });
+                refreshGreeting();
+            }, 30000);
+        }
+        document.addEventListener('DOMContentLoaded', init);
     </script>
-
-    <!-- ОСНОВНОЙ КОД ПРИЛОЖЕНИЯ (твой старый код) -->
-    <!-- ... -->
-
 </body>
 </html>
