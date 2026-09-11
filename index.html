@@ -126,7 +126,7 @@
         .player-circle { position: relative; width: 168px; height: 168px; margin: 4px auto 14px; }
         .player-circle .station-avatar { width: 100%; height: 100%; font-size: 40px; position: relative; z-index: 2; border: 3px solid var(--gold); box-shadow: 0 0 40px rgba(240, 180, 41, 0.22); }
         .player-circle .ring { position: absolute; top: -12px; left: -12px; width: calc(100% + 24px); height: calc(100% + 24px); border-radius: 50%; border: 2px solid var(--gold); opacity: 0.5; z-index: 1; }
-        .player-circle .ring.pulse { animation: pulseRing 1.8s ease-in-out infinite; }
+        .player-circle .ring.pulse { animation: pulseRing 1.8s ease-in-out infinite; border-color: var(--terracotta); }
         @keyframes pulseRing { 0% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.16); opacity: 0.08; } 100% { transform: scale(1); opacity: 0.5; } }
         .wave-ring { position: absolute; top: -28px; left: -28px; width: calc(100% + 56px); height: calc(100% + 56px); border-radius: 50%; border: 1.5px solid var(--terracotta); opacity: 0; z-index: 0; }
         .wave-ring.active { animation: waveExpand 2.5s ease-out infinite; }
@@ -197,7 +197,7 @@
             border: 1px solid var(--border); transition: var(--transition); cursor: pointer;
         }
         .radio-item:hover { border-color: var(--border-strong); transform: translateY(-3px); background: var(--glass-hover); }
-        .radio-item.is-live { border-color: rgba(232, 98, 61, 0.4); }
+        .radio-item.is-live { border-color: var(--terracotta); background: rgba(232, 98, 61, 0.10); box-shadow: 0 0 0 1px rgba(232,98,61,0.25); }
         .avatar-wrap { position: relative; display: inline-flex; }
         .radio-item .station-avatar { width: 88px; height: 88px; font-size: 24px; }
         .radio-info { min-width: 0; width: 100%; }
@@ -296,7 +296,14 @@
         @keyframes toastUp { from { opacity: 0; transform: translate(-50%, 16px); } to { opacity: 1; transform: translate(-50%, 0); } }
         .fa-spinner { animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+            /* Без движения индикатор "играет" должен быть виден через цвет/размер, а не только через анимацию */
+            .player-circle .ring.pulse { opacity: 0.9; border-color: var(--terracotta); border-width: 3px; }
+            .wave-ring.active { opacity: 0.4; border-color: var(--terracotta); }
+            .equalizer.playing .eq-bar { height: 16px !important; opacity: 1; }
+            .radio-item.is-live { border-color: var(--terracotta); background: rgba(232,98,61,0.14); }
+        }
     </style>
 </head>
 <body>
