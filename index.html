@@ -14,12 +14,6 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-        /* ===== ФИКС ДЛЯ "ПРОСТОГО РЕЖИМА" / КРУПНОГО СИСТЕМНОГО ШРИФТА =====
-           На части телефонов (упрощённый режим для пожилых, MIUI Elderly Mode и т.п.)
-           системный масштаб шрифта поднимается до 150-200%. WebView применяет его
-           поверх наших фиксированных размеров (кружки-аватарки, бейджи), из-за чего
-           вёрстка разваливается ("каша"). Отключаем это автомасштабирование —
-           теперь размер текста полностью управляется только этим файлом. */
         html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
         :root {
@@ -40,6 +34,7 @@
                 linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
             background-attachment: fixed; font-family: var(--font-body); color: var(--text); line-height: 1.5;
             min-height: 100vh; display: flex; flex-direction: column; padding-bottom: 150px; position: relative;
+            overscroll-behavior-y: none;
         }
         body::before {
             content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.05;
@@ -51,8 +46,36 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .card-label { font-family: var(--font-display); font-size: 12.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 7px; margin-bottom: 12px; }
 
-        /* Переключатель крупного текста масштабирует только содержимое страниц,
-           не трогая плавающий док внизу (там фиксированные удобные размеры кнопок). */
+        /* ===== БАННЕР "НЕТ СЕТИ" ===== */
+        .offline-banner {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+            background: linear-gradient(135deg, rgba(232,98,61,0.95), rgba(200,60,30,0.95));
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            padding: 12px 18px; display: none; align-items: center; justify-content: space-between; gap: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4); animation: slideDown 0.3s ease;
+        }
+        .offline-banner.show { display: flex; }
+        @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+        .offline-banner-text { font-size: 13.5px; font-weight: 600; color: white; display: flex; align-items: center; gap: 8px; }
+        .offline-banner-text i { font-size: 15px; }
+        .offline-retry {
+            background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white;
+            font-size: 12.5px; font-weight: 700; padding: 7px 14px; border-radius: 20px; cursor: pointer;
+            transition: var(--transition); white-space: nowrap; font-family: var(--font-body);
+        }
+        .offline-retry:hover { background: rgba(255,255,255,0.35); }
+        .offline-retry:active { transform: scale(0.95); }
+
+        /* ===== СВАЙП-НАВИГАЦИЯ ===== */
+        .swipe-container { position: relative; overflow: hidden; touch-action: pan-y; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .page.slide-in-right { animation: slideInRight 0.28s cubic-bezier(0.4, 0, 0.2, 1); }
+        .page.slide-in-left { animation: slideInLeft 0.28s cubic-bezier(0.4, 0, 0.2, 1); }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* Переключатель крупного текста */
         html.large-text .container { zoom: 1.22; }
 
         header { position: sticky; top: 0; z-index: 100; background: rgba(10, 13, 36, 0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
@@ -74,8 +97,6 @@
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
 
         .container { flex: 1; max-width: 720px; margin: 0 auto; padding: 16px 16px 30px; width: 100%; position: relative; z-index: 1; }
-        .page { display: none; }
-        .page.active { display: block; }
 
         .bottom-dock {
             position: fixed; left: 0; right: 0; bottom: 0; z-index: 200;
@@ -117,8 +138,10 @@
         .mini-btn:hover { color: var(--text); background: var(--glass-hover); }
         .mini-btn.play-btn { color: var(--bg-1); background: var(--gold); font-size: 15px; }
         .mini-btn.play-btn:hover { background: var(--gold-dim); }
+        .mini-btn.mini-back { font-size: 13px; }
 
         .station-avatar { position: relative; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; color: rgba(0,0,0,0.72); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25); flex-shrink: 0; }
+        .station-avatar.cached { background-size: cover; background-position: center; }
 
         .player-hero { text-align: center; padding: 26px 18px 22px; }
         .now-playing-label { font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
@@ -139,13 +162,18 @@
         .streak-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: var(--terracotta); background: rgba(232,98,61,0.12); border: 1px solid rgba(232,98,61,0.3); padding: 4px 11px; border-radius: 20px; margin-top: 8px; font-family: var(--font-mono); }
 
         .equalizer { display: flex; align-items: flex-end; justify-content: center; gap: 4px; height: 20px; margin: 8px 0 16px; }
-        .eq-bar { width: 4px; background: var(--gold); border-radius: 2px; height: 4px; transition: height 0.15s ease; opacity: 0.35; }
-        .equalizer.playing .eq-bar { opacity: 1; animation: eqBounce 0.9s ease-in-out infinite; }
-        .eq-bar:nth-child(1) { animation-duration: 0.7s !important; }
-        .eq-bar:nth-child(2) { animation-duration: 1.0s !important; animation-delay: 0.1s; }
-        .eq-bar:nth-child(3) { animation-duration: 0.6s !important; animation-delay: 0.05s; }
-        .eq-bar:nth-child(4) { animation-duration: 0.95s !important; animation-delay: 0.15s; }
-        .eq-bar:nth-child(5) { animation-duration: 0.75s !important; animation-delay: 0.2s; }
+        .eq-bar { width: 4px; background: var(--gold); border-radius: 2px; height: 4px; opacity: 0.35; }
+        .equalizer.playing .eq-bar {
+            opacity: 1;
+            animation-name: eqBounce;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+        }
+        .equalizer.playing .eq-bar:nth-child(1) { animation-duration: 0.7s; }
+        .equalizer.playing .eq-bar:nth-child(2) { animation-duration: 1.0s; animation-delay: 0.1s; }
+        .equalizer.playing .eq-bar:nth-child(3) { animation-duration: 0.6s; animation-delay: 0.05s; }
+        .equalizer.playing .eq-bar:nth-child(4) { animation-duration: 0.95s; animation-delay: 0.15s; }
+        .equalizer.playing .eq-bar:nth-child(5) { animation-duration: 0.75s; animation-delay: 0.2s; }
         @keyframes eqBounce { 0%, 100% { height: 4px; } 50% { height: 20px; } }
 
         .tuning-dial { margin: 6px auto 18px; max-width: 320px; position: relative; }
@@ -189,7 +217,6 @@
         .week-card .week-freq { font-size: 12px; color: var(--text-dim); font-family: var(--font-mono); }
         .week-card .week-play { width: 42px; height: 42px; border-radius: 50%; background: var(--gold); color: var(--bg-1); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
 
-        /* ===== СЕТКА КАРТОЧЕК РАДИО (список + избранное) ===== */
         .radio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .radio-item {
             position: relative; display: flex; flex-direction: column; align-items: center; text-align: center;
@@ -198,6 +225,7 @@
         }
         .radio-item:hover { border-color: var(--border-strong); transform: translateY(-3px); background: var(--glass-hover); }
         .radio-item.is-live { border-color: var(--terracotta); background: rgba(232, 98, 61, 0.10); box-shadow: 0 0 0 1px rgba(232,98,61,0.25); }
+        .radio-item.is-bg-playing { border-color: rgba(240,180,41,0.5); background: rgba(240,180,41,0.05); }
         .avatar-wrap { position: relative; display: inline-flex; }
         .radio-item .station-avatar { width: 88px; height: 88px; font-size: 24px; }
         .radio-info { min-width: 0; width: 100%; }
@@ -249,9 +277,6 @@
         .empty-state .title { font-family: var(--font-display); font-weight: 700; font-size: 16px; margin-bottom: 6px; }
         .empty-state .desc { color: var(--text-dim); font-size: 13.5px; }
 
-        .fact-container { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
-        .fact-nav { background: var(--glass); border: 1px solid var(--border); color: var(--gold); font-size: 15px; cursor: pointer; padding: 9px 12px; border-radius: 50%; transition: var(--transition); flex-shrink: 0; }
-        .fact-nav:hover { border-color: var(--border-strong); background: var(--glass-hover); }
         .pand-author { display: block; margin-top: 10px; font-family: var(--font-mono); font-size: 12px; color: var(--gold); font-weight: 600; }
 
         .profile-item { display: flex; align-items: center; gap: 14px; padding: 14px 2px; border-bottom: 1px solid var(--border); cursor: pointer; transition: var(--transition); }
@@ -288,6 +313,21 @@
         .faq-answer { margin-top: 8px; font-size: 13.5px; color: var(--text-dim); display: none; line-height: 1.6; }
         .faq-answer.open { display: block; }
 
+        /* ===== РЕКВИЗИТЫ (скрыты под кнопкой) ===== */
+        .card-reveal-btn {
+            width: 100%; background: var(--glass); border: 1px dashed var(--border);
+            border-radius: var(--radius-md); padding: 12px; color: var(--gold);
+            font-weight: 600; font-size: 13.5px; cursor: pointer; transition: var(--transition);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            font-family: var(--font-body); margin-top: 8px;
+        }
+        .card-reveal-btn:hover { border-color: var(--border-strong); background: var(--glass-hover); }
+        .card-reveal-content {
+            display: none; background: var(--glass); padding: 16px; border-radius: var(--radius-md);
+            margin: 12px 0; border: 1px solid var(--border); animation: fadeIn 0.3s ease;
+        }
+        .card-reveal-content.show { display: block; }
+
         footer { text-align: center; padding: 18px; font-size: 11.5px; color: var(--text-faint); border-top: 1px solid var(--border); margin-top: auto; flex-shrink: 0; position: relative; z-index: 1; }
         .footer-link { color: var(--gold); text-decoration: none; }
         .footer-link:hover { text-decoration: underline; }
@@ -296,17 +336,30 @@
         @keyframes toastUp { from { opacity: 0; transform: translate(-50%, 16px); } to { opacity: 1; transform: translate(-50%, 0); } }
         .fa-spinner { animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
         @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-            /* Без движения индикатор "играет" должен быть виден через цвет/размер, а не только через анимацию */
+            .radio-item:hover, .week-card:hover, .new-added-item:hover { transform: none !important; }
+            .toast-message, .page.active, .offline-banner { animation: none !important; }
+
             .player-circle .ring.pulse { opacity: 0.9; border-color: var(--terracotta); border-width: 3px; }
-            .wave-ring.active { opacity: 0.4; border-color: var(--terracotta); }
+            .wave-ring.active { opacity: 0.4; border-color: var(--terracotta); transform: scale(1.2); }
             .equalizer.playing .eq-bar { height: 16px !important; opacity: 1; }
             .radio-item.is-live { border-color: var(--terracotta); background: rgba(232,98,61,0.14); }
         }
     </style>
 </head>
 <body>
+
+    <!-- ===== БАННЕР "НЕТ СЕТИ" ===== -->
+    <div class="offline-banner" id="offlineBanner">
+        <div class="offline-banner-text">
+            <i class="fas fa-wifi"></i>
+            <span id="offlineBannerText">Пайвасти интернет нест</span>
+        </div>
+        <button class="offline-retry" onclick="checkConnectionAndRetry()">
+            <i class="fas fa-rotate-right"></i> <span id="offlineRetryText">Аз нав</span>
+        </button>
+    </div>
 
     <header>
         <div class="logo-area" onclick="showPage('main')">
@@ -322,7 +375,7 @@
         </div>
     </header>
 
-    <div class="container">
+    <div class="container swipe-container" id="swipeContainer">
 
         <!-- ===== ГЛАВНАЯ ===== -->
         <div class="page active" id="page-main">
@@ -384,6 +437,7 @@
                 </div>
 
                 <div class="player-actions">
+                    <button class="btn-secondary" id="prevBtnMain" title="⏮"><i class="fas fa-backward"></i> <span id="prevBtnLabel"></span></button>
                     <button class="btn-secondary" id="rouletteBtn"><i class="fas fa-shuffle"></i> <span data-i18n="rouletteBtnLabel"></span></button>
                     <button class="btn-secondary" id="shareBtnMain"><i class="fas fa-share-nodes"></i> <span data-i18n="shareBtnLabel"></span></button>
                     <button class="btn-secondary" id="sleepBtnMain"><i class="fas fa-moon"></i> <span id="sleepBtnLabel"></span></button>
@@ -412,7 +466,7 @@
 
         </div>
 
-        <!-- ===== СТРАНИЦА РАДИО ===== -->
+        <!-- ===== СТРАНИЦА РАДИО (DETAIL) ===== -->
         <div class="page" id="page-radio-detail">
             <button class="back-btn" onclick="showPage('main')"><i class="fas fa-arrow-left"></i> <span data-i18n="backBtn"></span></button>
 
@@ -442,15 +496,15 @@
             <div class="glass-card">
                 <div class="radio-detail-desc" id="detailDesc"></div>
                 <div class="radio-detail-contacts" id="detailContacts">
-                    <a href="#" id="detailPhone"><i class="fas fa-phone"></i> Телефон</a>
-                    <a href="#" id="detailWebsite" target="_blank"><i class="fas fa-globe"></i> Сайт</a>
-                    <a href="#" id="detailInstagram" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
-                    <a href="#" id="detailTelegram" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
+                    <a href="#" id="detailPhone" rel="noopener noreferrer"><i class="fas fa-phone"></i> Телефон</a>
+                    <a href="#" id="detailWebsite" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> Сайт</a>
+                    <a href="#" id="detailInstagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i> Instagram</a>
+                    <a href="#" id="detailTelegram" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram-plane"></i> Telegram</a>
                 </div>
             </div>
         </div>
 
-        <!-- ===== РАДИО (список) ===== -->
+        <!-- ===== РАДИО (СПИСОК) ===== -->
         <div class="page" id="page-radio">
             <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="searchPlaceholder">
             <div class="filter-chips">
@@ -516,12 +570,15 @@
                 <div class="profile-item" onclick="toggleProfileSection('donate')"><i class="fas fa-heart" style="color: var(--terracotta);"></i> <span data-i18n="donateLabel"></span><i class="fas fa-chevron-down chev"></i></div>
                 <div class="profile-subsection" id="donateSection">
                     <p data-i18n="donateDesc" style="white-space: pre-line;"></p>
-                    <div style="background: var(--glass); padding: 16px; border-radius: var(--radius-md); margin: 12px 0; border: 1px solid var(--border);">
+                    <button class="card-reveal-btn" id="revealCardBtn" onclick="revealCardDetails()">
+                        <i class="fas fa-eye"></i> <span data-i18n="revealCardBtn"></span>
+                    </button>
+                    <div class="card-reveal-content" id="cardRevealContent">
                         <div style="color: var(--gold); font-weight: 600; font-size: 13px;" data-i18n="cardNumberLabel"></div>
                         <div style="font-size: 18px; letter-spacing: 2px; font-weight: 700; font-family: var(--font-mono); margin-top: 4px;">5413 5252 0028 0531</div>
                         <div style="font-size: 12.5px; color: var(--text-dim); margin-top: 2px;" data-i18n="bankLabel"></div>
                     </div>
-                    <button class="btn-primary" onclick="window.open('https://t.me/kurush_digital', '_blank')" style="width: 100%;"><span data-i18n="writeTelegramBtn"></span></button>
+                    <button class="btn-primary" onclick="window.open('https://t.me/kurush_digital', '_blank', 'noopener,noreferrer')" style="width: 100%; margin-top: 12px;"><span data-i18n="writeTelegramBtn"></span></button>
                 </div>
 
                 <div class="profile-item" onclick="toggleProfileSection('faq')"><i class="fas fa-question-circle"></i> <span>FAQ</span><i class="fas fa-chevron-down chev"></i></div>
@@ -532,8 +589,8 @@
                 <div class="profile-item" onclick="toggleProfileSection('about')"><i class="fas fa-info-circle"></i> <span data-i18n="aboutLabel"></span><i class="fas fa-chevron-down chev"></i></div>
                 <div class="profile-subsection" id="aboutSection">
                     <p data-i18n="aboutText1"></p>
-                    <p style="margin-top: 8px;"><span data-i18n="versionLabel"></span>: <strong>3.4</strong></p>
-                    <p style="margin-top: 4px;"><span data-i18n="devLabel"></span>: <a href="https://kurushdigital.one" target="_blank" class="footer-link">Kurush Digital</a></p>
+                    <p style="margin-top: 8px;"><span data-i18n="versionLabel"></span>: <strong>3.5</strong></p>
+                    <p style="margin-top: 4px;"><span data-i18n="devLabel"></span>: <a href="https://kurushdigital.one" target="_blank" rel="noopener noreferrer" class="footer-link">Kurush Digital</a></p>
                     <p style="margin-top: 12px; font-size: 12px; color: var(--text-faint);" data-i18n="copyrightFooter"></p>
                 </div>
 
@@ -543,7 +600,7 @@
 
     </div>
 
-    <!-- ===== ПЛАВАЮЩИЙ ДОК ВНИЗУ ===== -->
+    <!-- ===== ПЛАВАЮЩИЙ ДОК ===== -->
     <div class="bottom-dock" id="bottomDock">
         <div class="mini-player" id="miniPlayer">
             <div class="mini-player-content">
@@ -553,6 +610,7 @@
                     <div class="mini-player-status" id="miniPlayerStatus"></div>
                 </div>
                 <div class="mini-player-controls">
+                    <button class="mini-btn mini-back" id="miniPrevBtn" title="⏮"><i class="fas fa-backward"></i></button>
                     <button class="mini-btn play-btn" id="miniPlayBtn"><i class="fas fa-play"></i></button>
                     <button class="mini-btn" id="miniCloseBtn"><i class="fas fa-times"></i></button>
                 </div>
@@ -567,14 +625,20 @@
         </nav>
     </div>
 
-    <footer><div>© 2026 | <a href="https://kurushdigital.one" target="_blank" class="footer-link">Kurush Digital</a></div></footer>
+    <footer><div>© 2026 | <a href="https://kurushdigital.one" target="_blank" rel="noopener noreferrer" class="footer-link">Kurush Digital</a></div></footer>
 
     <audio id="audioPlayer"></audio>
 
     <script src="games.js"></script>
     <script>
+        /* ============================================================
+           PESHRAS RADIO — JavaScript (оптимизированная версия 3.5)
+           ============================================================ */
+
         const APP_LOGO = 'https://i.ibb.co/5g1NGVRD/file-000000001bd071fbb0d2fc8bbcb0138a.png';
         const PLAY_MARKET_URL = 'https://play.google.com/store/apps/details?id=com.kurushdigital.isfsrafm';
+        const STREAM_TIMEOUT_MS = 15000;
+        const MAX_HISTORY = 7;
 
         const RADIOS = [
             { name: 'Радиои Имруз', freq: '107.4 FM', logo: '', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-imruz', desc_tg: 'Таронаҳои тоҷикӣ, эронӣ, афғонӣ ва ӯзбекӣ.', desc_ru: 'Негосударственное радио Таджикистана.', phone: '44 603 7777', website: '', instagram: 'https://www.instagram.com/radioiimruz/', telegram: '' },
@@ -585,7 +649,7 @@
             { name: 'Ҳамсадо FM', freq: '94.5 FM', logo: '', stream: 'https://c23.radioboss.fm/stream/102', desc_tg: 'Радиои ҳамсадо.', desc_ru: 'Радио единства.', phone: '+992 96 123 45 67', website: 'https://hamsado.tj', instagram: 'https://instagram.com/hamsado', telegram: 'https://t.me/hamsado' },
             { name: 'Радио Қанд', freq: '87.7 FM', logo: '', stream: 'https://listen7.myradio24.com/tamish', desc_tg: 'Радиои Канди Тоҷикистон.', desc_ru: 'Радио Канда Таджикистана.', phone: '+992 97 123 45 67', website: 'https://kand.tj', instagram: 'https://instagram.com/kand', telegram: 'https://t.me/kand' },
             { name: 'Радио Азия+', freq: '107.0 FM', logo: '', stream: 'https://eu.asiaplusradio.tj:8443/ap', desc_tg: 'Радиои Азия+.', desc_ru: 'Радио Азия+.', phone: '+992 987 65 43 21', website: 'https://asiaplus.news', instagram: 'https://www.instagram.com/asiaplustj/', telegram: 'https://t.me/asiaplus' },
-            { name: 'Радио Тироз', freq: '103.7 FM', logo: '', stream: 'https://eu1.fastcast4u.com/proxy/khusrav/stream?n=b742a6676ac1f8543fc2', desc_tg: 'Радиои Ти роз.', desc_ru: 'Радио Ти роз.', phone: '+992 99 123 45 67', website: 'https://tiroz.tj', instagram: 'https://instagram.com/tiroz', telegram: 'https://t.me/tiroz' },
+            { name: 'Радио Тироз', freq: '103.7 FM', logo: '', stream: 'https://eu1.fastcast4u.com/proxy/khusrav/stream?n=b742a6676ac1f8543fc2', desc_tg: 'Радиои Тироз.', desc_ru: 'Радио Тироз.', phone: '+992 99 123 45 67', website: 'https://tiroz.tj', instagram: 'https://instagram.com/tiroz', telegram: 'https://t.me/tiroz' },
             { name: 'Радио Нав', freq: '95.5 FM', logo: '', stream: 'https://c38.radioboss.fm:8172/stream', desc_tg: 'Радиои Нав.', desc_ru: 'Новое радио.', phone: '+992 91 123 45 67', website: 'https://nav.tj', instagram: 'https://instagram.com/nav', telegram: 'https://t.me/nav' },
             { name: 'Шаҳри ман', freq: '97.7 FM', logo: '', stream: 'https://c16.radioboss.fm:8438/stream', desc_tg: 'Радиои Шахри ман.', desc_ru: 'Радио Мой город.', phone: '+992 92 234 56 78', website: 'https://shahriman.tj', instagram: 'https://instagram.com/shahriman', telegram: 'https://t.me/shahriman' },
             { name: 'Радиои Исфара', freq: '93.9 FM', logo: '', stream: 'https://c40.radioboss.fm:8287/stream', desc_tg: 'Радиои нави шаҳри Исфара.', desc_ru: 'Новое радио города Исфара.', phone: '', website: 'https://isfarafm.tj', instagram: 'https://instagram.com/isfarafm', telegram: 'https://t.me/isfarafm', priority: true },
@@ -597,8 +661,6 @@
             { name: 'Садои Душанбе', freq: '89.0 FM', logo: '', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-sadoi-dushanbe', desc_tg: 'Садои пойтахти Тоҷикистон.', desc_ru: 'Голос столицы Таджикистана.', phone: '', website: '', instagram: '', telegram: '' },
             { name: 'Радио Navahang', freq: '99.0 FM', logo: '', stream: 'https://navairan.com/;stream.nsv', desc_tg: 'Радиои навохти мусиқии тоҷикӣ.', desc_ru: 'Радио с таджикской музыкой.', phone: '', website: '', instagram: '', telegram: '' }
         ];
-        // 👆 Чтобы поставить реальный логотип станции, впишите ссылку на картинку в поле "logo".
-        // ⚠️ При добавлении новой станции: freq должна быть уникальной, desc_tg/desc_ru — своим текстом.
 
         const PANDU = [
             { text: 'Дониш чароғи роҳи зиндагист.', author: 'Ҳикмати мардумӣ' },
@@ -657,7 +719,7 @@
                 newAddedTitle: 'Навакак илова шуд', newBadge: 'НАВ',
                 nowPlayingLabel: 'Пахши зинда', noStation: 'Радио интихоб нашудааст',
                 listenBtn: 'Гӯш кардан', pauseBtn: 'Таваққуф', loadingBtn: 'Бор мешавад...',
-                nextBtnLabel: 'Дигар', rouletteBtnLabel: 'Тасодуфӣ', shareBtnLabel: 'Мубодила', sleepBtnDefault: 'Таймер',
+                nextBtnLabel: 'Дигар', prevBtnLabel: 'Қаблӣ', rouletteBtnLabel: 'Тасодуфӣ', shareBtnLabel: 'Мубодила', sleepBtnDefault: 'Таймер',
                 gamesTitle: 'Бозиҳо', gamesDesc: 'Дар вақти гӯш кардани радио бозӣ кунед', gamesOpenBtn: 'Бозиҳоро кушоед',
                 factTitle: 'Панди рӯз', popularTitle: 'Маъмултарин радиоҳо', seeAllBtn: 'Ҳамаи радиоҳоро дидан',
                 weekTag: '⭐ Радиои ҳафта',
@@ -675,9 +737,10 @@
                 contactDesc3: 'Фикру андешаи шумо барои мо арзиш дорад — ҳар паём хонда мешавад.',
                 donateLabel: 'Дастгирии таҳиягар', donateDesc: 'Ин барномаро мо аз сифр, бо дасти худамон, шабу рӯз кор карда сохтем — то шумо ҳар рӯз радиои дилхоҳатонро ройгон, бе реклама гӯш карда тавонед.\n\nНигоҳ доштани сервер, паҳн кардани садо ва навсозиҳои доимӣ ройгон нест — ва ин ҳама танҳо аз ҳисоби одамони меҳрубоне чун Шумо давом меёбад.\n\nАгар ин барнома ҳар рӯз бо Шумо бошад — дар роҳ, дар кор, ҳангоми хоб — як лаҳза сарф карда моро дастгирӣ кунед. Ҳатто маблағи хурд барои мо хеле арзиш дорад.',
                 cardNumberLabel: '💳 Номер карта:', bankLabel: '(Алиф Бонк)',
+                revealCardBtn: 'Нишон додани реквизитҳо',
                 writeUsBtn: '📨 Навиштан ба мо', writeTelegramBtn: '📨 Навиштан дар Telegram',
                 rateLabel: 'Баҳо диҳед', aboutLabel: 'Дар бораи барнома',
-                aboutText1: '«Радиоҳои Тоҷикистон» — агрегатори радиостанцияҳои Тоҷикистон.',
+                aboutText1: '«Радиоҳои Тоҷикистон» — агрегатори радиостансияҳои Тоҷикистон.',
                 versionLabel: 'Версия', devLabel: 'Таҳиягар', copyrightFooter: '© 2026 Ҳама ҳуқуқҳо ҳифз шудаанд.',
                 logoutLabel: 'Баромадан', logoutConfirm: 'Оё шумо баромадед мехоҳед?',
                 tuningHint: '👆 Барои танзими дастӣ бо ангушт кашед',
@@ -690,13 +753,16 @@
                 statsSessions: 'бор гӯш кардаед', statsStreak: 'рӯз пайдарпай', statsFav: 'радиои дӯстдоштатарин', statsBucket: 'бештар гӯш мекунед',
                 bucketNight: 'шабона', bucketMorning: 'субҳона', bucketDay: 'рӯзона', bucketEvening: 'шомона',
                 shareMessage: 'Гӯш кунед радиоҳои Тоҷикистонро дар барномаи мо!',
-                badgesTitle: 'Ниҳонҳо', badgeExplorer: 'Кашшоф', badgeRegular: 'Мунтазам', badgeActive: 'Шунавандаи фаъол', badgeQuiz: 'Устоди квиз', badgeRhythm: 'Устоди ритм'
+                badgesTitle: 'Ниҳонҳо', badgeExplorer: 'Кашшоф', badgeRegular: 'Мунтазам', badgeActive: 'Шунавандаи фаъол', badgeQuiz: 'Устоди квиз', badgeRhythm: 'Устоди ритм',
+                offlineText: 'Пайвасти интернет нест', offlineRetry: 'Аз нав кӯшиш',
+                timeoutText: '⏱ Пайваст суст аст. Радиои дигарро интихоб кунед.',
+                bgPlayingToast: '🎵 Дар замина пахш мешавад'
             },
             ru: {
                 newAddedTitle: 'Недавно добавленные', newBadge: 'НОВОЕ',
                 nowPlayingLabel: 'Прямой эфир', noStation: 'Радио не выбрано',
                 listenBtn: 'Слушать', pauseBtn: 'Пауза', loadingBtn: 'Загрузка...',
-                nextBtnLabel: 'Далее', rouletteBtnLabel: 'Наугад', shareBtnLabel: 'Поделиться', sleepBtnDefault: 'Таймер',
+                nextBtnLabel: 'Далее', prevBtnLabel: 'Назад', rouletteBtnLabel: 'Наугад', shareBtnLabel: 'Поделиться', sleepBtnDefault: 'Таймер',
                 gamesTitle: 'Игры', gamesDesc: 'Играйте, пока слушаете радио', gamesOpenBtn: 'Открыть игры',
                 factTitle: 'Мудрость дня', popularTitle: 'Популярные радио', seeAllBtn: 'Смотреть все радио',
                 weekTag: '⭐ Радио недели',
@@ -714,6 +780,7 @@
                 contactDesc3: 'Ваше мнение важно для нас — каждое сообщение читается.',
                 donateLabel: 'Поддержать разработчика', donateDesc: 'Это приложение мы сделали с нуля своими руками, вложив в него дни и ночи работы — чтобы вы каждый день могли бесплатно слушать любимое радио без единой рекламы.\n\nСервер, трафик и постоянные обновления стоят денег, и всё это держится только на поддержке таких неравнодушных людей, как вы.\n\nЕсли это приложение каждый день рядом с вами — в дороге, на работе, перед сном — уделите минуту и поддержите нас. Даже небольшая сумма значит для нас очень много.',
                 cardNumberLabel: '💳 Номер карты:', bankLabel: '(Алиф Банк)',
+                revealCardBtn: 'Показать реквизиты',
                 writeUsBtn: '📨 Написать нам', writeTelegramBtn: '📨 Написать в Telegram',
                 rateLabel: 'Оценить приложение', aboutLabel: 'О приложении',
                 aboutText1: '«Радиоҳои Тоҷикистон» — агрегатор радиостанций Таджикистана.',
@@ -729,7 +796,10 @@
                 statsSessions: 'сеансов прослушивания', statsStreak: 'дней подряд', statsFav: 'любимая станция', statsBucket: 'чаще всего слушаете',
                 bucketNight: 'ночью', bucketMorning: 'утром', bucketDay: 'днём', bucketEvening: 'вечером',
                 shareMessage: 'Слушайте радио Таджикистана в нашем приложении!',
-                badgesTitle: 'Ачивки', badgeExplorer: 'Исследователь', badgeRegular: 'Постоянный слушатель', badgeActive: 'Активный слушатель', badgeQuiz: 'Мастер квиза', badgeRhythm: 'Мастер ритма'
+                badgesTitle: 'Ачивки', badgeExplorer: 'Исследователь', badgeRegular: 'Постоянный слушатель', badgeActive: 'Активный слушатель', badgeQuiz: 'Мастер квиза', badgeRhythm: 'Мастер ритма',
+                offlineText: 'Нет подключения к интернету', offlineRetry: 'Повторить',
+                timeoutText: '⏱ Соединение слабое. Выберите другую станцию.',
+                bgPlayingToast: '🎵 Играет в фоне'
             }
         };
         function t(key) { return STRINGS[currentLang][key] !== undefined ? STRINGS[currentLang][key] : key; }
@@ -747,13 +817,32 @@
             });
         }
 
-        // ===== КРУПНЫЙ ТЕКСТ (управляемая альтернатива системному масштабу) =====
         let currentTextSize = localStorage.getItem('textSize') || 'normal';
         function setTextSize(size) {
             currentTextSize = size;
             localStorage.setItem('textSize', size);
             document.documentElement.classList.toggle('large-text', size === 'large');
             document.querySelectorAll('.lang-btn[data-size]').forEach(b => b.classList.toggle('active', b.dataset.size === size));
+        }
+
+        /* ========== КЭШ ЛОГОТИПОВ ========== */
+        const LOGO_CACHE_KEY = 'radioLogoCache';
+        let logoCache = (() => { try { return JSON.parse(localStorage.getItem(LOGO_CACHE_KEY)) || {}; } catch(e) { return {}; } })();
+        function saveLogoCache() { try { localStorage.setItem(LOGO_CACHE_KEY, JSON.stringify(logoCache)); } catch(e) {} }
+        function preloadLogo(idx, url) {
+            if (!url || logoCache[idx]) return;
+            const img = new Image();
+            img.onload = () => { logoCache[idx] = url; saveLogoCache(); refreshAvatarFor(idx, url); };
+            img.src = url;
+        }
+        function refreshAvatarFor(idx, url) {
+            document.querySelectorAll(`.station-avatar[data-station-idx="${idx}"]`).forEach(el => {
+                el.style.backgroundImage = `url('${url}')`;
+                el.style.backgroundSize = 'cover';
+                el.style.backgroundPosition = 'center';
+                el.textContent = '';
+                el.classList.add('cached');
+            });
         }
 
         function hashString(str) { let hash = 0; for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash); return Math.abs(hash); }
@@ -765,30 +854,24 @@
             if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
             return (words[0][0] + words[1][0]).toUpperCase();
         }
-        function applyAvatar(el, radio) {
+        function applyAvatar(el, radio, idx) {
             if (!el || !radio) return;
-            el.style.background = getStationGradient(radio.name);
-            el.textContent = getStationInitials(radio.name);
-            const existingImg = el.querySelector('img.logo-img');
-            if (existingImg) existingImg.remove();
-            if (radio.logo) {
-                const img = document.createElement('img');
-                img.className = 'logo-img';
-                img.src = radio.logo;
-                img.alt = radio.name;
-                img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;';
-                img.onerror = () => img.remove();
-                el.appendChild(img);
+            if (idx !== undefined) el.setAttribute('data-station-idx', idx);
+            const cachedUrl = idx !== undefined ? logoCache[idx] : null;
+            if (cachedUrl) {
+                el.style.backgroundImage = `url('${cachedUrl}')`;
+                el.style.backgroundSize = 'cover';
+                el.style.backgroundPosition = 'center';
+                el.textContent = '';
+                el.classList.add('cached');
+            } else {
+                el.style.background = getStationGradient(radio.name);
+                el.textContent = getStationInitials(radio.name);
+                el.classList.remove('cached');
+                if (radio.logo && idx !== undefined) preloadLogo(idx, radio.logo);
             }
         }
 
-        function shuffleArray(arr) {
-            const a = arr.slice();
-            for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; }
-            return a;
-        }
-        // Детерминированный ГПСЧ: одно и то же зерно (номер недели) всегда даёт один и тот же порядок,
-        // поэтому список не скачет при каждом заходе, а меняется ровно раз в неделю.
         function seededRandom(seed) {
             return function () {
                 seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
@@ -804,9 +887,17 @@
             return a;
         }
         function computeWeeklyRadioOrder() {
-            let order = shuffleWithSeed(RADIOS.map((_, i) => i), getWeekIndex());
+            const WEEK_KEY = 'radioWeekOrder';
+            const storedWeek = localStorage.getItem('radioWeekIndex');
+            const currentWeek = getWeekIndex();
+            if (storedWeek == currentWeek) {
+                try { const saved = JSON.parse(localStorage.getItem(WEEK_KEY)); if (Array.isArray(saved) && saved.length === RADIOS.length) return saved; } catch(e) {}
+            }
+            let order = shuffleWithSeed(RADIOS.map((_, i) => i), currentWeek);
             const priorityIdx = RADIOS.findIndex(r => r.priority);
             if (priorityIdx !== -1) { order = order.filter(i => i !== priorityIdx); order.unshift(priorityIdx); }
+            localStorage.setItem('radioWeekIndex', currentWeek);
+            localStorage.setItem(WEEK_KEY, JSON.stringify(order));
             return order;
         }
 
@@ -821,24 +912,31 @@
         let radioDisplayOrder = [];
         const audio = document.getElementById('audioPlayer');
         let listeners = {};
-        const listenerIntervals = {};
+        let activeListenerInterval = null;
+        let streamTimeoutHandle = null;
+        let stationHistory = [];
+        let statsCache = null;
 
         function generateListenerCount() { return Math.floor(Math.random() * (150 - 12 + 1)) + 12; }
         function listenerText(count) { return currentLang === 'tg' ? `${count} шунаванда` : `${count} слушателей`; }
 
         function initListeners() {
-            RADIOS.forEach((_, i) => {
-                listeners[i] = generateListenerCount();
-                if (listenerIntervals[i]) clearInterval(listenerIntervals[i]);
-                listenerIntervals[i] = setInterval(() => {
-                    listeners[i] = generateListenerCount();
-                    updateRadioListenersUI();
-                    if (currentStationIndex === i) {
-                        document.getElementById('mainListenerCount').innerHTML = `<span class="dot"></span> ${listenerText(listeners[i])}`;
-                        document.getElementById('detailListeners').textContent = `● ${listenerText(listeners[i])}`;
+            RADIOS.forEach((_, i) => { listeners[i] = generateListenerCount(); });
+            startActiveListenerTimer();
+        }
+        function startActiveListenerTimer() {
+            if (activeListenerInterval) clearInterval(activeListenerInterval);
+            activeListenerInterval = setInterval(() => {
+                if (currentStationIndex >= 0) {
+                    listeners[currentStationIndex] = generateListenerCount();
+                    if (isPlaying) {
+                        document.getElementById('mainListenerCount').innerHTML = `<span class="dot"></span> ${listenerText(listeners[currentStationIndex])}`;
+                        document.getElementById('detailListeners').textContent = `● ${listenerText(listeners[currentStationIndex])}`;
+                        const activeItem = document.querySelector(`.radio-item[data-index="${currentStationIndex}"] .radio-listeners`);
+                        if (activeItem) activeItem.textContent = `● ${listenerText(listeners[currentStationIndex])}`;
                     }
-                }, 30000 + Math.random() * 20000);
-            });
+                }
+            }, 25000);
         }
         function updateRadioListenersUI() {
             document.querySelectorAll('.radio-item').forEach(el => {
@@ -861,16 +959,51 @@
             const now = new Date();
             const start = new Date(now.getFullYear(), 0, 1);
             const week = Math.floor((now - start) / (7 * 24 * 60 * 60 * 1000));
-            return week % RADIOS.length;
+            return week;
         }
+        function getDayIndex() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            return Math.floor((now - start) / (1000 * 60 * 60 * 24));
+        }
+
         function renderWeekCard() {
-            const idx = getWeekIndex();
+            const WEEK_KEY = 'radioWeekOfIndex';
+            const storedDay = localStorage.getItem('radioWeekDay');
+            const today = getDayIndex();
+            let idx;
+            if (storedDay == today) {
+                idx = parseInt(localStorage.getItem(WEEK_KEY));
+                if (isNaN(idx) || !RADIOS[idx]) idx = getWeekIndex() % RADIOS.length;
+            } else {
+                idx = getWeekIndex() % RADIOS.length;
+                localStorage.setItem('radioWeekDay', today);
+                localStorage.setItem(WEEK_KEY, idx);
+            }
             const radio = RADIOS[idx];
             if (!radio) return;
-            applyAvatar(document.getElementById('weekAvatar'), radio);
+            applyAvatar(document.getElementById('weekAvatar'), radio, idx);
             document.getElementById('weekName').textContent = radio.name;
             document.getElementById('weekFreq').textContent = radio.freq;
             document.getElementById('weekCard').dataset.idx = idx;
+        }
+
+        function showFact() {
+            const FACT_KEY = 'dailyFactIndex';
+            const storedDay = localStorage.getItem('dailyFactDay');
+            const today = getDayIndex();
+            let idx;
+            if (storedDay == today) {
+                idx = parseInt(localStorage.getItem(FACT_KEY));
+                if (isNaN(idx)) idx = today % PANDU.length;
+            } else {
+                idx = today % PANDU.length;
+                localStorage.setItem('dailyFactDay', today);
+                localStorage.setItem(FACT_KEY, idx);
+            }
+            const p = PANDU[idx];
+            document.getElementById('factOfDay').textContent = p.text;
+            document.getElementById('pandAuthor').textContent = '— ' + p.author;
         }
 
         function setLanguage(lang) {
@@ -881,11 +1014,58 @@
             renderRadios(); renderRadiosFull(); renderFavorites(); renderNewAdded(); renderStreak(); renderWeekCard();
             showFact();
             syncAnimation();
+            if (document.getElementById('statsSection').classList.contains('open')) renderStatsSection();
+            if (document.getElementById('faqSection').classList.contains('open')) {
+                const list = document.getElementById('faqList'); list.innerHTML = '';
+                FAQ_DATA[currentLang].forEach(item => {
+                    const div = document.createElement('div'); div.className = 'faq-item';
+                    div.innerHTML = `<div class="faq-question" onclick="this.nextElementSibling.classList.toggle('open')">${item.q} <i class="fas fa-chevron-down"></i></div><div class="faq-answer">${item.a}</div>`;
+                    list.appendChild(div);
+                });
+            }
+            updateRadioListenersUI();
+            updateMiniPlayer();
         }
 
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page-' + pageId).classList.add('active');
+        /* ========== СВАЙП-НАВИГАЦИЯ ========== */
+        const PAGE_ORDER = ['main', 'radio', 'favorites', 'profile'];
+        let touchStartX = 0, touchStartY = 0, isSwiping = false;
+
+        function initSwipe() {
+            const container = document.getElementById('swipeContainer');
+            container.addEventListener('touchstart', (e) => {
+                if (e.touches.length !== 1) return;
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+                isSwiping = false;
+            }, { passive: true });
+            container.addEventListener('touchmove', (e) => {
+                if (e.touches.length !== 1) return;
+                const dx = e.touches[0].clientX - touchStartX;
+                const dy = e.touches[0].clientY - touchStartY;
+                if (Math.abs(dx) > 30 && Math.abs(dx) > Math.abs(dy) * 1.5) isSwiping = true;
+            }, { passive: true });
+            container.addEventListener('touchend', (e) => {
+                if (!isSwiping) return;
+                const dx = e.changedTouches[0].clientX - touchStartX;
+                const currentPageEl = document.querySelector('.page.active');
+                if (!currentPageEl) return;
+                const currentPageId = currentPageEl.id.replace('page-', '');
+                if (currentPageId === 'radio-detail') { isSwiping = false; return; }
+                const pos = PAGE_ORDER.indexOf(currentPageId);
+                if (pos === -1) { isSwiping = false; return; }
+                if (dx < -60 && pos < PAGE_ORDER.length - 1) { showPage(PAGE_ORDER[pos + 1], 'right'); }
+                else if (dx > 60 && pos > 0) { showPage(PAGE_ORDER[pos - 1], 'left'); }
+                isSwiping = false;
+            }, { passive: true });
+        }
+
+        function showPage(pageId, direction) {
+            document.querySelectorAll('.page').forEach(p => { p.classList.remove('active', 'slide-in-right', 'slide-in-left'); });
+            const target = document.getElementById('page-' + pageId);
+            target.classList.add('active');
+            if (direction === 'right') target.classList.add('slide-in-right');
+            else if (direction === 'left') target.classList.add('slide-in-left');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             const navBtn = document.querySelector(`.nav-item[data-page="${pageId}"]`);
             if (navBtn) navBtn.classList.add('active');
@@ -896,18 +1076,6 @@
             updateMiniPlayer();
         }
 
-        function showFact() {
-            const p = PANDU[getDayIndex() % PANDU.length];
-            document.getElementById('factOfDay').textContent = p.text;
-            document.getElementById('pandAuthor').textContent = '— ' + p.author;
-        }
-
-        function getDayIndex() {
-            const now = new Date();
-            const start = new Date(now.getFullYear(), 0, 0);
-            return Math.floor((now - start) / (1000 * 60 * 60 * 24));
-        }
-
         function renderNewAdded() {
             const container = document.getElementById('newAddedList');
             container.innerHTML = '';
@@ -915,7 +1083,7 @@
             lastThree.forEach(({ r, i }) => {
                 const div = document.createElement('button'); div.className = 'new-added-item';
                 div.innerHTML = `<div class="station-avatar"></div><span class="new-added-badge" data-i18n="newBadge"></span><span class="name">${r.name}</span><span class="freq">${r.freq}</span>`;
-                applyAvatar(div.querySelector('.station-avatar'), r);
+                applyAvatar(div.querySelector('.station-avatar'), r, i);
                 div.querySelector('.new-added-badge').textContent = t('newBadge');
                 div.addEventListener('click', () => openRadioDetail(i));
                 container.appendChild(div);
@@ -992,7 +1160,7 @@
             const vinylMain = document.getElementById('vinylMain');
             if (currentRadio) {
                 nowPlaying.textContent = currentRadio.name;
-                applyAvatar(vinylMain, currentRadio);
+                applyAvatar(vinylMain, currentRadio, currentStationIndex);
                 document.getElementById('detailName').textContent = currentRadio.name;
                 document.getElementById('detailFreq').textContent = currentRadio.freq;
                 if (!dialDragging) updateTuningDial(currentRadio);
@@ -1021,7 +1189,7 @@
         function openRadioDetail(index) {
             const radio = RADIOS[index]; if (!radio) return;
             currentStationIndex = index; currentRadio = radio;
-            applyAvatar(document.getElementById('detailLogo'), radio);
+            applyAvatar(document.getElementById('detailLogo'), radio, index);
             document.getElementById('detailName').textContent = radio.name;
             document.getElementById('detailFreq').textContent = radio.freq;
             document.getElementById('detailDesc').textContent = currentLang === 'tg' ? radio.desc_tg : radio.desc_ru;
@@ -1062,12 +1230,33 @@
                 history.push({ i: index, ts: Date.now() });
                 while (history.length > 500) history.shift();
                 localStorage.setItem('listenHistory', JSON.stringify(history));
+                statsCache = null;
             } catch (e) {}
             renderStreak();
         }
 
+        /* ========== КОРРЕКТНАЯ ОСТАНОВКА ПОТОКА ========== */
+        function stopCurrentStream() {
+            if (streamTimeoutHandle) { clearTimeout(streamTimeoutHandle); streamTimeoutHandle = null; }
+            try {
+                audio.pause();
+                audio.removeAttribute('src');
+                audio.load();
+            } catch(e) {}
+        }
+
         function playRadio(index) {
             const radio = RADIOS[index]; if (!radio) return;
+
+            /* Останавливаем предыдущий поток корректно */
+            stopCurrentStream();
+
+            /* Добавляем в историю */
+            if (currentStationIndex !== -1 && currentStationIndex !== index) {
+                stationHistory.push(currentStationIndex);
+                if (stationHistory.length > MAX_HISTORY) stationHistory.shift();
+            }
+
             const playBtn = document.getElementById('playBtnMain');
             const detailPlayBtn = document.getElementById('detailPlayBtn');
             const playLabel = document.getElementById('playBtnMainLabel');
@@ -1075,10 +1264,21 @@
             if (playBtn) { playBtn.querySelector('i').className = 'fas fa-spinner fa-spin'; if (playLabel) playLabel.textContent = t('loadingBtn'); playBtn.disabled = true; }
             if (detailPlayBtn) { detailPlayBtn.querySelector('i').className = 'fas fa-spinner fa-spin'; if (detailLabel) detailLabel.textContent = t('loadingBtn'); detailPlayBtn.disabled = true; }
 
-            audio.src = radio.stream; audio.load();
+            /* Устанавливаем таймаут 15 секунд */
+            streamTimeoutHandle = setTimeout(() => {
+                if (!isPlaying) {
+                    stopCurrentStream();
+                    showToast(t('timeoutText'));
+                    resetPlayButtons();
+                }
+            }, STREAM_TIMEOUT_MS);
+
+            audio.src = radio.stream;
+            audio.load();
             const playPromise = audio.play();
             if (playPromise !== undefined) {
                 playPromise.then(() => {
+                    if (streamTimeoutHandle) { clearTimeout(streamTimeoutHandle); streamTimeoutHandle = null; }
                     currentStationIndex = index; currentRadio = radio; isPlaying = true;
                     addRecentRadio(index); recordListen(index);
                     syncAnimation(); renderNewAdded(); updateRadiosListUI(); updateFavoritesUI();
@@ -1087,13 +1287,41 @@
                     if (detailPlayBtn) detailPlayBtn.disabled = false;
                     updateMiniPlayer();
                 }).catch(() => {
+                    if (streamTimeoutHandle) { clearTimeout(streamTimeoutHandle); streamTimeoutHandle = null; }
                     isPlaying = false;
                     showToast(t('connectFail'));
-                    if (playBtn) { playBtn.querySelector('i').className = 'fas fa-play'; if (playLabel) playLabel.textContent = t('listenBtn'); playBtn.disabled = false; }
-                    if (detailPlayBtn) { detailPlayBtn.querySelector('i').className = 'fas fa-play'; if (detailLabel) detailLabel.textContent = t('listenBtn'); detailPlayBtn.disabled = false; }
+                    resetPlayButtons();
                     syncAnimation(); updateMiniPlayer();
                 });
             }
+        }
+
+        function resetPlayButtons() {
+            const playBtn = document.getElementById('playBtnMain');
+            const detailPlayBtn = document.getElementById('detailPlayBtn');
+            const playLabel = document.getElementById('playBtnMainLabel');
+            const detailLabel = document.getElementById('detailPlayBtnLabel');
+            if (playBtn) { playBtn.querySelector('i').className = 'fas fa-play'; if (playLabel) playLabel.textContent = t('listenBtn'); playBtn.disabled = false; }
+            if (detailPlayBtn) { detailPlayBtn.querySelector('i').className = 'fas fa-play'; if (detailLabel) detailLabel.textContent = t('listenBtn'); detailPlayBtn.disabled = false; }
+        }
+
+        /* ========== АВТОВОССТАНОВЛЕНИЕ ПРИ ОБРЫВЕ ========== */
+        audio.addEventListener('error', () => {
+            if (isPlaying && currentStationIndex !== -1) {
+                isPlaying = false;
+                syncAnimation();
+                updateMiniPlayer();
+                updateRadiosListUI();
+                updateFavoritesUI();
+                showToast(t('connectFail'));
+            }
+        });
+
+        /* ========== ВОЗВРАТ К ПРЕДЫДУЩЕЙ ========== */
+        function playPreviousStation() {
+            if (stationHistory.length === 0) { showToast(currentLang === 'tg' ? '📻 Таърихи холӣ' : '📻 История пуста'); return; }
+            const prev = stationHistory.pop();
+            playRadio(prev);
         }
 
         const miniPlayer = document.getElementById('miniPlayer');
@@ -1101,6 +1329,7 @@
         const miniPlayerStatus = document.getElementById('miniPlayerStatus');
         const miniPlayBtn = document.getElementById('miniPlayBtn');
         const miniCloseBtn = document.getElementById('miniCloseBtn');
+        const miniPrevBtn = document.getElementById('miniPrevBtn');
         const miniAvatar = document.getElementById('miniAvatar');
         const miniPlayerInfo = document.getElementById('miniPlayerInfo');
 
@@ -1111,7 +1340,7 @@
                 if (isPlaying && sleepTimerEnd) { const remain = Math.max(0, Math.round((sleepTimerEnd - Date.now()) / 60000)); statusText += ` · ⏰ ${remain} ${currentLang === 'tg' ? 'дақ' : 'мин'}`; }
                 miniPlayerStatus.textContent = statusText;
                 miniPlayBtn.innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
-                applyAvatar(miniAvatar, currentRadio);
+                applyAvatar(miniAvatar, currentRadio, currentStationIndex);
                 miniPlayer.classList.add('show');
             } else { miniPlayer.classList.remove('show'); }
         }
@@ -1119,8 +1348,10 @@
             if (isPlaying) { audio.pause(); isPlaying = false; syncAnimation(); updateMiniPlayer(); updateRadiosListUI(); updateFavoritesUI(); }
             else { playRadio(currentStationIndex === -1 ? 0 : currentStationIndex); }
         });
+        miniPrevBtn.addEventListener('click', playPreviousStation);
         miniCloseBtn.addEventListener('click', function () {
-            audio.pause(); isPlaying = false; clearSleepTimer(); syncAnimation(); updateMiniPlayer(); updateRadiosListUI(); updateFavoritesUI();
+            stopCurrentStream(); isPlaying = false; currentRadio = null; currentStationIndex = -1;
+            clearSleepTimer(); syncAnimation(); updateMiniPlayer(); updateRadiosListUI(); updateFavoritesUI();
         });
         miniPlayerInfo.addEventListener('click', function () { if (currentStationIndex !== -1) openRadioDetail(currentStationIndex); });
 
@@ -1173,6 +1404,7 @@
         }
         document.getElementById('nextBtnMain').addEventListener('click', playNextStation);
         document.getElementById('nextBtnDetail').addEventListener('click', playNextStation);
+        document.getElementById('prevBtnMain').addEventListener('click', playPreviousStation);
         document.getElementById('rouletteBtn').addEventListener('click', spinRoulette);
 
         function shareStation() {
@@ -1185,10 +1417,12 @@
         document.getElementById('shareBtnDetail').addEventListener('click', shareStation);
         document.getElementById('favBtnDetail').addEventListener('click', () => { if (currentStationIndex !== -1) toggleFavorite(currentStationIndex); updateFavBtnDetail(); });
 
+        /* ========== СТАТИСТИКА С КЭШЕМ ========== */
         function computeStats() {
+            if (statsCache) return statsCache;
             let history = [];
             try { history = JSON.parse(localStorage.getItem('listenHistory')) || []; } catch (e) {}
-            if (history.length === 0) return null;
+            if (history.length === 0) { statsCache = null; return null; }
             const counts = {};
             history.forEach(h => { counts[h.i] = (counts[h.i] || 0) + 1; });
             let favIdx = -1, favCount = 0;
@@ -1207,7 +1441,8 @@
                 if (days.includes(check.toDateString())) streakCount++; else break;
             }
             const distinctStations = Object.keys(counts).length;
-            return { totalSessions: history.length, favIdx, favCount, topBucketLabel: t(bucketKeyMap[topBucketKey]), streakCount, daysCount: days.length, distinctStations };
+            statsCache = { totalSessions: history.length, favIdx, favCount, topBucketLabel: t(bucketKeyMap[topBucketKey]), streakCount, daysCount: days.length, distinctStations };
+            return statsCache;
         }
         function renderStreak() {
             const wrap = document.getElementById('streakPillWrap');
@@ -1254,6 +1489,18 @@
             setTimeout(() => toast.remove(), 2600);
         }
 
+        function revealCardDetails() {
+            const content = document.getElementById('cardRevealContent');
+            const btn = document.getElementById('revealCardBtn');
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                btn.innerHTML = `<i class="fas fa-eye"></i> <span>${t('revealCardBtn')}</span>`;
+            } else {
+                content.classList.add('show');
+                btn.innerHTML = `<i class="fas fa-eye-slash"></i> <span>${currentLang === 'tg' ? 'Пинҳон кардан' : 'Скрыть'}</span>`;
+            }
+        }
+
         document.getElementById('playBtnMain').addEventListener('click', function () {
             if (isPlaying) { audio.pause(); isPlaying = false; syncAnimation(); renderNewAdded(); updateRadiosListUI(); updateFavoritesUI(); updateMiniPlayer(); }
             else { playRadio(currentStationIndex === -1 ? 0 : currentStationIndex); }
@@ -1276,7 +1523,11 @@
                 if (idx === currentStationIndex && isPlaying) { btn.innerHTML = '<i class="fas fa-pause"></i>'; btn.classList.add('playing'); }
                 else { btn.innerHTML = '<i class="fas fa-play"></i>'; btn.classList.remove('playing'); }
             });
-            document.querySelectorAll('.radio-item').forEach(el => { const idx = parseInt(el.dataset.index); el.classList.toggle('is-live', idx === currentStationIndex && isPlaying); });
+            document.querySelectorAll('.radio-item').forEach(el => {
+                const idx = parseInt(el.dataset.index);
+                el.classList.toggle('is-live', idx === currentStationIndex && isPlaying);
+                el.classList.toggle('is-bg-playing', idx === currentStationIndex && !isPlaying && currentRadio !== null);
+            });
             document.querySelectorAll('.favorite-btn').forEach(btn => { const idx = parseInt(btn.dataset.index); btn.innerHTML = favorites.includes(idx) ? '<i class="fas fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>'; btn.classList.toggle('active', favorites.includes(idx)); });
             updateRadioListenersUI();
         }
@@ -1285,8 +1536,9 @@
         function buildRadioItem(radio, i) {
             const isFav = favorites.includes(i);
             const isCurrent = (i === currentStationIndex && isPlaying);
+            const isBg = (i === currentStationIndex && !isPlaying && currentRadio !== null);
             const div = document.createElement('div');
-            div.className = 'radio-item' + (isCurrent ? ' is-live' : '');
+            div.className = 'radio-item' + (isCurrent ? ' is-live' : '') + (isBg ? ' is-bg-playing' : '');
             div.dataset.index = i; div.dataset.name = radio.name;
             div.innerHTML = `
                 <button class="favorite-btn ${isFav ? 'active' : ''}" data-index="${i}" onclick="event.stopPropagation(); toggleFavorite(${i})">${isFav ? '<i class="fas fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>'}</button>
@@ -1299,7 +1551,7 @@
                     <div class="radio-freq">${radio.freq}</div>
                     <div class="radio-listeners">● ${listenerText(listeners[i] || 0)}</div>
                 </div>`;
-            applyAvatar(div.querySelector('.station-avatar'), radio);
+            applyAvatar(div.querySelector('.station-avatar'), radio, i);
             div.addEventListener('click', () => openRadioDetail(i));
             return div;
         }
@@ -1362,8 +1614,8 @@
             if (sectionId === 'stats' && section.classList.contains('open')) { renderStatsSection(); }
         }
 
-        function openTelegram() { window.open('https://t.me/kurush_digital', '_blank'); }
-        function rateApp() { window.open(PLAY_MARKET_URL, '_blank'); }
+        function openTelegram() { window.open('https://t.me/kurush_digital', '_blank', 'noopener,noreferrer'); }
+        function rateApp() { window.open(PLAY_MARKET_URL, '_blank', 'noopener,noreferrer'); }
         function exitApp() {
             if (confirm(t('logoutConfirm'))) {
                 try { window.close(); } catch (e) { window.location.href = 'about:blank'; window.history.go(-999); }
@@ -1372,8 +1624,33 @@
         }
 
         document.querySelectorAll('.nav-item').forEach(btn => {
-            btn.addEventListener('click', () => { showPage(btn.dataset.page); btn.classList.remove('rg-tap'); void btn.offsetWidth; btn.classList.add('rg-tap'); });
+            btn.addEventListener('click', () => {
+                const currentPage = document.querySelector('.page.active');
+                const currentId = currentPage ? currentPage.id.replace('page-', '') : 'main';
+                const newPos = PAGE_ORDER.indexOf(btn.dataset.page);
+                const oldPos = PAGE_ORDER.indexOf(currentId);
+                const direction = newPos > oldPos ? 'right' : 'left';
+                showPage(btn.dataset.page, direction);
+                btn.classList.remove('rg-tap'); void btn.offsetWidth; btn.classList.add('rg-tap');
+            });
         });
+
+        /* ========== ПРОВЕРКА СЕТИ ========== */
+        function updateOnlineStatus() {
+            const banner = document.getElementById('offlineBanner');
+            const text = document.getElementById('offlineBannerText');
+            const retryText = document.getElementById('offlineRetryText');
+            if (text) text.textContent = t('offlineText');
+            if (retryText) retryText.textContent = t('offlineRetry');
+            if (navigator.onLine) { banner.classList.remove('show'); }
+            else { banner.classList.add('show'); }
+        }
+        window.addEventListener('online', () => { updateOnlineStatus(); showToast(currentLang === 'tg' ? '✅ Пайваст барқарор шуд' : '✅ Соединение восстановлено'); });
+        window.addEventListener('offline', updateOnlineStatus);
+        function checkConnectionAndRetry() {
+            if (navigator.onLine) { window.location.reload(); }
+            else { showToast(t('offlineText')); }
+        }
 
         function init() {
             const savedLang = localStorage.getItem('lang') || 'tg';
@@ -1387,11 +1664,18 @@
             syncAnimation();
             showPage('main');
             refreshGreeting();
+            initSwipe();
+            updateOnlineStatus();
             document.getElementById('timeDisplay').textContent = new Date().toLocaleTimeString('tg-TJ', { hour: '2-digit', minute: '2-digit' });
             setInterval(() => {
                 document.getElementById('timeDisplay').textContent = new Date().toLocaleTimeString('tg-TJ', { hour: '2-digit', minute: '2-digit' });
                 refreshGreeting();
             }, 30000);
+
+            /* Пауза при уходе приложения в фон, восстановление при возврате */
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden && isPlaying) showToast(t('bgPlayingToast'));
+            });
         }
         document.addEventListener('DOMContentLoaded', init);
     </script>
