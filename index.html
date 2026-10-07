@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+-<!DOCTYPE html>
 <html lang="tg">
 <head>
     <meta charset="UTF-8">
@@ -8,39 +8,16 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
-    <!-- ⚡ Локальные шрифты (никаких Google Fonts) -->
     <style>
-        @font-face {
-            font-family: 'Sora';
-            src: local('Segoe UI Semibold'), local('Roboto'), local('Helvetica Neue'), local('Arial Bold'), local('Arial');
-            font-weight: 600 800;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: 'Sora';
-            src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial');
-            font-weight: 400 500;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: 'Inter';
-            src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial');
-            font-weight: 300 700;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: 'JetBrains Mono';
-            src: local('Consolas'), local('Monaco'), local('Courier New'), local('monospace');
-            font-weight: 400 700;
-            font-display: swap;
-        }
+        @font-face { font-family: 'Sora'; src: local('Segoe UI Semibold'), local('Roboto'), local('Helvetica Neue'), local('Arial Bold'), local('Arial'); font-weight: 600 800; font-display: swap; }
+        @font-face { font-family: 'Sora'; src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial'); font-weight: 400 500; font-display: swap; }
+        @font-face { font-family: 'Inter'; src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial'); font-weight: 300 700; font-display: swap; }
+        @font-face { font-family: 'JetBrains Mono'; src: local('Consolas'), local('Monaco'), local('Courier New'), local('monospace'); font-weight: 400 700; font-display: swap; }
     </style>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
         html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-
         :root {
             --bg-1: #0A0D24; --bg-2: #170F3A;
             --gold: #F0B429; --gold-dim: #C8961F;
@@ -73,11 +50,9 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .card-label { font-family: var(--font-display); font-size: 12.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 7px; margin-bottom: 12px; }
 
-        /* ===== SVG-ИКОНКИ ===== */
         .icon { display: inline-block; width: 1em; height: 1em; fill: currentColor; vertical-align: -0.125em; flex-shrink: 0; }
         .icon-lg { width: 1.2em; height: 1.2em; }
 
-        /* ===== БАННЕР "НЕТ СЕТИ" ===== */
         .offline-banner {
             position: fixed; top: 0; left: 0; right: 0; z-index: 500;
             background: linear-gradient(135deg, rgba(232,98,61,0.95), rgba(200,60,30,0.95));
@@ -96,7 +71,6 @@
         .offline-retry:hover { background: rgba(255,255,255,0.35); }
         .offline-retry:active { transform: scale(0.95); }
 
-        /* ===== СВАЙП-НАВИГАЦИЯ ===== */
         .swipe-container { position: relative; overflow: hidden; touch-action: pan-y; }
         .page { display: none; }
         .page.active { display: block; }
@@ -168,8 +142,8 @@
         .mini-btn.play-btn:hover { background: var(--gold-dim); }
         .mini-btn.mini-back { font-size: 13px; }
 
-        .station-avatar { position: relative; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; color: rgba(0,0,0,0.72); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25); flex-shrink: 0; background-size: cover; background-position: center; }
-        .station-avatar.cached { background-size: cover; background-position: center; }
+        .station-avatar { position: relative; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; color: rgba(0,0,0,0.72); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25); flex-shrink: 0; background-size: cover; background-position: center; background-repeat: no-repeat; }
+        .station-avatar.cached { background-size: cover; background-position: center; background-repeat: no-repeat; }
 
         .player-hero { text-align: center; padding: 26px 18px 22px; }
         .now-playing-label { font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
@@ -191,12 +165,7 @@
 
         .equalizer { display: flex; align-items: flex-end; justify-content: center; gap: 4px; height: 20px; margin: 8px 0 16px; }
         .eq-bar { width: 4px; background: var(--gold); border-radius: 2px; height: 4px; opacity: 0.35; }
-        .equalizer.playing .eq-bar {
-            opacity: 1;
-            animation-name: eqBounce;
-            animation-timing-function: ease-in-out;
-            animation-iteration-count: infinite;
-        }
+        .equalizer.playing .eq-bar { opacity: 1; animation-name: eqBounce; animation-timing-function: ease-in-out; animation-iteration-count: infinite; }
         .equalizer.playing .eq-bar:nth-child(1) { animation-duration: 0.7s; }
         .equalizer.playing .eq-bar:nth-child(2) { animation-duration: 1.0s; animation-delay: 0.1s; }
         .equalizer.playing .eq-bar:nth-child(3) { animation-duration: 0.6s; animation-delay: 0.05s; }
@@ -215,6 +184,7 @@
         .tuning-needle.dragging { transition: none; }
         .tuning-needle::before { content: ''; position: absolute; top: -4px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 6px solid var(--terracotta); }
         .tuning-hint { font-size: 11px; color: var(--text-faint); margin-top: 6px; }
+        .tuning-preview-name { font-family: var(--font-mono); font-size: 11.5px; color: var(--teal); margin-top: 4px; min-height: 16px; }
 
         .btn-primary { background: var(--gold); border: none; border-radius: 40px; padding: 9px 22px; color: var(--bg-1); font-weight: 700; font-family: var(--font-display); cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-primary:hover { background: var(--gold-dim); transform: scale(1.02); }
@@ -279,7 +249,7 @@
         .see-all-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; margin-top: 4px; background: none; border: 1px dashed var(--border); border-radius: var(--radius-md); color: var(--text-dim); font-weight: 600; font-size: 14px; cursor: pointer; transition: var(--transition); }
         .see-all-btn:hover { border-color: var(--border-strong); color: var(--gold); }
 
-        .filter-chips { display: flex; gap: 8px; margin-bottom: 14px; align-items: center; }
+        .filter-chips { display: flex; gap: 8px; margin-bottom: 14px; align-items: center; flex-wrap: wrap; }
         .filter-chip { background: var(--glass); border: 1px solid var(--border); border-radius: 30px; padding: 8px 16px; color: var(--text-dim); font-size: 13.5px; font-weight: 600; cursor: pointer; transition: var(--transition); }
         .filter-chip.active { background: var(--gold); color: var(--bg-1); border-color: var(--gold); }
         .shuffle-hint { margin-left: auto; font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); display: flex; align-items: center; gap: 5px; }
@@ -375,7 +345,6 @@
 </head>
 <body>
 
-    <!-- ===== SVG-СПРАЙТ (все иконки в одном месте) ===== -->
     <svg style="display:none;" xmlns="http://www.w3.org/2000/svg">
         <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
         <symbol id="i-pause" viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></symbol>
@@ -415,7 +384,6 @@
         <symbol id="i-satellite" viewBox="0 0 24 24"><path d="M12 12c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm8.94-8.94l-2.12 2.12c.46 1.28.68 2.63.64 3.99l2.99.05c.06-2.1-.46-4.17-1.51-6.16zM4.06 7.06C3.01 9.05 2.49 11.12 2.55 13.22l2.99-.05c-.04-1.36.18-2.71.64-3.99L4.06 7.06zM3.51 4.51C2.05 6.95 1.27 9.7 1.24 12.5h2c.03-2.29.67-4.55 1.86-6.53L3.51 4.51zm16.98 0l-1.59 1.46c1.19 1.98 1.83 4.24 1.86 6.53h2c-.03-2.8-.81-5.55-2.27-7.99zM12 2c-1.05 0-2.08.11-3.08.33l.5 1.94c.83-.18 1.7-.27 2.58-.27s1.75.09 2.58.27l.5-1.94C14.08 2.11 13.05 2 12 2z"/></symbol>
     </svg>
 
-    <!-- ===== БАННЕР "НЕТ СЕТИ" ===== -->
     <div class="offline-banner" id="offlineBanner">
         <div class="offline-banner-text">
             <svg class="icon"><use href="#i-wifi"/></svg>
@@ -442,7 +410,6 @@
 
     <div class="container swipe-container" id="swipeContainer">
 
-        <!-- ===== ГЛАВНАЯ ===== -->
         <div class="page active" id="page-main">
 
             <div class="glass-card" style="text-align: center; padding: 18px;">
@@ -491,6 +458,7 @@
                         <div class="tuning-needle" id="tuningNeedle"></div>
                     </div>
                     <div class="tuning-scale-labels"><span>87.5</span><span>98</span><span>108</span></div>
+                    <div class="tuning-preview-name" id="tuningPreviewName"></div>
                     <div class="tuning-hint" id="tuningHint" data-i18n="tuningHint"></div>
                 </div>
 
@@ -531,7 +499,6 @@
 
         </div>
 
-        <!-- ===== СТРАНИЦА РАДИО (DETAIL) ===== -->
         <div class="page" id="page-radio-detail">
             <button class="back-btn" onclick="showPage('main')"><svg class="icon"><use href="#i-arrow-left"/></svg> <span data-i18n="backBtn"></span></button>
 
@@ -569,7 +536,6 @@
             </div>
         </div>
 
-        <!-- ===== РАДИО (СПИСОК) ===== -->
         <div class="page" id="page-radio">
             <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="searchPlaceholder">
             <div class="filter-chips">
@@ -585,10 +551,8 @@
             </div>
         </div>
 
-        <!-- ===== ИЗБРАННОЕ ===== -->
         <div class="page" id="page-favorites"><div id="favoritesList" class="radio-grid"></div></div>
 
-        <!-- ===== ПРОФИЛЬ ===== -->
         <div class="page" id="page-profile">
             <div class="glass-card">
                 <div style="font-family: var(--font-display); font-weight: 700; font-size: 18px; margin-bottom: 16px;" data-i18n="profileTitle"></div>
@@ -654,7 +618,7 @@
                 <div class="profile-item" onclick="toggleProfileSection('about')"><svg class="icon"><use href="#i-info"/></svg> <span data-i18n="aboutLabel"></span><svg class="icon chev"><use href="#i-chevron-down"/></svg></div>
                 <div class="profile-subsection" id="aboutSection">
                     <p data-i18n="aboutText1"></p>
-                    <p style="margin-top: 8px;"><span data-i18n="versionLabel"></span>: <strong>3.5</strong></p>
+                    <p style="margin-top: 8px;"><span data-i18n="versionLabel"></span>: <strong>3.6</strong></p>
                     <p style="margin-top: 4px;"><span data-i18n="devLabel"></span>: <a href="https://kurushdigital.one" target="_blank" rel="noopener noreferrer" class="footer-link">Kurush Digital</a></p>
                     <p style="margin-top: 12px; font-size: 12px; color: var(--text-faint);" data-i18n="copyrightFooter"></p>
                 </div>
@@ -665,7 +629,6 @@
 
     </div>
 
-    <!-- ===== ПЛАВАЮЩИЙ ДОК ===== -->
     <div class="bottom-dock" id="bottomDock">
         <div class="mini-player" id="miniPlayer">
             <div class="mini-player-content">
@@ -696,7 +659,10 @@
 
     <script>
         /* ============================================================
-           PESHRAS RADIO — JavaScript (v3.5, без внешних шрифтов)
+           PESHRAS RADIO — JavaScript (v3.6)
+           — Исправлено: просмотр ≠ прослушивание
+           — Улучшено: логотипы (кэш + повторная попытка)
+           — Добавлено: быстрый переход по частоте
            ============================================================ */
 
         const PLAY_MARKET_URL = 'https://play.google.com/store/apps/details?id=com.kurushdigital.isfsrafm';
@@ -705,23 +671,23 @@
 
         const RADIOS = [
             { name: 'Радиои Имруз', freq: '107.4 FM', logo: 'https://i.ibb.co/6cD3bDWT/1789265934733.png', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-imruz', desc_tg: 'Таронаҳои тоҷикӣ, эронӣ, афғонӣ ва ӯзбекӣ.', desc_ru: 'Негосударственное радио Таджикистана.', phone: '44 603 7777', website: '', instagram: 'https://www.instagram.com/radioiimruz/', telegram: '' },
-            { name: 'ZET FM', freq: '103.0 FM', logo: 'https://i.ibb.co/twbncJ0W/1789216795388.png', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-zetfm', desc_tg: 'Радиои муосири тоҷикӣ.', desc_ru: 'Современное таджикское радио.', phone: '+992 92 123 45 67', website: 'https://zetfm.tj', instagram: 'https://instagram.com/zetfm', telegram: 'https://t.me/zetfm' },
+            { name: 'ZET FM', freq: '103.0 FM', logo: 'https://i.ibb.co/xSR32mpd/1791298426596.jpg', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-zetfm', desc_tg: 'Радиои муосири тоҷикӣ.', desc_ru: 'Современное таджикское радио.', phone: '+992 92 123 45 67', website: 'https://zetfm.tj', instagram: 'https://instagram.com/zetfm', telegram: 'https://t.me/zetfm' },
             { name: 'Радио Диёр', freq: '105.5 FM', logo: 'https://i.ibb.co/9k7w282h/1789216877949.png', stream: 'https://c16.radioboss.fm/stream/234', desc_tg: 'Радиои фарҳангии Тоҷикистон.', desc_ru: 'Культурное радио Таджикистана.', phone: '+992 93 123 45 67', website: 'https://diyor.tj', instagram: 'https://instagram.com/diyor', telegram: 'https://t.me/diyor' },
-            { name: 'Радио Наво', freq: '96.5 FM', logo: 'https://i.ibb.co/gFBH0pcG/1789216932478.png', stream: 'https://radio.navo.tj:8443/live', desc_tg: 'Радиои мусиқии тоҷикӣ.', desc_ru: 'Таджикское музыкальное радио.', phone: '+992 94 123 45 67', website: 'https://navo.tj', instagram: 'https://instagram.com/navo', telegram: 'https://t.me/navo' },
+            { name: 'Радио Наво', freq: '96.5 FM', logo: 'https://i.ibb.co/MDRLjvN2/1791298252972.jpg', stream: 'https://radio.navo.tj:8443/live', desc_tg: 'Радиои мусиқии тоҷикӣ.', desc_ru: 'Таджикское музыкальное радио.', phone: '+992 94 123 45 67', website: 'https://navo.tj', instagram: 'https://instagram.com/navo', telegram: 'https://t.me/navo' },
             { name: 'Радио Пайванд', freq: '100.6 FM', logo: 'https://i.ibb.co/Kp6sB14g/2209-edit-99135194167233.png', stream: 'https://c6.radioboss.fm/stream/234', desc_tg: 'Радиои пайвандкунанда.', desc_ru: 'Радио, объединяющее людей.', phone: '+992927778210', website: 'https://payvand.tj', instagram: 'https://instagram.com/payvand', telegram: 'https://t.me/payvand' },
             { name: 'Ҳамсадо FM', freq: '94.5 FM', logo: 'https://i.ibb.co/mVc1Fjsg/Screenshot-20260701-144112-com-android-chrome-Chrome-Tabbed-Activity-edit-97713131978192.jpg', stream: 'https://c23.radioboss.fm/stream/102', desc_tg: 'Ҳамсадои дили шумо.', desc_ru: 'Радио единства.', phone: '+992 888 000 944', website: 'https://hamsado.tj', instagram: 'https://www.instagram.com/HAMSADO/', telegram: 'https://t.me/hamsado' },
-            { name: 'Радио Қанд', freq: '87.7 FM', logo: 'https://i.ibb.co/LdyJGdQS/unnamed-edit-99041490010342.jpg', stream: 'https://listen7.myradio24.com/tamish', desc_tg: 'Радиои Канди Тоҷикистон.', desc_ru: 'Радио Канда Таджикистана.', phone: '+992 93 570 0077', website: 'https://kandfm.tj', instagram: 'https://instagram.com/kandfm.tj', telegram: 'https://t.me/kandfm.tj' },
+            { name: 'Радио Қанд', freq: '87.7 FM', logo: 'https://i.ibb.co/SDybdY91/1791043849011.jpg', stream: 'https://listen7.myradio24.com/tamish', desc_tg: 'Радиои Канди Тоҷикистон.', desc_ru: 'Радио Канда Таджикистана.', phone: '+992 93 570 0077', website: 'https://kandfm.tj', instagram: 'https://instagram.com/kandfm.tj', telegram: 'https://t.me/kandfm.tj' },
             { name: 'Радио Азия+', freq: '107.0 FM', logo: 'https://i.ibb.co/7dXxH9HB/le5qn2-Wl-meoj4-KGEIc-X4-LKGy-Ff-CA8t5-E0-Yjz-SHug-SZ9a-Qzz-KIg-Y9-j-sbg-PMMJd-Yi-G0-JQs-S8ht-YAnw-Za-Aa-K.jpg', stream: 'https://eu.asiaplusradio.tj:8443/ap', desc_tg: 'Музыка и новости 24/7. Один из главных голосов Таджикистана — теперь в один клик, в любой точке мира.', desc_ru: 'Радио Азия+.', phone: '+992 987 65 43 21', website: 'https://asiaplus.news', instagram: 'https://www.instagram.com/asiaplustj', telegram: 'https://t.me/asiaplustj' },
             { name: 'Радио Тироз', freq: '103.7 FM', logo: 'https://i.ibb.co/8gpf1WTd/1789217593193.png', stream: 'https://eu1.fastcast4u.com/proxy/khusrav/stream?n=b742a6676ac1f8543fc2', desc_tg: 'Радиои Тироз.', desc_ru: 'Радио Тироз.', phone: '+992 99 123 45 67', website: 'https://tiroz.tj', instagram: 'https://instagram.com/tiroz', telegram: 'https://t.me/tiroz' },
-            { name: 'Радио Нав', freq: '95.5 FM', logo: 'https://i.ibb.co/dJ4BWhFK/channels4-profile-edit-99014396214571.jpg', stream: 'https://c38.radioboss.fm:8172/stream', desc_tg: 'Новое Радио — это самая модная и популярная музыка! В эфире только суперхиты и суперновинки.', desc_ru: 'Новое радио.', phone: '+992 55 055 59 55', website: 'https://newradio.tj/', instagram: 'https://www.instagram.com/newradio.tj/', telegram: 'https://t.me/newradioTjk' },
+            { name: 'Радио Нав', freq: '95.5 FM', logo: 'https://i.ibb.co/YBHgPmTK/1791037288751.jpg', stream: 'https://c38.radioboss.fm:8172/stream', desc_tg: 'Новое Радио — это самая модная и популярная музыка! В эфире только суперхиты и суперновинки.', desc_ru: 'Новое радио.', phone: '+992 55 055 59 55', website: 'https://newradio.tj/', instagram: 'https://www.instagram.com/newradio.tj/', telegram: 'https://t.me/newradioTjk' },
             { name: 'Шаҳри ман', freq: '97.7 FM', logo: 'https://i.ibb.co/xKHLfTn6/1789217022636-edit-99953010655723.png', stream: 'https://c16.radioboss.fm:8438/stream', desc_tg: 'Радиои Шахри ман.', desc_ru: 'Радио Мой город.', phone: '+992 92 234 56 78', website: 'https://shahriman.tj', instagram: 'https://instagram.com/shahriman', telegram: 'https://t.me/shahriman' },
-            { name: 'Радиои Navohang', freq: '99.0 FM', logo: 'https://i.ibb.co/69DHPGg/maxresdefault-edit-106413644110967.jpg', stream: 'https://navairan.com/;stream.nsv', desc_tg: 'Радиои нави шаҳри Исфара.', desc_ru: 'Новое радио города Исфара.', phone: '', website: 'https://isfarafm.tj', instagram: 'https://instagram.com/isfarafm', telegram: 'https://t.me/isfarafm', priority: true },
+            { name: 'Радиои Navahang', freq: '99.0 FM', logo: 'https://i.ibb.co/69DHPGg/maxresdefault-edit-106413644110967.jpg', stream: 'https://navairan.com/;stream.nsv', desc_tg: 'Радиои нави шаҳри Исфара.', desc_ru: 'Новое радио города Исфара.', phone: '', website: 'https://isfarafm.tj', instagram: 'https://instagram.com/isfarafm', telegram: 'https://t.me/isfarafm', priority: true },
             { name: 'Радио Ховар', freq: '91.0 FM', logo: 'https://i.ibb.co/Hf5zRJyS/1789274857360.png', stream: 'https://55ca6d57744.vps.myjino.ru/khovar', desc_tg: 'Радиои Ховар — овози шаҳри қадим.', desc_ru: 'Радио Ховар — голос древнего города.', phone: '', website: '', instagram: '', telegram: '' },
             { name: 'Овози Тоҷик', freq: '101.2 FM', logo: 'https://i.ibb.co/9kKSg0ZB/1789217642540.png', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-ovozi-tojik', desc_tg: 'Овози миллии тоҷикон.', desc_ru: 'Голос таджикского народа.', phone: '', website: '', instagram: '', telegram: '' },
-            { name: 'Радиои Тоҷикистон', freq: '88.5 FM', logo: 'https://i.ibb.co/vvP1yyNM/1789265859840.png', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-tojikiston', desc_tg: 'Радиои расмии давлатии Тоҷикистон.', desc_ru: 'Государственное радио Таджикистана.', phone: '', website: '', instagram: '', telegram: '' },
+            { name: 'Радиои Тоҷикистон', freq: '88.5 FM', logo: 'https://i.ibb.co/mV2wZ8BN/1791036942487.jpg', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-tojikiston', desc_tg: 'Радиои расмии давлатии Тоҷикистон.', desc_ru: 'Государственное радио Таджикистана.', phone: '', website: '', instagram: '', telegram: '' },
             { name: 'Радиои Фарҳанг', freq: '92.0 FM', logo: 'https://i.ibb.co/hJpLJWCj/1789265985464.png', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-farhangn', desc_tg: 'Радиои фарҳанг ва ҳунари тоҷик.', desc_ru: 'Радио культуры и искусства Таджикистана.', phone: '', website: '', instagram: '', telegram: '' },
-            { name: 'Радио Ватан', freq: '90.5 FM', logo: 'https://i.ibb.co/9kZMNrkF/1789267528729-edit-117867145540608.png', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-vatan', desc_tg: 'Радиои Ватан — садои диёр.', desc_ru: 'Радио Ватан — голос родного края.', phone: '', website: '', instagram: '', telegram: '' },
-            { name: 'Садои Душанбе', freq: '89.0 FM', logo: 'https://i.ibb.co/rfGCJ5ZR/1789217541111.png', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-sadoi-dushanbe', desc_tg: 'Садои пойтахти Тоҷикистон.', desc_ru: 'Голос столицы Таджикистана.', phone: '', website: '', instagram: '', telegram: '' },
+            { name: 'Радио Ватан', freq: '90.5 FM', logo: 'https://i.ibb.co/fYckVLSF/1791037155303.jpg', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-vatan', desc_tg: 'Радиои Ватан — садои диёр.', desc_ru: 'Радио Ватан — голос родного края.', phone: '', website: '', instagram: '', telegram: '' },
+            { name: 'Садои Душанбе', freq: '89.0 FM', logo: 'https://i.ibb.co/bgSTjvsN/1791036886393.jpg', stream: 'https://55ca6d57744.vps.myjino.ru/radioi-sadoi-dushanbe', desc_tg: 'Садои пойтахти Тоҷикистон.', desc_ru: 'Голос столицы Таджикистана.', phone: '', website: '', instagram: '', telegram: '' },
             { name: 'Радио Сафина', freq: '98.5 FM', logo: 'https://i.ibb.co/60TYnr3N/1789405670165.png', stream: 'https://resolutions-scratch-feeding-pink.trycloudflare.com/radiosafinalive', desc_tg: 'Садои нав, эҳсоси нав', desc_ru: 'Муассисаи давлатии «Телевизиони Сафина»', phone: '', website: '', instagram: 'https://www.instagram.com/tv_safina_official', telegram: 'https://t.me/tv_safina_official' },
             { name: 'Радио Исфара', freq: '93.9 FM', logo: 'https://i.ibb.co/Dqng8zV/file-00000000904c81f49d78945c850cf331-edit-99265565890673.png', stream: 'https://c40.radioboss.fm:8287/stream', desc_tg: 'Аз шумост ва барои шумост.', desc_ru: 'Радио с таджикской музыкой.', phone: ' +992 927 07 14 65', website: 'https://isfarafm.com/', instagram: 'https://instagram.com/radio_isfara', telegram: 'https://t.me/isfarafm' }
         ];
@@ -821,7 +787,8 @@
                 offlineText: 'Пайвасти интернет нест', offlineRetry: 'Аз нав кӯшиш',
                 timeoutText: '⏱ Пайваст суст аст. Радиои дигарро интихоб кунед.',
                 bgPlayingToast: '🎵 Дар замина пахш мешавад',
-                emptyHistory: '📻 Таърихи холӣ'
+                emptyHistory: '📻 Таърихи холӣ',
+                tuningPreview: 'Наздиктарин: '
             },
             ru: {
                 newAddedTitle: 'Недавно добавленные', newBadge: 'НОВОЕ',
@@ -865,7 +832,8 @@
                 offlineText: 'Нет подключения к интернету', offlineRetry: 'Повторить',
                 timeoutText: '⏱ Соединение слабое. Выберите другую станцию.',
                 bgPlayingToast: '🎵 Играет в фоне',
-                emptyHistory: '📻 История пуста'
+                emptyHistory: '📻 История пуста',
+                tuningPreview: 'Ближайшая: '
             }
         };
 
@@ -892,20 +860,53 @@
             document.querySelectorAll('.lang-btn[data-size]').forEach(b => b.classList.toggle('active', b.dataset.size === size));
         }
 
-        const LOGO_CACHE_KEY = 'radioLogoCache';
+        /* ============================================================
+           УЛУЧШЕННЫЙ КЭШ ЛОГОТИПОВ (v3.6)
+           — повторная попытка при ошибке
+           — хранение в localStorage
+           ============================================================ */
+        const LOGO_CACHE_KEY = 'radioLogoCache_v2';
+        const LOGO_FAILED_KEY = 'radioLogoFailed';
         let logoCache = (() => { try { return JSON.parse(localStorage.getItem(LOGO_CACHE_KEY)) || {}; } catch(e) { return {}; } })();
+        let logoFailed = (() => { try { return JSON.parse(localStorage.getItem(LOGO_FAILED_KEY)) || {}; } catch(e) { return {}; } })();
+
         function saveLogoCache() { try { localStorage.setItem(LOGO_CACHE_KEY, JSON.stringify(logoCache)); } catch(e) {} }
-        function preloadLogo(idx, url) {
-            if (!url || logoCache[idx]) return;
+        function saveLogoFailed() { try { localStorage.setItem(LOGO_FAILED_KEY, JSON.stringify(logoFailed)); } catch(e) {} }
+
+        function preloadLogo(idx, url, forceRetry = false) {
+            if (!url) return;
+            if (logoCache[idx] && !forceRetry) return;
+            if (logoFailed[idx] && !forceRetry) return;
+
             const img = new Image();
-            img.onload = () => { logoCache[idx] = url; saveLogoCache(); refreshAvatarFor(idx, url); };
+            const timeout = setTimeout(() => {
+                img.src = '';
+                logoFailed[idx] = url;
+                saveLogoFailed();
+            }, 12000);
+
+            img.onload = () => {
+                clearTimeout(timeout);
+                logoCache[idx] = url;
+                delete logoFailed[idx];
+                saveLogoCache(); saveLogoFailed();
+                refreshAvatarFor(idx, url);
+            };
+            img.onerror = () => {
+                clearTimeout(timeout);
+                logoFailed[idx] = url;
+                saveLogoFailed();
+                console.warn('Логотип не загрузился:', url);
+            };
             img.src = url;
         }
+
         function refreshAvatarFor(idx, url) {
             document.querySelectorAll(`.station-avatar[data-station-idx="${idx}"]`).forEach(el => {
                 el.style.backgroundImage = `url('${url}')`;
                 el.style.backgroundSize = 'cover';
                 el.style.backgroundPosition = 'center';
+                el.style.backgroundRepeat = 'no-repeat';
                 el.textContent = '';
                 el.classList.add('cached');
             });
@@ -928,6 +929,7 @@
                 el.style.backgroundImage = `url('${cachedUrl}')`;
                 el.style.backgroundSize = 'cover';
                 el.style.backgroundPosition = 'center';
+                el.style.backgroundRepeat = 'no-repeat';
                 el.textContent = '';
                 el.classList.add('cached');
             } else {
@@ -978,10 +980,12 @@
         }
 
         let currentLang = 'tg';
-        let currentRadio = null;
+        let currentRadio = null;       /* Что играет СЕЙЧАС */
+        let viewingRadio = null;        /* Что просматривается на странице деталей */
         let isPlaying = false;
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        let currentStationIndex = -1;
+        let currentStationIndex = -1;   /* Индекс текущей играющей */
+        let viewingStationIndex = -1;   /* Индекс просматриваемой */
         let listFilter = 'all';
         let sleepTimerMinutes = 0, sleepTimerEnd = null, sleepTimerInterval = null;
         let dialDragging = false;
@@ -1007,7 +1011,6 @@
                     listeners[currentStationIndex] = generateListenerCount();
                     if (isPlaying) {
                         document.getElementById('mainListenerCount').innerHTML = `<span class="dot"></span> ${listenerText(listeners[currentStationIndex])}`;
-                        document.getElementById('detailListeners').textContent = `● ${listenerText(listeners[currentStationIndex])}`;
                         const activeItem = document.querySelector(`.radio-item[data-index="${currentStationIndex}"] .radio-listeners`);
                         if (activeItem) activeItem.textContent = `● ${listenerText(listeners[currentStationIndex])}`;
                     }
@@ -1089,6 +1092,7 @@
             }
             updateRadioListenersUI();
             updateMiniPlayer();
+            updateFavBtnDetail();
         }
 
         const PAGE_ORDER = ['main', 'radio', 'favorites', 'profile'];
@@ -1157,11 +1161,13 @@
         function updateTuningDial(radio) {
             const needle = document.getElementById('tuningNeedle');
             const display = document.getElementById('tuningFreqDisplay');
-            if (!radio) { display.textContent = '— MHz'; needle.style.left = '50%'; return; }
+            const preview = document.getElementById('tuningPreviewName');
+            if (!radio) { display.textContent = '— MHz'; needle.style.left = '50%'; if (preview) preview.textContent = ''; return; }
             const freqNum = parseFloat(radio.freq);
-            if (isNaN(freqNum)) { display.textContent = radio.freq; needle.style.left = '50%'; return; }
+            if (isNaN(freqNum)) { display.textContent = radio.freq; needle.style.left = '50%'; if (preview) preview.textContent = ''; return; }
             const pct = Math.max(2, Math.min(98, ((freqNum - 87.5) / (108 - 87.5)) * 100));
             needle.style.left = pct + '%'; display.textContent = freqNum.toFixed(1) + ' MHz';
+            if (preview) preview.textContent = '';
         }
         function freqFromClientX(clientX) {
             const track = document.getElementById('tuningTrack');
@@ -1177,18 +1183,28 @@
         function previewNeedle(freq) {
             const needle = document.getElementById('tuningNeedle');
             const display = document.getElementById('tuningFreqDisplay');
+            const preview = document.getElementById('tuningPreviewName');
             const pct = Math.max(2, Math.min(98, ((freq - 87.5) / (108 - 87.5)) * 100));
             needle.style.left = pct + '%'; display.textContent = freq.toFixed(1) + ' MHz';
+            /* === НОВОЕ: показываем название ближайшей станции === */
+            const idx = nearestStationByFreq(freq);
+            if (idx >= 0 && preview) {
+                const r = RADIOS[idx];
+                preview.textContent = t('tuningPreview') + r.name + ' (' + r.freq + ')';
+            } else if (preview) { preview.textContent = ''; }
         }
         (function initTuningDrag() {
             const track = document.getElementById('tuningTrack');
             const needle = document.getElementById('tuningNeedle');
+            if (!track) return;
             track.addEventListener('pointerdown', (e) => { dialDragging = true; needle.classList.add('dragging'); track.setPointerCapture(e.pointerId); previewNeedle(freqFromClientX(e.clientX)); });
             track.addEventListener('pointermove', (e) => { if (!dialDragging) return; previewNeedle(freqFromClientX(e.clientX)); });
             track.addEventListener('pointerup', (e) => {
                 if (!dialDragging) return; dialDragging = false; needle.classList.remove('dragging');
                 const idx = nearestStationByFreq(freqFromClientX(e.clientX));
                 if (idx >= 0) playRadio(idx);
+                /* Сброс подсказки */
+                const preview = document.getElementById('tuningPreviewName'); if (preview) preview.textContent = '';
             });
             track.addEventListener('pointercancel', () => { dialDragging = false; needle.classList.remove('dragging'); });
         })();
@@ -1199,6 +1215,11 @@
             if (use) use.setAttribute('href', '#' + id);
         }
 
+        /* ============================================================
+           ОБНОВЛЁННЫЙ syncAnimation
+           — Теперь страница просмотра показывает данные ИГРАЮЩЕЙ станции
+             (если она открыта), а не той, что просматривается.
+           ============================================================ */
         function syncAnimation() {
             const pulseRing = document.getElementById('pulseRing');
             const waveRing1 = document.getElementById('waveRing1');
@@ -1237,17 +1258,15 @@
                 headerPill.style.display = 'none';
             }
 
+            /* === ГЛАВНЫЙ ЭКРАН: всегда показывает ТЕКУЩУЮ ИГРАЮЩУЮ станцию === */
             const nowPlaying = document.getElementById('mainNowPlaying');
             const vinylMain = document.getElementById('vinylMain');
             if (currentRadio) {
                 nowPlaying.textContent = currentRadio.name;
                 applyAvatar(vinylMain, currentRadio, currentStationIndex);
-                document.getElementById('detailName').textContent = currentRadio.name;
-                document.getElementById('detailFreq').textContent = currentRadio.freq;
                 if (!dialDragging) updateTuningDial(currentRadio);
                 if (listeners[currentStationIndex] !== undefined) {
                     document.getElementById('mainListenerCount').innerHTML = `<span class="dot"></span> ${listenerText(listeners[currentStationIndex])}`;
-                    document.getElementById('detailListeners').textContent = `● ${listenerText(listeners[currentStationIndex])}`;
                 }
             } else {
                 nowPlaying.textContent = t('noStation');
@@ -1256,14 +1275,30 @@
                 document.getElementById('mainListenerCount').innerHTML = `<span class="dot"></span> ${listenerText(0)}`;
                 if (!dialDragging) updateTuningDial(null);
             }
+
+            /* === СТРАНИЦА ПРОСМОТРА: обновляем данные, если она открыта === */
+            const detailPageOpen = document.getElementById('page-radio-detail').classList.contains('active');
+            if (detailPageOpen && viewingRadio) {
+                /* Показываем данные просматриваемой станции */
+                applyAvatar(document.getElementById('detailLogo'), viewingRadio, viewingStationIndex);
+                document.getElementById('detailName').textContent = viewingRadio.name;
+                document.getElementById('detailFreq').textContent = viewingRadio.freq;
+                if (listeners[viewingStationIndex] !== undefined) {
+                    document.getElementById('detailListeners').textContent = `● ${listenerText(listeners[viewingStationIndex])}`;
+                }
+            }
+
             updateFavBtnDetail();
             updateMiniPlayer();
         }
 
+        /* ============================================================
+           ОБНОВЛЁННЫЙ updateFavBtnDetail — работает с ПРОСМАТРИВАЕМОЙ станцией
+           ============================================================ */
         function updateFavBtnDetail() {
             const btn = document.getElementById('favBtnDetail');
-            if (!btn || currentStationIndex === -1) return;
-            const isFav = favorites.includes(currentStationIndex);
+            if (!btn || viewingStationIndex === -1) return;
+            const isFav = favorites.includes(viewingStationIndex);
             if (isFav) {
                 btn.innerHTML = `<svg class="icon" style="color: var(--terracotta);"><use href="#i-heart"/></svg> <span>${t('favBtnActive')}</span>`;
             } else {
@@ -1271,9 +1306,16 @@
             }
         }
 
+        /* ============================================================
+           ОБНОВЛЁННЫЙ openRadioDetail
+           — теперь НЕ подменяет currentStationIndex
+           — только задаёт viewingStationIndex
+           ============================================================ */
         function openRadioDetail(index) {
             const radio = RADIOS[index]; if (!radio) return;
-            currentStationIndex = index; currentRadio = radio;
+            viewingStationIndex = index;
+            viewingRadio = radio;
+
             applyAvatar(document.getElementById('detailLogo'), radio, index);
             document.getElementById('detailName').textContent = radio.name;
             document.getElementById('detailFreq').textContent = radio.freq;
@@ -1295,7 +1337,20 @@
             if (radio.telegram) { telegram.style.display = 'flex'; telegram.href = radio.telegram; telegram.innerHTML = `<svg class="icon"><use href="#i-telegram"/></svg> Telegram`; }
             else { telegram.style.display = 'none'; }
 
+            /* Обновляем статус кнопки Play — играет ли эта станция сейчас? */
+            const detailPlayBtn = document.getElementById('detailPlayBtn');
+            const detailLabel = document.getElementById('detailPlayBtnLabel');
+            const detailIcon = document.getElementById('detailPlayBtnIcon');
+            if (isPlaying && currentStationIndex === index) {
+                setIconUse(detailIcon, 'i-pause'); if (detailLabel) detailLabel.textContent = t('pauseBtn');
+                document.getElementById('equalizerDetail').classList.add('playing');
+            } else {
+                setIconUse(detailIcon, 'i-play'); if (detailLabel) detailLabel.textContent = t('listenBtn');
+                document.getElementById('equalizerDetail').classList.remove('playing');
+            }
+
             showPage('radio-detail');
+            updateFavBtnDetail();
             syncAnimation();
             renderNewAdded();
             updateMiniPlayer();
@@ -1329,6 +1384,10 @@
             } catch(e) {}
         }
 
+        /* ============================================================
+           ОБНОВЛЁННЫЙ playRadio
+           — теперь currentStationIndex меняется ТОЛЬКО здесь
+           ============================================================ */
         function playRadio(index) {
             const radio = RADIOS[index]; if (!radio) return;
 
@@ -1373,7 +1432,22 @@
             updateMiniPlayer();
             addRecentRadio(index);
             recordListen(index);
-            if (document.getElementById('page-radio-detail').classList.contains('active')) openRadioDetail(index);
+
+            /* Если открыта страница просмотра — обновляем её */
+            if (document.getElementById('page-radio-detail').classList.contains('active')) {
+                /* Если просматривается другая станция — оставляем её в просмотре */
+                if (viewingStationIndex !== index) {
+                    /* Меняем просмотр на играющую? Нет — пользователь сам выбрал, что смотреть */
+                    /* Но обновляем кнопку Play для просматриваемой станции */
+                    const detailLabel = document.getElementById('detailPlayBtnLabel');
+                    const detailIcon = document.getElementById('detailPlayBtnIcon');
+                    setIconUse(detailIcon, 'i-play');
+                    if (detailLabel) detailLabel.textContent = t('listenBtn');
+                } else {
+                    /* Просматривается та же станция — обновляем на паузу */
+                    openRadioDetail(index);
+                }
+            }
 
             if (playPromise !== undefined) {
                 playPromise.then(() => {
@@ -1527,8 +1601,30 @@
             else { showToast('🔗 ' + PLAY_MARKET_URL); }
         }
         document.getElementById('shareBtnMain').addEventListener('click', shareStation);
-        document.getElementById('shareBtnDetail').addEventListener('click', shareStation);
-        document.getElementById('favBtnDetail').addEventListener('click', () => { if (currentStationIndex !== -1) toggleFavorite(currentStationIndex); updateFavBtnDetail(); });
+
+        /* === ОБНОВЛЕНО: shareBtnDetail делится ПРОСМАТРИВАЕМОЙ станцией === */
+        document.getElementById('shareBtnDetail').addEventListener('click', () => {
+            const radio = viewingRadio;
+            if (radio && navigator.share) {
+                navigator.share({
+                    title: radio.name,
+                    text: `Слушай ${radio.name} на ${radio.freq}`,
+                    url: PLAY_MARKET_URL
+                }).catch(() => {});
+            } else if (navigator.clipboard && radio) {
+                navigator.clipboard.writeText(`${radio.name} (${radio.freq}) — ${PLAY_MARKET_URL}`).then(() => showToast(t('linkCopied')));
+            } else {
+                shareStation();
+            }
+        });
+
+        /* === ОБНОВЛЕНО: favBtnDetail работает с ПРОСМАТРИВАЕМОЙ станцией === */
+        document.getElementById('favBtnDetail').addEventListener('click', () => { 
+            if (viewingStationIndex !== -1) {
+                toggleFavorite(viewingStationIndex);
+                updateFavBtnDetail();
+            }
+        });
 
         function computeStats() {
             if (statsCache) return statsCache;
@@ -1625,9 +1721,17 @@
             if (isPlaying) { audio.pause(); isPlaying = false; syncAnimation(); renderNewAdded(); updateRadiosListUI(); updateFavoritesUI(); updateMiniPlayer(); }
             else { playRadio(currentStationIndex === -1 ? 0 : currentStationIndex); }
         });
+
+        /* === ОБНОВЛЕНО: detailPlayBtn теперь корректно работает с просматриваемой станцией === */
         document.getElementById('detailPlayBtn').addEventListener('click', function () {
-            if (isPlaying) { audio.pause(); isPlaying = false; syncAnimation(); renderNewAdded(); updateRadiosListUI(); updateFavoritesUI(); updateMiniPlayer(); }
-            else { playRadio(currentStationIndex === -1 ? 0 : currentStationIndex); }
+            /* Если просматривается та же станция, что играет — пауза */
+            if (isPlaying && currentStationIndex === viewingStationIndex) {
+                audio.pause(); isPlaying = false; syncAnimation(); renderNewAdded(); updateRadiosListUI(); updateFavoritesUI(); updateMiniPlayer();
+            } 
+            /* Иначе — включаем просматриваемую станцию */
+            else if (viewingStationIndex !== -1) {
+                playRadio(viewingStationIndex);
+            }
         });
 
         document.getElementById('weekCard').addEventListener('click', function (e) {
@@ -1698,7 +1802,13 @@
             let list = radioDisplayOrder.map(i => ({ r: RADIOS[i], i }));
             if (listFilter === 'fav') list = list.filter(({ i }) => favorites.includes(i));
             const query = (document.getElementById('searchInput').value || '').toLowerCase();
-            if (query) list = list.filter(({ r }) => r.name.toLowerCase().includes(query));
+            /* === НОВОЕ: поиск по имени И по частоте === */
+            if (query) {
+                list = list.filter(({ r }) =>
+                    r.name.toLowerCase().includes(query) ||
+                    r.freq.toLowerCase().includes(query)
+                );
+            }
             if (list.length === 0) { emptyState.style.display = 'block'; }
             else { emptyState.style.display = 'none'; list.forEach(({ r, i }) => container.appendChild(buildRadioItem(r, i))); }
         }
@@ -1796,6 +1906,9 @@
             currentLang = savedLang;
             setTextSize(currentTextSize);
             radioDisplayOrder = computeWeeklyRadioOrder();
+            if (!radioDisplayOrder.length) {
+                radioDisplayOrder = RADIOS.map((_, i) => i);
+            }
             applyStrings();
             initListeners();
             showFact();
